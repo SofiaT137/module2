@@ -3,9 +3,15 @@ package com.epam.esm.entity;
 import java.util.Objects;
 
 public class Tag extends AbstractEntity{
+
     private String name;
 
     public Tag(String name) {
+        this.name = name;
+    }
+
+    public Tag(Long id, String name) {
+        super(id);
         this.name = name;
     }
 
