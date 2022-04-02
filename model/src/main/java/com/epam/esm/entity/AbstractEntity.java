@@ -1,4 +1,4 @@
-package com.epam.esm.Entity;
+package com.epam.esm.entity;
 
 import java.util.Objects;
 
