@@ -2,7 +2,7 @@ package com.epam.esm.entity;
 
 import java.util.Objects;
 
-public abstract class AbstractEntity {
+public abstract class AbstractEntity{
 
     private Long id;
 

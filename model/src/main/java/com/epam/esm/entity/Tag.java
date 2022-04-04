@@ -2,7 +2,7 @@ package com.epam.esm.entity;
 
 import java.util.Objects;
 
-public class Tag extends AbstractEntity{
+public class Tag extends AbstractEntity {
 
     private String name;
 

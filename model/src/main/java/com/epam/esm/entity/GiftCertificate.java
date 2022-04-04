@@ -3,7 +3,7 @@ package com.epam.esm.entity;
 import java.util.Objects;
 import java.util.Set;
 
-public class GiftCertificate extends AbstractEntity{
+public class GiftCertificate extends AbstractEntity {
 
     private String name;
     private String description;
