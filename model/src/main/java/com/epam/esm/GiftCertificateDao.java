@@ -2,14 +2,14 @@ package com.epam.esm;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exceptions.DaoException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface GiftCertificateDao extends CRUDDao<GiftCertificate> {
 
-    List<Tag> getListOfTags(long id);
-    List<GiftCertificate> getByFilters(Map<String, String> filters);
-    void addListOfTags(long id, List<Tag> tagList);
-    void deleteListOfTags(long id, List<Tag> tagList);
+    void addTagsToCertificate(long id, Set<Tag> tagList) throws DaoException;
+    void deleteListOfCertificateTags(long id) throws DaoException;
 }
