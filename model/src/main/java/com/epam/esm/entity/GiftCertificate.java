@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -9,16 +10,15 @@ public class GiftCertificate extends AbstractEntity {
     private String description;
     private Double price;
     private Integer duration;
-    private String createDate;
-    private String lastUpdateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime lastUpdateDate;
     private Set<Tag> tags;
 
     public GiftCertificate() {
 
     }
 
-    public GiftCertificate(Long id, String name, String description, Double price, Integer duration, String createDate, String lastUpdateDate, Set<Tag> tags) {
-        super(id);
+    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<Tag> tags) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -28,7 +28,8 @@ public class GiftCertificate extends AbstractEntity {
         this.tags = tags;
     }
 
-    public GiftCertificate(String name, String description, Double price, Integer duration, String createDate, String lastUpdateDate, Set<Tag> tags) {
+    public GiftCertificate(Long id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<Tag> tags) {
+        super(id);
         this.name = name;
         this.description = description;
         this.price = price;
@@ -70,19 +71,19 @@ public class GiftCertificate extends AbstractEntity {
         this.duration = duration;
     }
 
-    public String getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public String getLastUpdateDate() {
+    public LocalDateTime getLastUpdateDate() {
         return lastUpdateDate;
     }
 
-    public void setLastUpdateDate(String lastUpdateDate) {
+    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 
@@ -100,7 +101,13 @@ public class GiftCertificate extends AbstractEntity {
         if (!(o instanceof GiftCertificate)) return false;
         if (!super.equals(o)) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getPrice(), that.getPrice()) && Objects.equals(getDuration(), that.getDuration()) && Objects.equals(getCreateDate(), that.getCreateDate()) && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate()) && Objects.equals(getTags(), that.getTags());
+        return Objects.equals(getName(), that.getName())
+                && Objects.equals(getDescription(), that.getDescription())
+                && Objects.equals(getPrice(), that.getPrice())
+                && Objects.equals(getDuration(), that.getDuration())
+                && Objects.equals(getCreateDate(), that.getCreateDate())
+                && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate())
+                && Objects.equals(getTags(), that.getTags());
     }
 
     @Override
@@ -115,8 +122,8 @@ public class GiftCertificate extends AbstractEntity {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
-                ", createDate='" + createDate + '\'' +
-                ", lastUpdateDate='" + lastUpdateDate + '\'' +
+                ", createDate=" + createDate +
+                ", lastUpdateDate=" + lastUpdateDate +
                 ", tags=" + tags +
                 '}';
     }
