@@ -1,8 +1,8 @@
 package com.epam.esm.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class GiftCertificate extends AbstractEntity {
 
@@ -12,13 +12,13 @@ public class GiftCertificate extends AbstractEntity {
     private Integer duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
-    private Set<Tag> tags;
+    private List<Tag> tags;
 
     public GiftCertificate() {
 
     }
 
-    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<Tag> tags) {
+    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -28,7 +28,7 @@ public class GiftCertificate extends AbstractEntity {
         this.tags = tags;
     }
 
-    public GiftCertificate(Long id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<Tag> tags) {
+    public GiftCertificate(Long id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
         super(id);
         this.name = name;
         this.description = description;
@@ -87,11 +87,11 @@ public class GiftCertificate extends AbstractEntity {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Set<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -101,18 +101,12 @@ public class GiftCertificate extends AbstractEntity {
         if (!(o instanceof GiftCertificate)) return false;
         if (!super.equals(o)) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return Objects.equals(getName(), that.getName())
-                && Objects.equals(getDescription(), that.getDescription())
-                && Objects.equals(getPrice(), that.getPrice())
-                && Objects.equals(getDuration(), that.getDuration())
-                && Objects.equals(getCreateDate(), that.getCreateDate())
-                && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate())
-                && Objects.equals(getTags(), that.getTags());
+        return Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getPrice(), that.getPrice()) && Objects.equals(getDuration(), that.getDuration()) && Objects.equals(getCreateDate(), that.getCreateDate()) && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate()) && Objects.equals(tags, that.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), getTags());
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), tags);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.jbdc.mapper.GiftCertificateMapper;
+import com.epam.esm.jbdc.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,9 +14,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import com.epam.esm.jbdc.impl.sql_creator.SQLCreator;
 
 import java.sql.PreparedStatement;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
@@ -43,7 +46,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         try {
             jdbcTemplate.update(
                     connection -> {
-                        PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{"id"});
+                        PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{"gift_certification_id"});
                         ps.setString(1, entity.getName());
                         ps.setString(2, entity.getDescription());
                         ps.setString(3, String.valueOf(entity.getPrice()));
@@ -58,27 +61,26 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
-    @Override
-    public void addTagsToCertificate(long id, Set<Tag> tagSet){
-        if (tagSet.isEmpty()){
+    private void addTagsToCertificate(long id, List<Tag> tagList){
+        if (tagList.isEmpty()){
             return;
         }
-        Set<Long> tagsId = getSetWithTagsId(tagSet);
+        List<Long> tagsId = getSetWithTagsId(tagList);
         tagsId.forEach(tagId -> jdbcTemplate.update(ADD_CERTIFICATE_TAGS,id,tagId));
     }
 
-    private Set<Long> getSetWithTagsId(Set<Tag> tagSet){
-        Set<Long> setOfTagsId = new HashSet<>();
+    private List<Long> getSetWithTagsId(List<Tag> tagSet){
+        List<Long> listOfTagsId = new ArrayList<>();
         TagDao tagDao = new TagDaoImpl();
         tagSet.forEach(tag ->{
             try{
-               setOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
+                listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
             }catch (DaoException exception){
                 exception.getMessage();
                 exception.getErrorCode();
             }
         });
-        return setOfTagsId;
+        return listOfTagsId;
     }
 
     @Override
@@ -108,9 +110,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     private String generateUpdateQuery (Map<String,String> fields){
-
         StringBuilder setPart = new StringBuilder();
-
         for (Map.Entry<String, String> stringStringEntry : fields.entrySet()) {
             String key = stringStringEntry.getKey();
             String value = stringStringEntry.getValue();
@@ -142,8 +142,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
-    @Override
-    public void deleteListOfCertificateTags(long id) throws DaoException {
+
+    private void deleteListOfCertificateTags(long id) throws DaoException {
         try {
             jdbcTemplate.update(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID, id);
         }catch (DataAccessException exception){
@@ -151,4 +151,18 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
+
+    @Override
+    public List<GiftCertificate> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException {
+        SQLCreator sqlCreator = new SQLCreator();
+        List<GiftCertificate> certificates = jdbcTemplate.query(sqlCreator.createGetCertificateQuery(mapWithFilters), new GiftCertificateMapper());
+        certificates = certificates.stream().distinct().collect(Collectors.toList());
+        for (GiftCertificate certificate : certificates) {
+            List<Tag> tags = jdbcTemplate.query(GET_TAGS_CONNECTED_WITH_CERTIFICATE, new TagMapper(), certificate.getId());
+            certificate.setTags(tags);
+        }
+        return certificates;
+    }
+
 }
+
