@@ -24,7 +24,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void insert(Tag entity) throws ServiceException, DaoException {
-        tagValidator.validate(entity.getName());
+        tagValidator.validate(entity);
         tagDao.insert(entity);
     }
 
