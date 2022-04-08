@@ -1,7 +1,7 @@
 package com.epam.esm.jbdc.impl;
 
-import com.epam.esm.GiftCertificateDao;
-import com.epam.esm.TagDao;
+import com.epam.esm.jbdc.GiftCertificateDao;
+import com.epam.esm.jbdc.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;

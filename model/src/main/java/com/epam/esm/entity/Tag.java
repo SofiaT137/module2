@@ -19,7 +19,7 @@ public class Tag extends AbstractEntity {
 
     }
 
-    public String getName() {
+    public Tag getName() {
         return name;
     }
 

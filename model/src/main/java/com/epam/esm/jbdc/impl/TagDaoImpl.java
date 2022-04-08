@@ -1,6 +1,6 @@
 package com.epam.esm.jbdc.impl;
 
-import com.epam.esm.TagDao;
+import com.epam.esm.jbdc.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.jbdc.mapper.TagMapper;
