@@ -1,10 +1,13 @@
 package com.epam.esm.jbdc.impl.sql_creator;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.entity.GiftCertificateTableColumns.*;
 
+@Component
 public class SQLCreator {
 
     private static final String TAG_NAME = "tag_name";

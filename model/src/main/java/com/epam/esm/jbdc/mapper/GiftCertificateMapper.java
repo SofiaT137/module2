@@ -2,12 +2,14 @@ package com.epam.esm.jbdc.mapper;
 
 import com.epam.esm.entity.GiftCertificate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
 import static com.epam.esm.entity.GiftCertificateTableColumns.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Component
 public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 
     @Override
