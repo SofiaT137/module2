@@ -1,4 +1,4 @@
-package com.epam.esm.jbdc.impl.configuration;
+package com.epam.esm.jbdc.impl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
