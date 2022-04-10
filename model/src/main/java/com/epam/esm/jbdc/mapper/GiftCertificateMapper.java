@@ -14,12 +14,12 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
     public GiftCertificate mapRow(ResultSet rs, int rowNum) throws SQLException {
         GiftCertificate certificate = new GiftCertificate();
         certificate.setId(rs.getLong(ID));
-        certificate.setName(rs.getString(NAME));
+        certificate.setGift_certificate_name(rs.getString(NAME));
         certificate.setDescription(rs.getString(DESCRIPTION));
         certificate.setPrice(rs.getDouble(PRICE));
         certificate.setDuration(rs.getInt(DURATION));
-        certificate.setCreateDate(rs.getTimestamp(CREATE_DATE).toLocalDateTime());
-        certificate.setLastUpdateDate(rs.getTimestamp(LAST_UPDATE_DATE).toLocalDateTime());
+        certificate.setCreate_date(rs.getTimestamp(CREATE_DATE).toLocalDateTime());
+        certificate.setLast_update_date(rs.getTimestamp(LAST_UPDATE_DATE).toLocalDateTime());
         return certificate;
 
     }

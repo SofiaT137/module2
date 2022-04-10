@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 import static com.epam.esm.entity.GiftCertificateTableColumns.*;
-@Repository
+
+@Repository // @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     private JdbcTemplate jdbcTemplate;
@@ -46,13 +47,13 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         try {
             jdbcTemplate.update(
                     connection -> {
-                        PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{"gift_certification_id"});
-                        ps.setString(1, entity.getName());
+                        PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{"gift_certificate_id"});
+                        ps.setString(1, entity.getGift_certificate_name());
                         ps.setString(2, entity.getDescription());
                         ps.setString(3, String.valueOf(entity.getPrice()));
                         ps.setString(4, String.valueOf(entity.getDuration()));
-                        ps.setString(5, String.valueOf(entity.getCreateDate()));
-                        ps.setString(6, String.valueOf(entity.getLastUpdateDate()));
+                        ps.setString(5, String.valueOf(entity.getCreate_date()));
+                        ps.setString(6, String.valueOf(entity.getLast_update_date()));
                         return ps;
                     }, keyHolder);
             addTagsToCertificate(Objects.requireNonNull(keyHolder.getKey()).longValue(),entity.getTags());
@@ -62,7 +63,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     private void addTagsToCertificate(long id, List<Tag> tagList){
-        if (tagList.isEmpty()){
+        if (tagList == null || tagList.isEmpty()){
             return;
         }
         List<Long> tagsId = getSetWithTagsId(tagList);
@@ -85,8 +86,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public GiftCertificate getById(long id) throws DaoException {
-        List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATE_BY_ID, new GiftCertificateMapper());
-        if (certificates.size()!=1){
+        List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATE_BY_ID, new GiftCertificateMapper(),id);
+        if (certificates.isEmpty()){
             throw new DaoException(CANNOT_FIND_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);
         }
         return certificates.get(0);
@@ -123,12 +124,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     private Map<String,String> getAllNewDataFields(GiftCertificate certificate){
         Map<String,String> newDataFields = new HashMap<>();
-        newDataFields.put(NAME,certificate.getName());
+        newDataFields.put(NAME,certificate.getGift_certificate_name());
         newDataFields.put(DESCRIPTION,certificate.getDescription());
         newDataFields.put(PRICE,String.valueOf(certificate.getPrice()));
         newDataFields.put(DURATION, String.valueOf(certificate.getDuration()));
-        newDataFields.put(CREATE_DATE,String.valueOf(certificate.getCreateDate()));
-        newDataFields.put(LAST_UPDATE_DATE,String.valueOf(certificate.getLastUpdateDate()));
+        newDataFields.put(CREATE_DATE,String.valueOf(certificate.getCreate_date()));
+        newDataFields.put(LAST_UPDATE_DATE,String.valueOf(certificate.getLast_update_date()));
         return newDataFields;
     }
 
