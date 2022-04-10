@@ -73,6 +73,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private List<Long> getSetWithTagsId(List<Tag> tagSet){
         List<Long> listOfTagsId = new ArrayList<>();
         TagDao tagDao = new TagDaoImpl();
+        //Попытаться взять айди тега
+        //Если не удалось,то попытаться добавить этот тег
+        //Если успех, то вставить в лист айди нового тека
+        // в противном случае логируем
         tagSet.forEach(tag ->{
             try{
                 listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
