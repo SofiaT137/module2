@@ -4,6 +4,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ServiceException;
 import com.epam.esm.jbdc.TagDao;
+import com.epam.esm.jbdc.impl.TagDaoImpl;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private TagDao tagDao;
+    private TagDao tagDao = new TagDaoImpl();
     private TagValidator tagValidator = new TagValidator();
 
     @Autowired

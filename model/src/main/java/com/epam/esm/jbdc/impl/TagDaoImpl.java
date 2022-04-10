@@ -42,11 +42,11 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Tag getById(long id) throws DaoException {
-        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_ID, new TagMapper());
-        if (tagList.size()!=1){
+        List<Tag> tags = jdbcTemplate.query(GET_TAG_BY_ID, new TagMapper(),id);
+        if (tags.isEmpty()){
             throw new DaoException(CANNOT_FIND_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);
         }
-        return tagList.get(0);
+        return tags.get(0);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Tag getTagByName(String name) throws DaoException {
-        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_NAME, new TagMapper());
+        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_NAME, new TagMapper(),name);
         if (tagList.size()!=1){
             throw new DaoException(CANNOT_FIND_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_NAME);
         }
