@@ -8,9 +8,11 @@ import com.epam.esm.jbdc.GiftCertificateDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.DATASOURCE_SAVING_ERROR;
 import static com.epam.esm.jbdc.sql_queries.TagSQLQueries.INSERT_TAG;
@@ -36,6 +38,11 @@ public class GiftCertificateController {
     public ResponseEntity insertTag(@RequestBody GiftCertificate giftCertificate) throws DaoException{
         giftCertificateDao.insert(giftCertificate);
         return ResponseEntity.status(HttpStatus.CREATED).body("Success");
+    }
+
+    @GetMapping("/filter")
+    public List<GiftCertificate> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException {
+        return giftCertificateDao.getQueryWithConditions(allRequestParams);
     }
 
 }

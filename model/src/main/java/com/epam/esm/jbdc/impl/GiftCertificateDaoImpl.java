@@ -28,16 +28,26 @@ import static com.epam.esm.entity.GiftCertificateTableColumns.*;
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     private JdbcTemplate jdbcTemplate;
+    private GiftCertificateMapper giftCertificateMapper;
+    private SQLCreator sqlCreator;
+    private TagDao tagDao;
+    private TagMapper tagMapper;
 
     private static final String INSERT_CERTIFICATE_ERROR_MESSAGE = "Cannot add this certificate!";
     private static final String CANNOT_FIND_CERTIFICATE_ERROR_MESSAGE = "Cannot find this certificate!";
     private static final String CANNOT_FIND_ANY_CERTIFICATE_ERROR_MESSAGE = "Cannot find any certificate!";
     private static final String CANNOT_DELETE_CERTIFICATE_ERROR_MESSAGE = "Cannot delete this certificate!";
     private static final String CANNOT_UPDATE_CERTIFICATE_ERROR_MESSAGE = "Cannot update this certificate!";
+    private static final String GET_ASSOCIATED_TAGS_QUERY = "SELECT t.tag_id,t.tag_name FROM tag t INNER JOIN gift_certificate_tag gct ON t.tag_id = gct.tag_id WHERE gct.gift_certificate_id=?";
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate, GiftCertificateMapper giftCertificateRowMapper,
+                                  TagMapper tagMapper,SQLCreator queryCreator,TagDao tagDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.giftCertificateMapper = giftCertificateRowMapper;
+        this.sqlCreator = queryCreator;
+        this.tagDao = tagDao;
+        this.tagMapper = tagMapper;
     }
 
     @Override
@@ -70,45 +80,66 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         tagsId.forEach(tagId -> jdbcTemplate.update(ADD_CERTIFICATE_TAGS,id,tagId));
     }
 
-    private List<Long> getSetWithTagsId(List<Tag> tagSet){
+    private List<Tag> getCertificateTags(long id) throws DaoException {
+        try {
+            return jdbcTemplate.query(GET_ASSOCIATED_TAGS_QUERY, tagMapper, id);
+        } catch (DataAccessException e) {
+            throw new DaoException("Test method",DATASOURCE_SAVING_ERROR);
+        }
+
+    }
+
+    //ASK BEST PRACTICE
+    private List<Long> getSetWithTagsId(List<Tag> tagList){
         List<Long> listOfTagsId = new ArrayList<>();
-        TagDao tagDao = new TagDaoImpl();
-        //Попытаться взять айди тега
-        //Если не удалось,то попытаться добавить этот тег
-        //Если успех, то вставить в лист айди нового тека
-        // в противном случае логируем
-        tagSet.forEach(tag ->{
-            try{
+        boolean isTagExist = false;
+        for (Tag tag : tagList) {
+            try {
                 listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
-            }catch (DaoException exception){
+                isTagExist = true;
+            } catch (DaoException exception) {
                 exception.getMessage();
-                exception.getErrorCode();
             }
-        });
+            if (!isTagExist){
+                try {
+                    tagDao.insert(tag);
+                    listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
+                } catch (DaoException exception) {
+                    exception.getMessage();
+                }
+            }
+            isTagExist = false;
+        }
         return listOfTagsId;
     }
 
+
     @Override
     public GiftCertificate getById(long id) throws DaoException {
-        List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATE_BY_ID, new GiftCertificateMapper(),id);
+        List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATE_BY_ID, giftCertificateMapper,id);
         if (certificates.isEmpty()){
             throw new DaoException(CANNOT_FIND_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);
         }
-        return certificates.get(0);
+        GiftCertificate giftCertificate =  certificates.get(0);
+        giftCertificate.setTags(getCertificateTags(id));
+        return giftCertificate;
     }
 
     @Override
     public List<GiftCertificate> getAll() throws DaoException {
-        List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATES, new GiftCertificateMapper());
+        List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATES, giftCertificateMapper);
         if (certificates.isEmpty()){
             throw new DaoException(CANNOT_FIND_ANY_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_NOT_FOUND);
+        }
+        for (GiftCertificate certificate : certificates) {
+            certificate.setTags(getCertificateTags(certificate.getId()));
         }
         return certificates;
     }
 
     @Override
     public void update(GiftCertificate entity) throws DaoException {
-        int rows = jdbcTemplate.update(generateUpdateQuery(getAllNewDataFields(entity)), new GiftCertificateMapper());
+        int rows = jdbcTemplate.update(generateUpdateQuery(getAllNewDataFields(entity)), giftCertificateMapper);
         if (rows == 0){
             throw new DaoException(CANNOT_UPDATE_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_SAVING_ERROR);
         }
@@ -159,12 +190,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public List<GiftCertificate> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException {
-        SQLCreator sqlCreator = new SQLCreator();
-        List<GiftCertificate> certificates = jdbcTemplate.query(sqlCreator.createGetCertificateQuery(mapWithFilters), new GiftCertificateMapper());
+        List<GiftCertificate> certificates = jdbcTemplate.query(sqlCreator.createGetCertificateQuery(mapWithFilters), giftCertificateMapper);
         certificates = certificates.stream().distinct().collect(Collectors.toList());
         for (GiftCertificate certificate : certificates) {
-            List<Tag> tags = jdbcTemplate.query(GET_TAGS_CONNECTED_WITH_CERTIFICATE, new TagMapper(), certificate.getId());
-            certificate.setTags(tags);
+            certificate.setTags(getCertificateTags(certificate.getId()));
         }
         return certificates;
     }
