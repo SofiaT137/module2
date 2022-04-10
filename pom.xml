@@ -20,7 +20,7 @@
 	<artifactId>module-2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>module-2</name>
+	<gift_certificate_name>module-2</gift_certificate_name>
 	<description>This is REST.API.Basic project.</description>
 
 	<properties>
