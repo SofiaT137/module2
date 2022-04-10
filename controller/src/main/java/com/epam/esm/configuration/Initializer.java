@@ -1,4 +1,4 @@
-package com.epam.esm;
+package com.epam.esm.configuration;
 
 import com.epam.esm.configuration.WebConfig;
 import org.springframework.web.WebApplicationInitializer;
