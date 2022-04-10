@@ -2,8 +2,6 @@ DROP DATABASE certificate_base;
 
 CREATE DATABASE IF NOT EXISTS certificate_base;
 
-USE certificate_base;
-
 -- -----------------------------------------------------
 -- Table certificate_base.tag
 -- -----------------------------------------------------
