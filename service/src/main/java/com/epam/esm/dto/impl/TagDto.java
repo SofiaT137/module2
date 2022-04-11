@@ -1,5 +1,6 @@
-package com.epam.esm.dto;
+package com.epam.esm.dto.impl;
 
+import com.epam.esm.dto.AbstractDto;
 import com.epam.esm.entity.Tag;
 
 import java.util.Objects;
@@ -13,7 +14,7 @@ public class TagDto extends AbstractDto<Long> {
     }
 
     public TagDto(Long id, String name) {
-        super(id);
+        this.id = id;
         this.name = name;
     }
 
