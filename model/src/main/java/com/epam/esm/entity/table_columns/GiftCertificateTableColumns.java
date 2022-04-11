@@ -1,6 +1,6 @@
 package com.epam.esm.entity;
 
-public class GiftCertificateTableColumns {
+public final class GiftCertificateTableColumns {
 
     public static final String ID = "gift_certificate_id";
     public static final String NAME = "gift_certificate_name";
