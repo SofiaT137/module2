@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
-import static com.epam.esm.entity.GiftCertificateTableColumns.*;
+import static com.epam.esm.entity.table_columns.GiftCertificateTableColumns.*;
 
 @Repository // @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
 public class GiftCertificateDaoImpl implements GiftCertificateDao {

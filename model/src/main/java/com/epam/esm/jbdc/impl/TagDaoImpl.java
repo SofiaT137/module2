@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID;
+import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.jbdc.sql_queries.TagSQLQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 

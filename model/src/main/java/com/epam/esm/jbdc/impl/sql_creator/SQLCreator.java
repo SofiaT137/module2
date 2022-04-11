@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
-import static com.epam.esm.entity.GiftCertificateTableColumns.*;
+import static com.epam.esm.entity.table_columns.GiftCertificateTableColumns.*;
 
 @Component
 public class SQLCreator {
