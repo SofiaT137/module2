@@ -18,6 +18,11 @@ public class TagController {
     private TagService tagService;
 
     @Autowired
+    public void setTagService(TagService tagService) {
+        this.tagService = tagService;
+    }
+
+    @Autowired
     public TagController(TagService tagService) {
         this.tagService = tagService;
     }
@@ -29,7 +34,7 @@ public class TagController {
     }
 
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable Long id) throws DaoException {
+    public Tag getTagById(@PathVariable Long id) throws DaoException, ServiceException {
         return tagService.getById(id);
     }
 
@@ -39,7 +44,7 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteByID(@PathVariable long id) throws DaoException {
+    public ResponseEntity deleteByID(@PathVariable long id) throws DaoException, ServiceException {
         tagService.deleteByID(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Success");
     }
