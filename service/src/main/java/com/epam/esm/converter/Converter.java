@@ -1,4 +1,4 @@
-package com.epam.esm.converter.impl;
+package com.epam.esm.converter;
 
 import com.epam.esm.dto.AbstractDto;
 import com.epam.esm.entity.AbstractEntity;
