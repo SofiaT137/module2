@@ -17,28 +17,34 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.jbdc.impl.sql_creator.SQLCreator;
 
 import java.sql.PreparedStatement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 import static com.epam.esm.entity.table_columns.GiftCertificateTableColumns.*;
 
-@Repository // @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
+@Repository 
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-    private JdbcTemplate jdbcTemplate;
-    private GiftCertificateMapper giftCertificateMapper;
-    private SQLCreator sqlCreator;
-    private TagDao tagDao;
-    private TagMapper tagMapper;
+    private final JdbcTemplate jdbcTemplate;
+    private final GiftCertificateMapper giftCertificateMapper;
+    private final SQLCreator sqlCreator;
+    private final TagDao tagDao;
+    private final TagMapper tagMapper;
 
     private static final String INSERT_CERTIFICATE_ERROR_MESSAGE = "Cannot add this certificate!";
     private static final String CANNOT_FIND_CERTIFICATE_ERROR_MESSAGE = "Cannot find this certificate!";
     private static final String CANNOT_FIND_ANY_CERTIFICATE_ERROR_MESSAGE = "Cannot find any certificate!";
     private static final String CANNOT_DELETE_CERTIFICATE_ERROR_MESSAGE = "Cannot delete this certificate!";
     private static final String CANNOT_UPDATE_CERTIFICATE_ERROR_MESSAGE = "Cannot update this certificate!";
-    private static final String GET_ASSOCIATED_TAGS_QUERY = "SELECT t.tag_id,t.tag_name FROM tag t INNER JOIN gift_certificate_tag gct ON t.tag_id = gct.tag_id WHERE gct.gift_certificate_id=?";
+    private static final String CANNOT_GET_ALL_CERTIFICATE_TAGS_ERROR_MESSAGE = "Cannot get all certificate tags!";
+    private static final String SOMETHING_WENT_WRONG_ERROR_MESSAGE = "Something went wrong when we tried to add new tag";
+
 
     @Autowired
     public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate, GiftCertificateMapper giftCertificateRowMapper,
@@ -57,7 +63,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         try {
             jdbcTemplate.update(
                     connection -> {
-                        PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{"gift_certificate_id"});
+                        PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{CERTIFICATE_ID});
                         ps.setString(1, entity.getGiftCertificateName());
                         ps.setString(2, entity.getDescription());
                         ps.setString(3, String.valueOf(entity.getPrice()));
@@ -72,7 +78,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
-    public void addTagsToCertificate(long id, List<Tag> tagList){
+    public void addTagsToCertificate(long id, List<Tag> tagList) throws DaoException {
         if (tagList == null || tagList.isEmpty()){
             return;
         }
@@ -84,22 +90,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         try {
             return jdbcTemplate.query(GET_ASSOCIATED_TAGS_QUERY, tagMapper, id);
         } catch (DataAccessException e) {
-            throw new DaoException("Test method",DATASOURCE_SAVING_ERROR);
+            throw new DaoException(CANNOT_GET_ALL_CERTIFICATE_TAGS_ERROR_MESSAGE,CANNOT_FIND_GIFT_CERTIFICATE_TAGS);
         }
     }
 
-    public void deleteCertificateTags(GiftCertificate giftCertificate) throws DaoException {
-        for (Tag tag : giftCertificate.getTags()) {
-            try{
-                jdbcTemplate.update(REMOVE_CERTIFICATE_TAGS,giftCertificate.getId(),tag.getId());
-            }catch (DataAccessException e) {
-                throw new DaoException("DELETE OPERATION HAS A PROBLEM",DATASOURCE_SAVING_ERROR);
-            }
-        }
-    }
-
-    //ASK BEST PRACTICE
-    private List<Long> getListWithTagsId(List<Tag> tagList){
+    private List<Long> getListWithTagsId(List<Tag> tagList) throws DaoException {
         List<Long> listOfTagsId = new ArrayList<>();
         boolean isTagExist = false;
         for (Tag tag : tagList) {
@@ -114,7 +109,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
                     tagDao.insert(tag);
                     listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
                 } catch (DaoException exception) {
-                    exception.getMessage();
+                    throw new DaoException(SOMETHING_WENT_WRONG_ERROR_MESSAGE,CANNOT_ADD_NEW_TAG);
                 }
             }
             isTagExist = false;
@@ -161,12 +156,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         for (Map.Entry<String, Object> stringObjectEntry : fields.entrySet()) {
             String key = stringObjectEntry.getKey();
             Object value = stringObjectEntry.getValue();
-            if (!key.equals("gift_certificate_id") && value != null){
-                setPart.append(key).append("=").append("'").append(value).append("'").append(',');
+            if (!key.equals(CERTIFICATE_ID) && value != null && !key.equals(CREATE_DATE)){
+                setPart.append(key).append(EQUALS).append(QUOTE).append(value).append(QUOTE).append(COMA);
             }
         }
-        setPart.deleteCharAt(setPart.length()-1);
-        return UPDATE_GIFT_CERTIFICATE_SET + setPart +WHERE_ID + fields.get("gift_certificate_id");
+        setPart.deleteCharAt(setPart.length()-2);
+        return UPDATE_GIFT_CERTIFICATE_SET + setPart +WHERE_ID + fields.get(CERTIFICATE_ID);
     }
 
     private Map<String,Object> getAllNewDataFields(GiftCertificate certificate){
@@ -181,8 +176,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         return newDataFields;
     }
 
-
-
     @Override
     @Transactional
     public void deleteByID(long id) throws DaoException {
@@ -194,14 +187,13 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
 
-    private void deleteListOfCertificateTags(long id) throws DaoException {
+    public void deleteListOfCertificateTags(long id) throws DaoException {
         try {
             jdbcTemplate.update(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID, id);
         }catch (DataAccessException exception){
             throw new DaoException(exception.getMessage(),DATASOURCE_NOT_FOUND_BY_ID);
         }
     }
-
 
     @Override
     public List<GiftCertificate> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException {

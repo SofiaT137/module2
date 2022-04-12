@@ -11,8 +11,8 @@ public interface GiftCertificateDao extends CRUDDao<GiftCertificate> {
 
     List<GiftCertificate> getQueryWithConditions(Map<String,String> mapWithFilters) throws DaoException;
 
-    void addTagsToCertificate(long id, List<Tag> tagList);
+    void addTagsToCertificate(long id, List<Tag> tagList) throws DaoException;
 
-    void deleteCertificateTags(GiftCertificate giftCertificate) throws DaoException;
+    void deleteListOfCertificateTags(long id) throws DaoException;
 
 }
