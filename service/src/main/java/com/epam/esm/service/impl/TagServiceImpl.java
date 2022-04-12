@@ -4,9 +4,9 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ServiceException;
 import com.epam.esm.jbdc.TagDao;
-import com.epam.esm.jbdc.impl.TagDaoImpl;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.TagValidator;
+import com.epam.esm.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,16 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private TagDao tagDao = new TagDaoImpl();
-    private TagValidator tagValidator = new TagValidator();
+    private TagDao tagDao;
+    private TagValidator tagValidator;
 
     @Autowired
-    public void setTagDao(TagDao tagDao) {
+    public void setTagValidator(TagValidator tagValidator) {
+        this.tagValidator = tagValidator;
+    }
+
+    @Autowired
+    public void setTagDao(TagDao tagDao){
         this.tagDao = tagDao;
     }
 
@@ -30,7 +35,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag getById(long id) throws DaoException {
+    public Tag getById(long id) throws DaoException, ServiceException {
+        tagValidator.validateId(id);
         return tagDao.getById(id);
     }
 
@@ -40,7 +46,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void deleteByID(long id) throws DaoException {
+    public void deleteByID(long id) throws DaoException, ServiceException {
+        tagValidator.validateId(id);
         tagDao.deleteByID(id);
     }
 
