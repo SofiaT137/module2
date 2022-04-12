@@ -6,14 +6,15 @@ public interface GiftCertificateQueries {
     String ADD_CERTIFICATE_TAGS = "INSERT INTO gift_certificate_tag(gift_certificate_id, tag_id) VALUES(?, ?)";
     String GET_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE gift_certificate_id=?";
     String GET_GIFT_CERTIFICATES = "SELECT gc.gift_certificate_id, gift_certificate_name, description, price, duration, create_date, last_update_date FROM gift_certificate AS gc ";
-    String DELETE_GIFT_CERTIFICATE= "DELETE FROM gift_certificate WHERE id=?";
+    String DELETE_GIFT_CERTIFICATE= "DELETE FROM gift_certificate WHERE gift_certificate_id=?";
     String DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID = "DELETE FROM gift_certificate_tag WHERE gift_certificate_id=?";
     String UPDATE_GIFT_CERTIFICATE_SET = "UPDATE gift_certificate SET ";
-    String WHERE_ID = "WHERE id=";
+    String WHERE_ID = " WHERE gift_certificate_id = ";
+    String REMOVE_CERTIFICATE_TAGS = "DELETE FROM gift_certificate_tag WHERE gift_certificate_id=? AND tag_id=?";
     String JOIN_BY_TAG_ID = "INNER JOIN gift_certificate_tag " +
             "AS gct ON gc.gift_certificate_id = gct.gift_certificate_id " +
             "LEFT JOIN tag AS t on t.tag_id = gct.tag_id";
-    String GET_TAGS_CONNECTED_WITH_CERTIFICATE = "SELECT tag_name FROM gift_certificate AS gs " +
+    String GET_TAGS_CONNECTED_TO_CERTIFICATE = "SELECT tag_name FROM gift_certificate AS gs " +
             "INNER JOIN  gift_certificate_tag AS gct ON gs.gift_certificate_id = gct.gift_certificate_id " +
             "INNER JOIN tag AS t ON t.tag_id = gct.tag_id WHERE gs.gift_certificate_id = ?";
     String WHERE = " WHERE ";
