@@ -58,12 +58,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
             jdbcTemplate.update(
                     connection -> {
                         PreparedStatement ps = connection.prepareStatement(INSERT_GIFT_CERTIFICATE, new String[]{"gift_certificate_id"});
-                        ps.setString(1, entity.getGift_certificate_name());
+                        ps.setString(1, entity.getGiftCertificateName());
                         ps.setString(2, entity.getDescription());
                         ps.setString(3, String.valueOf(entity.getPrice()));
                         ps.setString(4, String.valueOf(entity.getDuration()));
-                        ps.setString(5, String.valueOf(entity.getCreate_date()));
-                        ps.setString(6, String.valueOf(entity.getLast_update_date()));
+                        ps.setString(5, String.valueOf(entity.getCreateDate()));
+                        ps.setString(6, String.valueOf(entity.getLastUpdateDate()));
                         return ps;
                     }, keyHolder);
             addTagsToCertificate(Objects.requireNonNull(keyHolder.getKey()).longValue(),entity.getTags());
@@ -72,11 +72,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
-    private void addTagsToCertificate(long id, List<Tag> tagList){
+    public void addTagsToCertificate(long id, List<Tag> tagList){
         if (tagList == null || tagList.isEmpty()){
             return;
         }
-        List<Long> tagsId = getSetWithTagsId(tagList);
+        List<Long> tagsId = getListWithTagsId(tagList);
         tagsId.forEach(tagId -> jdbcTemplate.update(ADD_CERTIFICATE_TAGS,id,tagId));
     }
 
@@ -86,11 +86,20 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         } catch (DataAccessException e) {
             throw new DaoException("Test method",DATASOURCE_SAVING_ERROR);
         }
+    }
 
+    public void deleteCertificateTags(GiftCertificate giftCertificate) throws DaoException {
+        for (Tag tag : giftCertificate.getTags()) {
+            try{
+                jdbcTemplate.update(REMOVE_CERTIFICATE_TAGS,giftCertificate.getId(),tag.getId());
+            }catch (DataAccessException e) {
+                throw new DaoException("DELETE OPERATION HAS A PROBLEM",DATASOURCE_SAVING_ERROR);
+            }
+        }
     }
 
     //ASK BEST PRACTICE
-    private List<Long> getSetWithTagsId(List<Tag> tagList){
+    private List<Long> getListWithTagsId(List<Tag> tagList){
         List<Long> listOfTagsId = new ArrayList<>();
         boolean isTagExist = false;
         for (Tag tag : tagList) {
@@ -139,34 +148,40 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public void update(GiftCertificate entity) throws DaoException {
-        int rows = jdbcTemplate.update(generateUpdateQuery(getAllNewDataFields(entity)), giftCertificateMapper);
+        Map<String,Object> map = getAllNewDataFields(entity);
+        String updateRequest = generateUpdateQuery(map);
+        int rows = jdbcTemplate.update(updateRequest);
         if (rows == 0){
             throw new DaoException(CANNOT_UPDATE_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_SAVING_ERROR);
         }
     }
 
-    private String generateUpdateQuery (Map<String,String> fields){
+    private String generateUpdateQuery (Map<String,Object> fields){
         StringBuilder setPart = new StringBuilder();
-        for (Map.Entry<String, String> stringStringEntry : fields.entrySet()) {
-            String key = stringStringEntry.getKey();
-            String value = stringStringEntry.getValue();
-            if (!key.equals("id") && value != null){
-                setPart.append(key).append("=").append("'").append(value).append("'");
+        for (Map.Entry<String, Object> stringObjectEntry : fields.entrySet()) {
+            String key = stringObjectEntry.getKey();
+            Object value = stringObjectEntry.getValue();
+            if (!key.equals("gift_certificate_id") && value != null){
+                setPart.append(key).append("=").append("'").append(value).append("'").append(',');
             }
         }
-        return UPDATE_GIFT_CERTIFICATE_SET + setPart + WHERE_ID + fields.get("id");
+        setPart.deleteCharAt(setPart.length()-1);
+        return UPDATE_GIFT_CERTIFICATE_SET + setPart +WHERE_ID + fields.get("gift_certificate_id");
     }
 
-    private Map<String,String> getAllNewDataFields(GiftCertificate certificate){
-        Map<String,String> newDataFields = new HashMap<>();
-        newDataFields.put(NAME,certificate.getGift_certificate_name());
+    private Map<String,Object> getAllNewDataFields(GiftCertificate certificate){
+        Map<String,Object> newDataFields = new HashMap<>();
+        newDataFields.put(ID,certificate.getId());
+        newDataFields.put(NAME,certificate.getGiftCertificateName());
         newDataFields.put(DESCRIPTION,certificate.getDescription());
-        newDataFields.put(PRICE,String.valueOf(certificate.getPrice()));
-        newDataFields.put(DURATION, String.valueOf(certificate.getDuration()));
-        newDataFields.put(CREATE_DATE,String.valueOf(certificate.getCreate_date()));
-        newDataFields.put(LAST_UPDATE_DATE,String.valueOf(certificate.getLast_update_date()));
+        newDataFields.put(PRICE,certificate.getPrice());
+        newDataFields.put(DURATION, certificate.getDuration());
+        newDataFields.put(CREATE_DATE,certificate.getCreateDate());
+        newDataFields.put(LAST_UPDATE_DATE,certificate.getLastUpdateDate());
         return newDataFields;
     }
+
+
 
     @Override
     @Transactional
