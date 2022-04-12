@@ -1,6 +1,7 @@
 package com.epam.esm.dto.impl;
 
 import com.epam.esm.dto.AbstractDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +15,30 @@ public class GiftCertificateDto extends AbstractDto<Long> {
     private String createDate;
     private String lastUpdateDate;
     private List<String> tags;
+
+    public GiftCertificateDto(Long id, String giftCertificateName, String description, Double price, Integer duration, String createDate, String lastUpdateDate, List<String> tags) {
+        this.id = id;
+        this.giftCertificateName = giftCertificateName;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
+
+    public GiftCertificateDto(String giftCertificateName, String description, Double price, Integer duration, String createDate, String lastUpdateDate, List<String> tags) {
+        this.giftCertificateName = giftCertificateName;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
+
+    public GiftCertificateDto() {
+    }
 
     public String getGiftCertificateName() {
         return giftCertificateName;
