@@ -65,7 +65,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         List<Tag> tags = null;
         if (tagNames != null) {
             tags = entity.getTags().stream().map(Tag::new).collect(Collectors.toList());
-            giftCertificateDao.deleteCertificateTags(giftCertificateDao.getById(id));
+            giftCertificateDao.deleteListOfCertificateTags(id);
         }
         certificateValidator.validate(entity,tags);
         giftCertificateDao.update(giftCertificateConverter.convert(entity));

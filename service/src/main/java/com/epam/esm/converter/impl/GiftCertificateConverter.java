@@ -17,27 +17,47 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
+
         String createDateDto = value.getCreateDate();
+        String lastUpdateDateDto = value.getLastUpdateDate();
+        LocalDateTime createDate = validateDate(createDateDto);
+        LocalDateTime lastUpdateDate = validateDate(lastUpdateDateDto);
         List<String> valueTagsList = value.getTags();
+        List<Tag> finalTagList = convertNamesToTagList(valueTagsList);
+
+        return new GiftCertificate(value.getId(),value.getGiftCertificateName(),value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,finalTagList);
+    }
+
+    private LocalDateTime validateDate(String dateTime){
+        LocalDateTime date;
+        if (dateTime != null){
+            date = LocalDateTime.parse(dateTime);
+        } else {
+            date = getCurrentDateTime();
+        }
+        return date;
+    }
+
+    private LocalDateTime getCurrentDateTime(){
+        return LocalDateTime.now();
+    }
+
+    private List<Tag> convertNamesToTagList(List<String> valueTagsList){
         List<Tag> convertNamesToTags;
         if (valueTagsList == null){
             convertNamesToTags = new ArrayList<>();
         }else{
             convertNamesToTags = getTagList(valueTagsList);
         }
-        LocalDateTime createDate = null;
-        if (createDateDto != null){
-            createDate = LocalDateTime.parse(createDateDto);
-        }
-        LocalDateTime lastUpdateDate = LocalDateTime.parse(value.getLastUpdateDate());
-        return new GiftCertificate(value.getId(),value.getGiftCertificateName(),value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,convertNamesToTags);
+        return convertNamesToTags;
     }
+
 
     private List<Tag> getTagList(List<String> listTagsName) {
         return listTagsName.stream().map(Tag::new).collect(Collectors.toList());
     }
 
-    private List<String> getStringList(List<Tag> listTags){
+    private List<String> getNamesOfTagsList(List<Tag> listTags){
         return listTags.stream().map(Tag::getName).collect(Collectors.toList());
     }
 
@@ -46,6 +66,6 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         String createDate = value.getCreateDate().format(formatter);
         String lastUpdateDate = value.getLastUpdateDate().format(formatter);
-        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(), value.getPrice(), value.getDuration(), createDate,lastUpdateDate,getStringList(value.getTags()));
+        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(), value.getPrice(), value.getDuration(), createDate,lastUpdateDate, getNamesOfTagsList(value.getTags()));
     }
 }
