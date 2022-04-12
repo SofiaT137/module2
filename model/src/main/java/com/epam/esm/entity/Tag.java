@@ -1,8 +1,10 @@
 package com.epam.esm.entity;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
-public class Tag extends AbstractEntity {
+public class Tag extends AbstractEntity<Long> {
 
     private String name;
 

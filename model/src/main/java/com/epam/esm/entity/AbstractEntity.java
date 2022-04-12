@@ -2,7 +2,7 @@ package com.epam.esm.entity;
 
 import java.util.Objects;
 
-public abstract class AbstractEntity{
+public abstract class AbstractEntity<K> {
 
     private Long id;
 
@@ -26,7 +26,7 @@ public abstract class AbstractEntity{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AbstractEntity)) return false;
-        AbstractEntity that = (AbstractEntity) o;
+        AbstractEntity<K> that = (AbstractEntity<K>) o;
         return Objects.equals(getId(), that.getId());
     }
 
