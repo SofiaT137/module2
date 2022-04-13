@@ -8,7 +8,6 @@ import com.epam.esm.exceptions.ServiceException;
 import com.epam.esm.jbdc.GiftCertificateDao;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
-import com.epam.esm.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +20,9 @@ import java.util.stream.Collectors;
 @Service //// @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
-    private GiftCertificateDao giftCertificateDao;
-    private GiftCertificateConverter giftCertificateConverter;
-    private GiftCertificateValidator certificateValidator;
+    private final GiftCertificateDao giftCertificateDao;
+    private final GiftCertificateConverter giftCertificateConverter;
+    private final GiftCertificateValidator certificateValidator;
 
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao, GiftCertificateConverter giftCertificateConverter, GiftCertificateValidator certificateValidator) {
@@ -45,7 +44,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public List<GiftCertificateDto> getAll() throws DaoException {
-        return giftCertificateDao.getAll().stream().map(giftCertificate -> giftCertificateConverter.convert(giftCertificate)).collect(Collectors.toList());
+        return giftCertificateDao.getAll().stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }
 
     @Override
@@ -74,6 +73,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException {
-        return giftCertificateDao.getQueryWithConditions(mapWithFilters).stream().map(giftCertificate -> giftCertificateConverter.convert(giftCertificate)).collect(Collectors.toList());
+        return giftCertificateDao.getQueryWithConditions(mapWithFilters).stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }
 }

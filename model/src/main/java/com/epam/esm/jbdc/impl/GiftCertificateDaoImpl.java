@@ -28,7 +28,11 @@ import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 import static com.epam.esm.entity.table_columns.GiftCertificateTableColumns.*;
 
-@Repository 
+/**
+ * Class GiftCertificateDaoImpl is implementation of interface {@link GiftCertificateDao}
+ * This class is intended for work with 'gift certificate' and 'gift_certificate_tag' tables
+ */
+@Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -56,6 +60,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         this.tagMapper = tagMapper;
     }
 
+    /**
+     * Method for creating a query to insert the GiftCertificate entity in a 'gift_certificate' table.
+     * @param  entity GiftCertificate entity
+     */
     @Override
     @Transactional
     public void insert(GiftCertificate entity) throws DaoException {
@@ -78,6 +86,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
+    /**
+     * Method for creating a query to add tags to the GiftCertificate entity in a 'gift_certificate' table.
+     * @param id GiftCertificate id
+     * @param tagList list of tags
+     */
     public void addTagsToCertificate(long id, List<Tag> tagList) throws DaoException {
         if (tagList == null || tagList.isEmpty()){
             return;
@@ -118,6 +131,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
 
+    /**
+     * Method for creating a query to get the GiftCertificate entity by its id in a 'gift_certificate' table.
+     * @param id GiftCertificate id
+     * @return GiftCertificate entity
+     */
     @Override
     public GiftCertificate getById(long id) throws DaoException {
         List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATE_BY_ID, giftCertificateMapper,id);
@@ -129,6 +147,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         return giftCertificate;
     }
 
+    /**
+     * Method for creating a query to get all the GiftCertificate entity in a 'gift_certificate' table.
+     * @return list of GiftCertificate entities
+     */
     @Override
     public List<GiftCertificate> getAll() throws DaoException {
         List<GiftCertificate> certificates = jdbcTemplate.query(GET_GIFT_CERTIFICATES, giftCertificateMapper);
@@ -141,6 +163,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         return certificates;
     }
 
+    /**
+     * Method for creating a query to update the GiftCertificate entity in a 'gift_certificate' table.
+     * @param entity GiftCertificate entity
+     */
     @Override
     public void update(GiftCertificate entity) throws DaoException {
         Map<String,Object> map = getAllNewDataFields(entity);
@@ -176,6 +202,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         return newDataFields;
     }
 
+    /**
+     * Method for creating a query to delete the GiftCertificate entity by its id in a 'gift_certificate' table.
+     * @param id GiftCertificate id
+     */
     @Override
     @Transactional
     public void deleteByID(long id) throws DaoException {
@@ -187,6 +217,10 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
 
+    /**
+     * Method for creating a query to delete GiftCertificate entity relations in a 'gift_certificate_tag' table
+     * @param id GiftCertificate id
+     */
     public void deleteListOfCertificateTags(long id) throws DaoException {
         try {
             jdbcTemplate.update(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID, id);
@@ -195,6 +229,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
+    /**
+     * Method for creating a query to get GiftCertificate entity by filters in a 'gift certificate' table
+     * @param mapWithFilters Map(key=filter, value=passed value)
+     * @return list of GiftCertificate entities
+     */
     @Override
     public List<GiftCertificate> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException {
         List<GiftCertificate> certificates = jdbcTemplate.query(sqlCreator.createGetCertificateQuery(mapWithFilters), giftCertificateMapper);
