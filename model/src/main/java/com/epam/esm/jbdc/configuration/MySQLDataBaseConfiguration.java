@@ -3,19 +3,18 @@ package com.epam.esm.jbdc.configuration;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 
 
 @Configuration//источник определения бинов
 @ComponentScan("com.epam.esm") // По умолчанию, такая конфигурация сканирует на наличие классов с аннотацией @Component и его потомков в том пакете, в котором сама находится, а также в подпакетах.
 @PropertySource("classpath:dbConnection.properties")
+@Profile("prod")
 public class MySQLDataBaseConfiguration{
 
     private final Environment environment;
@@ -44,7 +43,7 @@ public class MySQLDataBaseConfiguration{
         basicDS.setPassword(environment.getProperty(DATA_BASE_PASSWORD));
         basicDS.setDriverClassName(environment.getProperty(DATA_BASE_DRIVER));
         basicDS.setUrl(environment.getProperty(DATA_BASE_URL));
-        basicDS.setInitialSize(Integer.parseInt(environment.getProperty(POOL_SIZE)));
+        basicDS.setInitialSize(Integer.parseInt(Objects.requireNonNull(environment.getProperty(POOL_SIZE))));
         return basicDS;
     }
 
