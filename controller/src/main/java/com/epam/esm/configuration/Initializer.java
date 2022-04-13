@@ -26,5 +26,6 @@ public class Initializer implements WebApplicationInitializer {
         servDyn.setLoadOnStartup(1);
         //Maps URL pattern
         servDyn.addMapping("/");
+        servDyn.setInitParameter("spring.profiles.default","prod");
     }
 }
