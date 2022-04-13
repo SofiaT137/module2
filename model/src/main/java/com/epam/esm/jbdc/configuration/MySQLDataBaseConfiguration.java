@@ -24,7 +24,7 @@ public class MySQLDataBaseConfiguration{
     private static final String DATA_BASE_PASSWORD = "PASSWORD";
     private static final String DATA_BASE_DRIVER = "DB_DRIVER";
     private static final String DATA_BASE_URL = "DB_URL";
-    private static final Integer POOL_SIZE = 4;
+    private static final String POOL_SIZE = "INITIAL_SIZE";
 
 
     @Autowired
@@ -44,7 +44,7 @@ public class MySQLDataBaseConfiguration{
         basicDS.setPassword(environment.getProperty(DATA_BASE_PASSWORD));
         basicDS.setDriverClassName(environment.getProperty(DATA_BASE_DRIVER));
         basicDS.setUrl(environment.getProperty(DATA_BASE_URL));
-        basicDS.setInitialSize(POOL_SIZE);
+        basicDS.setInitialSize(Integer.parseInt(environment.getProperty(POOL_SIZE)));
         return basicDS;
     }
 

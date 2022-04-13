@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>com.epam.esm</groupId>
             <artifactId>service</artifactId>
@@ -49,8 +50,5 @@
         </dependency>
 
     </dependencies>
-
-
-
 
 </project>

@@ -1,5 +1,7 @@
 package com.epam.esm.exceptions;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,10 +44,5 @@ public class ExceptionsHandler {
         String exceptionMessage = exception.getLocalizedMessage();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.BAD_REQUEST);
     }
-
-    //json ошибка
-
-
-
 
 }
