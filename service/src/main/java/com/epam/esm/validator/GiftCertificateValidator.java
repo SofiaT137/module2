@@ -6,9 +6,10 @@ import com.epam.esm.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
@@ -36,6 +37,7 @@ public class GiftCertificateValidator extends Validator {
     private static final String INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_EXCEPTION = "This gift certificate description is too long!";
     private static final String INCORRECT_GIFT_CERTIFICATE_PRICE_EXCEPTION = "This gift certificate price is forbidden!";
     private static final String INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION = "This gift certificate duration is forbidden!";
+    private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "Check the values, that you transferred!";
 
     public void validate(GiftCertificateDto giftCertificate, List<Tag> listOfTag) throws ServiceException {
         if (giftCertificate.getGiftCertificateName() != null) {
@@ -80,12 +82,24 @@ public class GiftCertificateValidator extends Validator {
         }
     }
 
-    public void validateListOfTags(List<Tag> tags) throws ServiceException {
+    private void validateListOfTags(List<Tag> tags) throws ServiceException {
         if (tags == null) return;
         for (Tag tag : tags) {
             tagValidator.validate(tag);
         }
     }
+
+    public void validateMapKeys(Map<String,String> mapWithParameters) throws ServiceException {
+        List<String> allowedKeys = Arrays.asList("tag_name","partName","partDescription","sortByNameASC","sortByCreationDateASC","sortByNameDESC","sortByCreationDateDESC");
+        List<String> transferredKeys = new ArrayList<>(mapWithParameters.keySet());
+        for (String transferredKey : transferredKeys) {
+            if (!allowedKeys.contains(transferredKey)){
+                throw new ServiceException(INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION,INCORRECT_TRANSFERRED_PARAMETERS);
+            }
+        }
+    }
+
+
 
 
 
