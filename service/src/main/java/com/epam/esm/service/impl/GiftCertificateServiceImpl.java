@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Service //// @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
+@Service
+//// @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDao giftCertificateDao;
@@ -41,7 +42,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificateDto getById(long id) throws DaoException, ServiceException {
-        certificateValidator.validateId(id);
         return giftCertificateConverter.convert(giftCertificateDao.getById(id));
     }
 
@@ -51,16 +51,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
     public void deleteByID(long id) throws DaoException, ServiceException {
-        certificateValidator.validateId(id);
         giftCertificateDao.deleteByID(id);
     }
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public void update(Long id,GiftCertificateDto entity) throws DaoException, ServiceException {
-        certificateValidator.validateId(id);
         entity.setId(id);
         entity.setLastUpdateDate(getCurrentDate());
         List<String> tagNames = entity.getTags();

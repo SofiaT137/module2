@@ -37,7 +37,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag getById(long id) throws DaoException, ServiceException {
-        tagValidator.validateId(id);
         return tagDao.getById(id);
     }
 
@@ -47,9 +46,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
     public void deleteByID(long id) throws DaoException, ServiceException {
-        tagValidator.validateId(id);
         tagDao.deleteByID(id);
     }
 
