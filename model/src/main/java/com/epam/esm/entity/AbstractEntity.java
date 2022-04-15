@@ -6,11 +6,11 @@ public abstract class AbstractEntity<K> {
 
     private Long id;
 
-    public AbstractEntity(){
+    protected AbstractEntity(){
 
     }
 
-    public AbstractEntity(Long id) {
+    protected AbstractEntity(Long id) {
         this.id = id;
     }
 
@@ -26,7 +26,7 @@ public abstract class AbstractEntity<K> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AbstractEntity)) return false;
-        AbstractEntity<K> that = (AbstractEntity<K>) o;
+        AbstractEntity<?> that = (AbstractEntity<?>) o;
         return Objects.equals(getId(), that.getId());
     }
 
