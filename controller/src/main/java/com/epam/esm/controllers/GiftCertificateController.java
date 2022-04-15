@@ -41,7 +41,7 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/filter")
-    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException {
+    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException, ServiceException {
           return giftCertificateService.getQueryWithConditions(allRequestParams);
     }
 
