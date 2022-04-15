@@ -1,5 +1,6 @@
 package com.epam.esm.controllers;
 
+import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ServiceException;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tags")
@@ -41,6 +43,11 @@ public class TagController {
     @GetMapping
     public List<Tag> getAll() throws DaoException {
         return tagService.getAll();
+    }
+
+    @GetMapping("/filter")
+    public Tag getTagByName(String name) throws DaoException {
+        return tagService.getTagByName(name);
     }
 
     @DeleteMapping("/{id}")
