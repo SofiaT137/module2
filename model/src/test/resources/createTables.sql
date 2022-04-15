@@ -1,27 +1,31 @@
-CREATE SCHEMA certificates;
+CREATE SCHEMA certificate_base;
 
-create table gift_certificate(
-    gift_certificate_id bigint primary key auto_increment,
-    gift_certificate_name varchar(45),
-    description text(450),
-    price decimal(6,2),
-    duration tinyint(90),
-    create_date timestamp(6),
-    last_update_date timestamp(6)
+CREATE TABLE gift_certificate (
+  gift_certificate_id bigint primary key NOT NULL AUTO_INCREMENT,
+  gift_certificate_name varchar(45) NOT NULL,
+  description text(300),
+  price decimal(6,2)  NOT NULL,
+  duration tinyint  NOT NULL,
+  create_date timestamp(6) NOT NULL,
+  last_update_date timestamp(6) NOT NULL
 );
 
-create table tag(
-     tag_id bigint primary key not null auto_increment,
-     tag_name not null varchar(25)
+
+CREATE TABLE tag (
+  tag_id bigint  NOT NULL AUTO_INCREMENT,
+  tag_name varchar(25) NOT NULL,
+  PRIMARY KEY (tag_id)
 );
 
-create table gift_certificate_tag(
-    tag_id bigint,
-    gift_certificate_id bigint,
-    constraint tag_id_foreign_key
-    foreign key (tag_id) references tag(tag_id)
-    on delete cascade on update cascade,
-    constraint gift_certificate_id_foreign_key
-    foreign key (gift_certificate_id) references gift_certificate(gift_certificate_id)
-    on delete cascade on update cascade
+
+CREATE TABLE gift_certificate_tag (
+  id bigint NOT NULL AUTO_INCREMENT,
+  gift_certificate_id bigint,
+  tag_id bigint,
+  CONSTRAINT gift_certificate_tag_fk1
+  FOREIGN KEY (gift_certificate_id) REFERENCES gift_certificate (gift_certificate_id)
+  ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT gift_certificate_tag_fk2
+  FOREIGN KEY (tag_id) REFERENCES tag (tag_id)
+  ON DELETE CASCADE ON UPDATE CASCADE
 );
