@@ -6,9 +6,9 @@ import com.epam.esm.exceptions.ServiceException;
 import com.epam.esm.jbdc.TagDao;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.TagValidator;
-import com.epam.esm.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +29,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
     public void insert(Tag entity) throws ServiceException, DaoException {
         tagValidator.validate(entity);
         tagDao.insert(entity);
@@ -46,6 +47,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
     public void deleteByID(long id) throws DaoException, ServiceException {
         tagValidator.validateId(id);
         tagDao.deleteByID(id);

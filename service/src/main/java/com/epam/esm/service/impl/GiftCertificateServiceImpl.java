@@ -10,6 +10,7 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +33,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public void insert(GiftCertificateDto entity) throws DaoException {
+    @Transactional(rollbackFor = {Exception.class})
+    public void insert(GiftCertificateDto entity) throws DaoException, ServiceException {
+        certificateValidator.validate(entity,null);
         giftCertificateDao.insert(giftCertificateConverter.convert(entity));
     }
 
@@ -48,12 +51,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public void deleteByID(long id) throws DaoException, ServiceException {
         certificateValidator.validateId(id);
         giftCertificateDao.deleteByID(id);
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public void update(Long id,GiftCertificateDto entity) throws DaoException, ServiceException {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         String lastUpdateDate = LocalDateTime.now().format(formatter);
