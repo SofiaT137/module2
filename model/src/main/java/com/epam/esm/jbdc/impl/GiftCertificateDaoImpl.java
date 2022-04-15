@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.jbdc.impl.sql_creator.SQLCreator;
 
@@ -65,7 +66,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
      * @param  entity GiftCertificate entity
      */
     @Override
-    @Transactional
     public void insert(GiftCertificate entity) throws DaoException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -207,9 +207,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
      * @param id GiftCertificate id
      */
     @Override
-    @Transactional
     public void deleteByID(long id) throws DaoException {
-        deleteListOfCertificateTags(id);
         int rows = jdbcTemplate.update(DELETE_GIFT_CERTIFICATE,id);
         if (rows == 0){
             throw new DaoException(CANNOT_DELETE_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);

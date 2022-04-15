@@ -5,7 +5,6 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.jbdc.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,6 @@ public class TagDaoImpl implements TagDao {
      * Method for creating a query to insert the Tag entity in a 'tag' table.
      * @param entity Tag entity
      */
-    @Transactional
     @Override
     public void insert(Tag entity) throws DaoException {
         int rows = jdbcTemplate.update(INSERT_TAG,entity.getName());
@@ -80,24 +78,10 @@ public class TagDaoImpl implements TagDao {
      * @param id Tag id
      */
     @Override
-    @Transactional
     public void deleteByID(long id) throws DaoException {
-        deleteListOfCertificateTags(id);
         int rows = jdbcTemplate.update(DELETE_TAG,id);
         if (rows == 0){
             throw new DaoException(DELETE_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);
-        }
-    }
-
-    /**
-     * Method for creating a query to delete the Tag entity relations in a 'gift_certificate_tag' table.
-     * @param id Tag id
-     */
-    public void deleteListOfCertificateTags(long id) throws DaoException {
-        try {
-            jdbcTemplate.update(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_TAG_ID, id);
-        }catch (DataAccessException exception){
-            throw new DaoException(exception.getMessage(),DATASOURCE_NOT_FOUND_BY_ID);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.epam.esm.exceptions;
 
+
 public class DaoException extends Exception{
 
     private String errorCode;
