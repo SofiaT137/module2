@@ -37,28 +37,24 @@ public class SQLCreator {
             }else if (key.equals(PART_OF_CERTIFICATE_DESCRIPTION)) {
                 addPartSearchParameter(partSearchPart,DESCRIPTION,value);
             }else if (key.equals(SORT_BY_NAME)){
-                addSort(orderPart,value,false);
+                addSort(orderPart,"gift_certificate_name",false);
             }else if (key.equals(SORT_BY_DATE)){
-                addSort(orderPart,value,false);
+                addSort(orderPart,"create_date",false);
             }else if (key.equals(SORT_BY_NAME_DESC)){
-                addSort(orderPart,value,true);
+                addSort(orderPart,"gift_certificate_name",true);
             }else if (key.equals(SORT_BY_DATE_DESC)){
-                addSort(orderPart,value,true);
+                addSort(orderPart,"create_date",true);
             }
         }
 
         StringBuilder checkQuery = query.append(joinPart);
 
+        System.out.println(getFinalQuery(checkQuery,checkForDoubleWhere(checkQuery,partSearchPart),orderPart));
         return getFinalQuery(checkQuery,checkForDoubleWhere(checkQuery,partSearchPart),orderPart);
     }
 
     private void addJoinQuery(StringBuilder joinPart, String tagName) {
-        if (joinPart.toString().contains(WHERE)) {
-            joinPart.append(AND);
-        } else {
-            joinPart.append(JOIN_BY_TAG_ID).append(WHERE);
-        }
-        joinPart.append(TAG_NAME).append(EQUALS_QUOTE).append(tagName).append(QUOTE);
+        joinPart.append(JOIN_BY_TAG_ID).append(WHERE).append(TAG_NAME).append(EQUALS_QUOTE).append(tagName).append(QUOTE);
     }
 
     private void addPartSearchParameter(StringBuilder query, String parameter, String value) {
@@ -97,9 +93,7 @@ public class SQLCreator {
         for (StringBuilder sbEntity:
              sb) {
             finalString.append(sbEntity);
-            finalString.append(" \n");
         }
-        finalString.deleteCharAt(finalString.length() - 2);
         return finalString.toString();
     }
 }
