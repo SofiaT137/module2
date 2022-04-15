@@ -83,7 +83,7 @@ public class GiftCertificateValidator extends Validator {
     public void validateListOfTags(List<Tag> tags) throws ServiceException {
         if (tags == null) return;
         for (Tag tag : tags) {
-            TagValidator.validate(tag);
+            tagValidator.validate(tag);
         }
     }
 

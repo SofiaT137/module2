@@ -20,7 +20,7 @@ public class TagValidator extends Validator {
     private static final Integer MIN_TAG_NAME_LENGTH = 2;
     private static final Integer MAX_TAG_NAME_LENGTH = 30;
 
-    public static void validate(Tag tag) throws ServiceException {
+    public void validate(Tag tag) throws ServiceException {
         validateName(tag.getName());
     }
 
