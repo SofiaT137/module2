@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.support.JdbcTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+
 
 import javax.sql.DataSource;
 import java.util.Objects;
@@ -18,6 +22,7 @@ import java.util.Objects;
 public class MySQLDataBaseConfiguration{
 
     private final Environment environment;
+    private PlatformTransactionManager transactionManager;
 
     private static final String DATA_BASE_USER = "USER";
     private static final String DATA_BASE_PASSWORD = "PASSWORD";
@@ -50,11 +55,22 @@ public class MySQLDataBaseConfiguration{
     /**
      * This method creates JdbcTemplate entity
      * @param dataSource The data source
-     * @return The JdbcTemplate object
+     * @return The JdbcTemplate entity
      */
     @Bean
     public JdbcTemplate getJBDCTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource());
+        return new JdbcTemplate(dataSource);
+    }
+
+
+    /**
+     * This method creates DataSourceTransactionManager entity
+     * @param dataSource The data source
+     * @return The DataSourceTransactionManager entity
+     */
+    @Bean
+    public DataSourceTransactionManager getTransactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
 
