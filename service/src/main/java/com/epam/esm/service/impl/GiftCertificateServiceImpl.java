@@ -60,20 +60,27 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public void update(Long id,GiftCertificateDto entity) throws DaoException, ServiceException {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        String lastUpdateDate = LocalDateTime.now().format(formatter);
         certificateValidator.validateId(id);
         entity.setId(id);
-        entity.setLastUpdateDate(lastUpdateDate);
+        entity.setLastUpdateDate(getCurrentDate());
         List<String> tagNames = entity.getTags();
         List<Tag> tags = null;
         if (tagNames != null) {
-            tags = entity.getTags().stream().map(Tag::new).collect(Collectors.toList());
+            tags = getNewTagList(tagNames);
             giftCertificateDao.deleteListOfCertificateTags(id);
         }
         certificateValidator.validate(entity,tags);
         giftCertificateDao.update(giftCertificateConverter.convert(entity));
         giftCertificateDao.addTagsToCertificate(id,tags);
+    }
+
+    private String getCurrentDate(){
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return LocalDateTime.now().format(formatter);
+    }
+
+    private List<Tag> getNewTagList(List<String> listOfTagNames){
+        return listOfTagNames.stream().map(Tag::new).collect(Collectors.toList());
     }
 
     @Override
