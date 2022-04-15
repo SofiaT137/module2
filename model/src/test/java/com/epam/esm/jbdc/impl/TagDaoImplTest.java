@@ -24,10 +24,13 @@ class TagDaoImplTest {
     @Autowired
     private TagDao tagDao;
 
+    private static final String newTagName = "happiness";
+    private static final String tagNameToFind = "sea";
+
     @Test
     void insert() throws DaoException {
-        tagDao.insert(new Tag("happiness"));
-        Long id2 = tagDao.getTagByName("happiness").getId();
+        tagDao.insert(new Tag(newTagName));
+        Long id2 = tagDao.getTagByName(newTagName).getId();
         assertNotNull(id2);
     }
 
@@ -44,16 +47,15 @@ class TagDaoImplTest {
     }
 
     @Test
-    void deleteByID() {
-    }
-
-    @Test
-    void deleteListOfCertificateTags() {
+    void deleteByID() throws DaoException {
+        tagDao.deleteByID(2);
+        List<Tag> allTags = tagDao.getAll();
+        assertEquals(3, allTags.size());
     }
 
     @Test
     void getTagByName() throws DaoException {
-        Tag happinessTag = tagDao.getTagByName("sea");
+        Tag happinessTag = tagDao.getTagByName(tagNameToFind);
         assertNotNull(happinessTag.getId());
     }
 }
