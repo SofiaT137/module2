@@ -84,7 +84,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException {
+    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException, ServiceException {
+        certificateValidator.validateMapKeys(mapWithFilters);
         return giftCertificateDao.getQueryWithConditions(mapWithFilters).stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }
 }
