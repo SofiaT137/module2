@@ -21,8 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("dev")
 class TagDaoImplTest {
 
-    @Autowired
     private TagDao tagDao;
+
+    @Autowired
+    public TagDaoImplTest(TagDao tagDao) {
+        this.tagDao = tagDao;
+    }
 
     private static final String newTagName = "happiness";
     private static final String tagNameToFind = "sea";

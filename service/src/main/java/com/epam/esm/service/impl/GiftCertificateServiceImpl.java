@@ -36,7 +36,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public void insert(GiftCertificateDto entity) throws DaoException, ServiceException {
-        certificateValidator.validate(entity,null);
+        certificateValidator.validate(entity);
         giftCertificateDao.insert(giftCertificateConverter.convert(entity));
     }
 
@@ -66,7 +66,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             tags = getNewTagList(tagNames);
             giftCertificateDao.deleteListOfCertificateTags(id);
         }
-        certificateValidator.validate(entity,tags);
+        certificateValidator.validate(entity);
         giftCertificateDao.update(giftCertificateConverter.convert(entity));
         giftCertificateDao.addTagsToCertificate(id,tags);
     }

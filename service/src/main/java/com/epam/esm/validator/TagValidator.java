@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
 @Component
-public final class TagValidator{
+public final class TagValidator extends Validator{
 
     private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
 

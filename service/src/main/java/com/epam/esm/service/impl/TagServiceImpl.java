@@ -19,13 +19,9 @@ public class TagServiceImpl implements TagService {
     private TagValidator tagValidator;
 
     @Autowired
-    public void setTagValidator(TagValidator tagValidator) {
-        this.tagValidator = tagValidator;
-    }
-
-    @Autowired
-    public void setTagDao(TagDao tagDao){
+    public TagServiceImpl(TagDao tagDao, TagValidator tagValidator) {
         this.tagDao = tagDao;
+        this.tagValidator = tagValidator;
     }
 
     @Override
@@ -37,6 +33,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag getById(long id) throws DaoException, ServiceException {
+        tagValidator.checkID(id);
         return tagDao.getById(id);
     }
 
@@ -47,6 +44,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void deleteByID(long id) throws DaoException, ServiceException {
+        tagValidator.checkID(id);
         tagDao.deleteByID(id);
     }
 
