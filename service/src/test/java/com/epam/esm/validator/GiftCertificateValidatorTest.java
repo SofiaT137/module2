@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,18 +23,15 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TagValidator.class, GiftCertificateValidator.class})
+@ExtendWith({MockitoExtension.class})
 class GiftCertificateValidatorTest {
 
+    @InjectMocks
     private GiftCertificateValidator giftCertificateValidator;
-    private TagValidator tagValidator;
 
-    @Autowired
-    public GiftCertificateValidatorTest(GiftCertificateValidator giftCertificateValidator, TagValidator tagValidator) {
-        this.giftCertificateValidator = giftCertificateValidator;
-        this.tagValidator = tagValidator;
-    }
+    @Spy
+    private TagValidator tagValidator = Mockito.mock(TagValidator.class);
+
 
     private static final String CORRECT_NAME = "Swimming with seals";
     private static final String INCORRECT_NAME = "$52-vmt[****";
@@ -96,13 +94,6 @@ class GiftCertificateValidatorTest {
                 () -> giftCertificateValidator.validateMapKeys(stringStringMap));
         assertTrue(thrown.getMessage().contains("Check the values"));
     }
-
-    @Test
-    void validateCorrectMapKeys(){
-        stringStringMap.put("tag_name","joy");
-        assertDoesNotThrow(()-> giftCertificateValidator.validateMapKeys(stringStringMap));
-    }
-
 }
 
 

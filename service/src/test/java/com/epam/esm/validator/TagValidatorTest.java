@@ -4,22 +4,16 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TagValidator.class)
+@ExtendWith({MockitoExtension.class})
 class TagValidatorTest {
 
+    @InjectMocks
     private TagValidator tagValidator;
-
-    @Autowired
-    public TagValidatorTest(TagValidator tagValidator) {
-        this.tagValidator = tagValidator;
-    }
 
     private static final Long CORRECT_ID = 9L;
     private static final Long INCORRECT_ID = -9L;

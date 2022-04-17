@@ -4,10 +4,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ServiceException;
 import com.epam.esm.jbdc.TagDao;
-import com.epam.esm.service.TagService;
-import com.epam.esm.validator.GiftCertificateValidator;
 import com.epam.esm.validator.TagValidator;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,9 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +19,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith({MockitoExtension.class})
-//@ExtendWith(SpringExtension.class)
-//@ContextConfiguration(classes = TagValidator.class)
 class TagServiceImplTest {
 
     @Spy
@@ -38,10 +30,6 @@ class TagServiceImplTest {
     @InjectMocks
     private TagServiceImpl tagService;
 
-//    @Autowired
-//    public TagServiceImplTest(TagValidator tagValidator) {
-//       this.tagService = new TagServiceImpl(this.tagDao,tagValidator);
-//    }
 
     private static final Tag TAG_1 = new Tag(1L, "joy");
     private static final Tag TAG_2 = new Tag(2L, "happiness");
@@ -115,7 +103,7 @@ class TagServiceImplTest {
         try {
             tagService.deleteByID(invalidID);
         }catch (ServiceException exception){
-            exception.printStackTrace();
+            exception.getLocalizedMessage();
         }
         Mockito.verify(tagDao, Mockito.times(0)).deleteByID(invalidID);
     }
