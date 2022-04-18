@@ -1,4 +1,4 @@
-package com.epam.esm.configuration;
+package com.epam.esm.controller_configuration;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
