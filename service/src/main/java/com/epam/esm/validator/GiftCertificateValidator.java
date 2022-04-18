@@ -16,14 +16,7 @@ import java.util.regex.Pattern;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
 @Component
-public final class GiftCertificateValidator {
-
-    private TagValidator tagValidator;
-
-    @Autowired
-    public GiftCertificateValidator(TagValidator tagValidator) {
-        this.tagValidator = tagValidator;
-    }
+public final class GiftCertificateValidator extends Validator {
 
     private static final Integer MIN_GIFT_CERTIFICATE_NAME_LENGTH = 3;
     private static final Integer MAX_GIFT_CERTIFICATE_NAME_LENGTH = 45;

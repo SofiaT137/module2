@@ -12,7 +12,7 @@ public interface GiftCertificateQueries {
     String WHERE_ID = " WHERE gift_certificate_id = ";
     String JOIN_BY_TAG_ID = "INNER JOIN gift_certificate_tag " +
             "AS gct ON gc.gift_certificate_id = gct.gift_certificate_id " +
-            "LEFT JOIN tag AS t on t.tag_id = gct.tag_id";
+            "INNER JOIN tag AS t on t.tag_id = gct.tag_id";
     String GET_ASSOCIATED_TAGS_QUERY = "SELECT t.tag_id,t.tag_name FROM tag t INNER JOIN gift_certificate_tag gct ON t.tag_id = gct.tag_id WHERE gct.gift_certificate_id=?";
     String WHERE = " WHERE ";
     String AND = " AND ";
