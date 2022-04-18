@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan("com.epam.esm")
 public class WebConfig implements WebMvcConfigurer {
 
-    ApplicationContext applicationContext;//это главный интерфейс в Spring-приложении, который предоставляет информацию о конфигурации приложения.
+    private final ApplicationContext applicationContext;//это главный интерфейс в Spring-приложении, который предоставляет информацию о конфигурации приложения.
 
     @Autowired
     public WebConfig(ApplicationContext applicationContext) {

@@ -1,4 +1,4 @@
-package com.epam.esm.service_configuration;
+package com.epam.esm.logging_configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
