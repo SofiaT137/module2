@@ -8,24 +8,35 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+/**
+ * Class Initializer implements WebApplicationInitializer.
+ * This class will be loaded when loading web project starts.
+  */
 public class Initializer implements WebApplicationInitializer {
 
+    private static final String SERVLET_NAME = "test";
+    private static final String SERVLET_MAPPING = "/";
+    private static final String PROFILES_DEFAULT = "spring.profiles.default";
+    private static final String PROD = "prod";
+    private static final Integer LOAD_ON_START_UP = 1;
+
+    /**
+     * Method onStartup helps to create context object, register annotated configuration class, passes servlet context
+     * to context instance, registers dispatch servlet and passes context instance to it, maps URL pattern, sets creation priority,
+     * sets Init parameter
+     * @param servletContext Servlet context
+     * @throws ServletException Servlet exception
+     */
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        // Creates context object (абстрактный класс, позволяет нам зарегистрировать один диспетчерский сервлет и создать корневой контекст веб-приложения)
         AnnotationConfigWebApplicationContext annotationConfigApplicationContext = new AnnotationConfigWebApplicationContext();
-        // Registers annotated configurations class
-        annotationConfigApplicationContext.register(WebConfig.class);//инициализируем контекст, т.е говорим, что этот класс источник определения бинов
-        // Passes servlet context to context instance
+        annotationConfigApplicationContext.register(WebConfig.class);
         annotationConfigApplicationContext.setServletContext(servletContext);
-        //Registers dispatch servlet and passes context instance
         DispatcherServlet servlet = new DispatcherServlet(annotationConfigApplicationContext);
         servlet.setThrowExceptionIfNoHandlerFound(true);
-        ServletRegistration.Dynamic servDyn = servletContext.addServlet("test",servlet);
-        //Sets creation priority
-        servDyn.setLoadOnStartup(1);
-        //Maps URL pattern
-        servDyn.addMapping("/");
-        servDyn.setInitParameter("spring.profiles.default","prod");
+        ServletRegistration.Dynamic servDyn = servletContext.addServlet(SERVLET_NAME,servlet);
+        servDyn.setLoadOnStartup(LOAD_ON_START_UP);
+        servDyn.addMapping(SERVLET_MAPPING);
+        servDyn.setInitParameter(PROFILES_DEFAULT,PROD);
     }
 }

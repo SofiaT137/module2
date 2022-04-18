@@ -1,5 +1,8 @@
 package com.epam.esm.exceptions;
 
+/**
+ * Class ExceptionEntity creates Exception entity
+ */
 public class ExceptionEntity {
 
     private String exceptionMessage;

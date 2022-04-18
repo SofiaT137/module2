@@ -1,6 +1,5 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ServiceException;
@@ -11,18 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
+/**
+ * TagController class presents REST controller for tag entity
+ */
 @RestController
 @RequestMapping("/tags")
 public class TagController {
 
-    private TagService tagService;
-
-    @Autowired
-    public void setTagService(TagService tagService) {
-        this.tagService = tagService;
-    }
+    private final TagService tagService;
+    private static final String CREATED_MESSAGE = "Created!";
+    private static final String DELETED_MESSAGE = "Deleted!";
 
     @Autowired
     public TagController(TagService tagService) {
@@ -30,9 +28,9 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity insertTag(@RequestBody Tag tag) throws DaoException, ServiceException {
+    public ResponseEntity<Object> insertTag(@RequestBody Tag tag) throws DaoException, ServiceException {
         tagService.insert(tag);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Success");
+        return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
     }
 
     @GetMapping("/{id}")
@@ -41,7 +39,7 @@ public class TagController {
     }
 
     @GetMapping
-    public List<Tag> getAll() throws DaoException {
+    public List<Tag> getAllTags() throws DaoException {
         return tagService.getAll();
     }
 
@@ -51,9 +49,9 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteByID(@PathVariable long id) throws DaoException, ServiceException {
+    public ResponseEntity<Object> deleteTagByID(@PathVariable long id) throws DaoException, ServiceException {
         tagService.deleteByID(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Success");
+        return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
     }
 
 }

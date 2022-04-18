@@ -9,12 +9,19 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 
+/**
+ * ExceptionsHandler class allows intercept and process exceptions across the project
+ */
 @RestControllerAdvice
 public class ExceptionsHandler {
 
     private static final String STRING_MESSAGE = "Message: ";
 
-    //обработка dao ошибок
+    /**
+     * Method resourceNotFoundException helps intercept and process DaoException exceptions
+     * @param exception DaoException exception
+     * @return new ResponseEntity<>(Exception entity, HttpStatus);
+     */
     @ExceptionHandler(DaoException.class)
     public ResponseEntity<Object> resourceNotFoundException(DaoException exception) {
         String exceptionMessage = exception.getLocalizedMessage();
@@ -23,7 +30,11 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(exceptionEntity, HttpStatus.NOT_FOUND);
     }
 
-    //обработка service ошибок
+    /**
+     * Method resourceNotFoundException helps intercept and process Service exceptions
+     * @param exception Service exception
+     * @return new ResponseEntity<>(Exception entity, HttpStatus);
+     */
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<Object> badRequestException(ServiceException exception) {
         String exceptionMessage = exception.getLocalizedMessage();
@@ -32,28 +43,44 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(exceptionEntity, HttpStatus.BAD_REQUEST);
     }
 
-    //переданы неверные аргументы
+    /**
+     * Method resourceNotFoundException helps intercept and process MethodArgumentTypeMismatchException exceptions
+     * @param exception MethodArgumentTypeMismatchException exception
+     * @return new ResponseEntity<>(Exception entity, HttpStatus);
+     */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> wrongParametersException(MethodArgumentTypeMismatchException exception) {
         String exceptionMessage = exception.getLocalizedMessage();
         return new ResponseEntity<>(STRING_MESSAGE + exceptionMessage, HttpStatus.BAD_REQUEST);
     }
 
-    //не разрешено так делать(обработка 405 ошибки)
+    /**
+     * Method resourceNotFoundException helps intercept and process HttpRequestMethodNotSupportedException exceptions
+     * @param exception HttpRequestMethodNotSupportedException exception
+     * @return new ResponseEntity<>(Exception entity, HttpStatus);
+     */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Object> requestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
         String exceptionMessage = exception.getLocalizedMessage();
         return new ResponseEntity<>(STRING_MESSAGE + exceptionMessage, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    //не нашел нужного обработчика
+    /**
+     * Method resourceNotFoundException helps intercept and process NoHandlerFoundException exceptions
+     * @param exception NoHandlerFoundException exception
+     * @return new ResponseEntity<>(Exception entity, HttpStatus);
+     */
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<Object> noHandlerFoundException(NoHandlerFoundException exception) {
         String exceptionMessage = exception.getLocalizedMessage();
         return new ResponseEntity<>(STRING_MESSAGE + exceptionMessage, HttpStatus.BAD_REQUEST);
     }
 
-    //Internal Server error exception 500
+    /**
+     * Method resourceNotFoundException helps intercept and process InternalServerException exceptions
+     * @param exception Exception exception
+     * @return new ResponseEntity<>(Exception entity, HttpStatus);
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> internalServerErrorException(Exception exception) {
         String exceptionMessage = exception.getLocalizedMessage();

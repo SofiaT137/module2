@@ -7,17 +7,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@EnableWebMvc // используется для включения Spring MVC в приложении и работает путем импорта конфигурации Spring MVC из WebMvcConfigurer
+/**
+ *   The WebConfig class is implementation of interface WebMvcConfigurer.
+ *   This class presents web-annotated configuration class.
+ */
+@EnableWebMvc
 @Configuration
 @ComponentScan("com.epam.esm")
 public class WebConfig implements WebMvcConfigurer {
 
-    private final ApplicationContext applicationContext;//это главный интерфейс в Spring-приложении, который предоставляет информацию о конфигурации приложения.
+    private final ApplicationContext applicationContext;
 
     @Autowired
     public WebConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
-
-
 }
