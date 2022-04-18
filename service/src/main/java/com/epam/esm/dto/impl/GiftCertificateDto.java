@@ -106,7 +106,6 @@ public class GiftCertificateDto extends AbstractDto<Long> {
                 && Objects.equals(getPrice(), that.getPrice())
                 && Objects.equals(getDuration(), that.getDuration())
                 && Objects.equals(getCreateDate(), that.getCreateDate())
-                && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate())
                 && Objects.equals(getTags(), that.getTags());
     }
 
@@ -117,7 +116,6 @@ public class GiftCertificateDto extends AbstractDto<Long> {
                 getPrice(),
                 getDuration(),
                 getCreateDate(),
-                getLastUpdateDate(),
                 getTags());
     }
 
@@ -130,7 +128,6 @@ public class GiftCertificateDto extends AbstractDto<Long> {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate='" + createDate + '\'' +
-                ", lastUpdateDate='" + lastUpdateDate + '\'' +
                 ", tags=" + tags +
                 '}';
     }
