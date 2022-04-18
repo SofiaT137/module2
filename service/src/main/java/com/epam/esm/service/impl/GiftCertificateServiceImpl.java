@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.converter.impl.GiftCertificateConverter;
 import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ServiceException;
@@ -35,13 +36,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public void insert(GiftCertificateDto entity) throws DaoException, ServiceException {
-        certificateValidator.validate(entity);
-        giftCertificateDao.insert(giftCertificateConverter.convert(entity));
+    public void insert(GiftCertificateDto entityDto) throws DaoException, ServiceException {
+        certificateValidator.validate(entityDto);
+        GiftCertificate entity = giftCertificateConverter.convert(entityDto);
+        giftCertificateDao.insert(entity);
     }
 
     @Override
     public GiftCertificateDto getById(long id) throws DaoException, ServiceException {
+        certificateValidator.checkID(id);
         return giftCertificateConverter.convert(giftCertificateDao.getById(id));
     }
 
@@ -52,6 +55,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public void deleteByID(long id) throws DaoException, ServiceException {
+        certificateValidator.checkID(id);
         giftCertificateDao.deleteByID(id);
     }
 
@@ -60,14 +64,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public void update(Long id,GiftCertificateDto entity) throws DaoException, ServiceException {
         entity.setId(id);
         entity.setLastUpdateDate(getCurrentDate());
+        certificateValidator.validate(entity);
         List<String> tagNames = entity.getTags();
         List<Tag> tags = null;
         if (tagNames != null) {
             tags = getNewTagList(tagNames);
             giftCertificateDao.deleteListOfCertificateTags(id);
         }
-        certificateValidator.validate(entity);
-        giftCertificateDao.update(giftCertificateConverter.convert(entity));
+        GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
+        giftCertificateDao.update(giftCertificateEntity);
         giftCertificateDao.addTagsToCertificate(id,tags);
     }
 
