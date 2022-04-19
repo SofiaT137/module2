@@ -24,12 +24,17 @@
 
 	<dependencies>
 
+		<!--Spring dependencies-->
+		<!--Dependency is responsible for injecting dependencies through either Constructor or Setter methods-->
+		<!--(DI)-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>5.3.18</version>
 		</dependency>
 
+		<!--Dependency is responsible for instantiating, configuring, and assembling beans by reading configuration metadata from XML, Java annotations, and/or Java code in the configuration files-->
+		<!--(the Spring IoC container)-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -43,6 +48,8 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--JUnit dependencies-->
+		<!--The main module where all core annotations are located, such as @Test, Lifecycle method annotations and assertions-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -50,6 +57,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--It has test engine implementation which is required at runtime to execute the tests-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -61,6 +69,7 @@
 
 	<build>
 
+		<!--This plugin provides goals to manipulate WAR projects within the Tomcat servlet container version 7.x-->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
@@ -73,11 +82,14 @@
 					<path>/</path>
 				</configuration>
 			</plugin>
+
+			<!-- This plugin is responsible for collecting and compiling all the dependencies, classes, and resources of the web application into a web application archive-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.3.2</version>
 				<configuration>
+					<!--Don't need to add a useless web.xml to the project-->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
