@@ -1,18 +1,12 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.ServiceException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,10 +23,11 @@ class GiftCertificateValidatorTest {
     @InjectMocks
     private GiftCertificateValidator giftCertificateValidator;
 
-    @Spy
-    private TagValidator tagValidator = Mockito.mock(TagValidator.class);
-
-
+    private static final String NAME_IS_FORBIDDEN = "name is forbidden";
+    private static final String DESCRIPTION_IS_TOO_LONG = "description is too long";
+    private static final String PRICE_IS_FORBIDDEN = "price is forbidden";
+    private static final String DURATION_IS_FORBIDDEN = "duration is forbidden!";
+    private static final String CHECK_THE_VALUES = "Check the values";
     private static final String CORRECT_NAME = "Swimming with seals";
     private static final String INCORRECT_NAME = "$52-vmt[****";
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";
@@ -44,8 +39,12 @@ class GiftCertificateValidatorTest {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
     private static final String date = LocalDateTime.now().format(formatter);
     private static final List<String> list = Arrays.asList("joy","happiness","seal");
-    private static Map<String,String> stringStringMap = new HashMap<>();
+    private static final Map<String,String> stringStringMap = new HashMap<>();
 
+    @BeforeAll
+    static void init(){
+        stringStringMap.put("name_tag","joy");
+    }
 
 
     @Test
@@ -59,7 +58,7 @@ class GiftCertificateValidatorTest {
         ServiceException thrown = assertThrows(
                 ServiceException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(INCORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-        assertTrue(thrown.getMessage().contains("name is forbidden"));
+        assertTrue(thrown.getMessage().contains(NAME_IS_FORBIDDEN));
     }
 
     @Test
@@ -67,7 +66,7 @@ class GiftCertificateValidatorTest {
         ServiceException thrown = assertThrows(
                 ServiceException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,INCORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-        assertTrue(thrown.getMessage().contains("description is too long"));
+        assertTrue(thrown.getMessage().contains(DESCRIPTION_IS_TOO_LONG));
     }
 
     @Test
@@ -75,7 +74,7 @@ class GiftCertificateValidatorTest {
         ServiceException thrown = assertThrows(
                 ServiceException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,INCORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-        assertTrue(thrown.getMessage().contains("price is forbidden"));
+        assertTrue(thrown.getMessage().contains(PRICE_IS_FORBIDDEN));
     }
 
     @Test
@@ -83,16 +82,15 @@ class GiftCertificateValidatorTest {
         ServiceException thrown = assertThrows(
                 ServiceException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,INCORRECT_DURATION,date,date,list)));
-        assertTrue(thrown.getMessage().contains("duration is forbidden!"));
+        assertTrue(thrown.getMessage().contains(DURATION_IS_FORBIDDEN));
     }
 
     @Test
     void validateIncorrectMapKeys(){
-        stringStringMap.put("name_tag","joy");
         ServiceException thrown = assertThrows(
                 ServiceException.class,
                 () -> giftCertificateValidator.validateMapKeys(stringStringMap));
-        assertTrue(thrown.getMessage().contains("Check the values"));
+        assertTrue(thrown.getMessage().contains(CHECK_THE_VALUES));
     }
 }
 
