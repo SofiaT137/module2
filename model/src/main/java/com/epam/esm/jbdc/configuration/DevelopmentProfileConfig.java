@@ -11,6 +11,10 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
+/**
+ * DevelopmentProfileConfig class presents the 'dev' @profile configuration class.
+ * The class declares @Bean methods and may be processed by the Spring container to generate bean definitions.
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
 @Profile("dev")
@@ -18,8 +22,15 @@ public class DevelopmentProfileConfig {
 
     private static final String CREATE_SCHEMA = "classpath:createTables.sql";
     private static final String TEST_DATA = "classpath:fillTables.sql";
+    private static final String DESTROY_METHOD_NAME = "shutdown";
 
-    @Bean(destroyMethod="shutdown")
+    /**
+     * This method creates bean of a DataSource object is the preferred means of getting a connection.
+     * (The BasicDataSource object produces a standard Connection object for connecting to the physical data source.)
+     * @return BasicDataSource object
+     */
+
+    @Bean(destroyMethod=DESTROY_METHOD_NAME)
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)

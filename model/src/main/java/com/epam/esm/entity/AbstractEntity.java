@@ -2,13 +2,15 @@ package com.epam.esm.entity;
 
 import java.util.Objects;
 
+/**
+ * The abstract class AbstractEntity presents creation of the abstract entity
+ * @param <K>
+ */
 public abstract class AbstractEntity<K> {
 
     private Long id;
 
-    protected AbstractEntity(){
-
-    }
+    protected AbstractEntity(){}
 
     protected AbstractEntity(Long id) {
         this.id = id;

@@ -3,19 +3,25 @@ package com.epam.esm.jbdc.configuration;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
 import javax.sql.DataSource;
 import java.util.Objects;
 
-
-@Configuration//источник определения бинов
-@ComponentScan("com.epam.esm") // По умолчанию, такая конфигурация сканирует на наличие классов с аннотацией @Component и его потомков в том пакете, в котором сама находится, а также в подпакетах.
+/**
+ * DevelopmentProfileConfig class presents the 'prod' @profile configuration class.
+ * The class declares @Bean methods and may be processed by the Spring container to generate bean definitions.
+ */
+@Configuration
+@ComponentScan("com.epam.esm")
 @PropertySource("classpath:dbConnection.properties")
 @Profile("prod")
 public class MySQLDataBaseConfiguration{
@@ -29,7 +35,6 @@ public class MySQLDataBaseConfiguration{
     private static final String DATA_BASE_URL = "DB_URL";
     private static final String POOL_SIZE = "INITIAL_SIZE";
 
-
     @Autowired
     public MySQLDataBaseConfiguration(Environment environment) {
         this.environment = environment;
@@ -40,7 +45,7 @@ public class MySQLDataBaseConfiguration{
      * (The BasicDataSource object produces a standard Connection object for connecting to the physical data source.)
      * @return BasicDataSource object
      */
-    @Bean //используется для указания того, что метод создает, настраивает и инициализирует новый объект, управляемый Spring IoC контейнером.
+    @Bean
     public DataSource dataSource(){
         BasicDataSource basicDS = new BasicDataSource();
         basicDS.setUsername(environment.getProperty(DATA_BASE_USER));
@@ -60,17 +65,4 @@ public class MySQLDataBaseConfiguration{
     public JdbcTemplate getJBDCTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
-
-
-    /**
-     * This method creates DataSourceTransactionManager entity
-     * @param dataSource The data source
-     * @return The DataSourceTransactionManager entity
-     */
-    @Bean
-    public DataSourceTransactionManager getTransactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-
-
 }

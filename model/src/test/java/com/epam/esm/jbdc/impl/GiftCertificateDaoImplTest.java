@@ -5,6 +5,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.jbdc.GiftCertificateDao;
 import com.epam.esm.jbdc.configuration.DevelopmentProfileConfig;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,34 @@ class GiftCertificateDaoImplTest {
     @Autowired
     private GiftCertificateDao giftCertificateDao;
 
+    private static LocalDateTime createDate;
+    private static LocalDateTime lastUpdateDate;
+    private static String certificateName;
+    private static String certificateDescription;
+    private static Double certificatePrice;
+    private static Integer certificateDuration;
+    private static List<Tag> newTags;
+    private static String newDescription;
+    private static Map<String,String> filters;
+
+
+    @BeforeAll
+    static void init(){
+        createDate =  LocalDateTime.of(2022, 4, 13, 13, 13, 44);
+        lastUpdateDate =  LocalDateTime.of(2022, 4, 13, 13, 13, 44);
+        certificateName = "3 swimming lessons";
+        certificateDescription = "Lessons with personal teacher";
+        certificatePrice = 120.33;
+        certificateDuration = 30;
+        newTags = Arrays.asList(new Tag("teacher"),new Tag("lessons"));
+        newDescription = "The cutest swimming lessons in your life!";
+        filters = new HashMap<>();
+        filters.put("partName","shark");
+    }
+
 
     @Test
     void insert() throws DaoException {
-        LocalDateTime createDate = LocalDateTime.of(2022, 4, 13, 13, 13, 44);
-        LocalDateTime lastUpdateDate = LocalDateTime.of(2022, 4, 13, 13, 13, 44);
-        String certificateName = "3 swimming lessons";
-        String certificateDescription = "Lessons with personal teacher";
-        Double certificatePrice = 120.33;
-        Integer certificateDuration = 30;
         GiftCertificate giftCertificate = new GiftCertificate(certificateName, certificateDescription, certificatePrice, certificateDuration, createDate, lastUpdateDate);
         giftCertificateDao.insert(giftCertificate);
         Integer size = giftCertificateDao.getAll().size();
@@ -47,7 +67,6 @@ class GiftCertificateDaoImplTest {
     @Test
     void addTagsToCertificate() throws DaoException {
         giftCertificateDao.getById(3);
-        List<Tag> newTags = Arrays.asList(new Tag("teacher"),new Tag("lessons"));
         giftCertificateDao.addTagsToCertificate(3,newTags);
         Integer certificateListSize = giftCertificateDao.getById(3).getTags().size();
         assertEquals(2,certificateListSize);
@@ -67,7 +86,6 @@ class GiftCertificateDaoImplTest {
 
     @Test
     void update() throws DaoException {
-        String newDescription = "The cutest swimming lessons in your life!";
         GiftCertificate giftCertificate = giftCertificateDao.getById(1);
         Integer oldDuration = giftCertificate.getDuration();
         assertEquals(80,oldDuration);
@@ -99,8 +117,6 @@ class GiftCertificateDaoImplTest {
 
     @Test
     void getQueryWithConditions() throws DaoException {
-        Map<String,String> filters = new HashMap<>();
-        filters.put("partName","shark");
         List<GiftCertificate> list = giftCertificateDao.getQueryWithConditions(filters);
         assertEquals(1,list.size());
     }

@@ -7,8 +7,6 @@ import com.epam.esm.jbdc.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import static com.epam.esm.jbdc.sql_queries.TagSQLQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
 /**
- * Class TagDaoImpl is implementation of interface {@link TagDao}
+ * Class TagDaoImpl is implementation of interface TagDao
  * This class is intended for work with 'tag' and 'gift_certificate_tag' tables
  */
 @Repository
@@ -34,10 +32,7 @@ public class TagDaoImpl implements TagDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /**
-     * Method for creating a query to insert the Tag entity in a 'tag' table.
-     * @param entity Tag entity
-     */
+
     @Override
     public void insert(Tag entity) throws DaoException {
         int rows = jdbcTemplate.update(INSERT_TAG,entity.getName());
@@ -46,11 +41,7 @@ public class TagDaoImpl implements TagDao {
         }
     }
 
-    /**
-     * Method for creating a query to get the Tag entity by its id in a 'tag' table.
-     * @param id Tag id
-     * @return Tag entity
-     */
+
     @Override
     public Tag getById(long id) throws DaoException {
         List<Tag> tags = jdbcTemplate.query(GET_TAG_BY_ID, new TagMapper(),id);
@@ -60,10 +51,7 @@ public class TagDaoImpl implements TagDao {
         return tags.get(0);
     }
 
-    /**
-     * Method for creating a query to get all the Tag entity in a 'tag' table.
-     * @return list of Tag entities
-     */
+
     @Override
     public List<Tag> getAll() throws DaoException {
         List<Tag> tagList = jdbcTemplate.query(GET_TAG_TABLE_ALL_INFO, new TagMapper());
@@ -73,10 +61,7 @@ public class TagDaoImpl implements TagDao {
         return tagList;
     }
 
-    /**
-     * Method for creating a query to delete the Tag entity by its id in a 'tag' table.
-     * @param id Tag id
-     */
+
     @Override
     public void deleteByID(long id) throws DaoException {
         int rows = jdbcTemplate.update(DELETE_TAG,id);
@@ -85,10 +70,6 @@ public class TagDaoImpl implements TagDao {
         }
     }
 
-    /**
-     * Method for creating a query to get the Tag entity by its name in a 'tag' table.
-     * @param name Tag name
-     */
     @Override
     public Tag getTagByName(String name) throws DaoException {
         List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_NAME, new TagMapper(),name);

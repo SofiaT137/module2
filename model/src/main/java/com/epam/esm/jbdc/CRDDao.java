@@ -4,9 +4,33 @@ import com.epam.esm.exceptions.DaoException;
 
 import java.util.List;
 
+/**
+ * CRDDao interface features CRD functionality
+ * @param <T> The entity object from table
+ */
 public interface CRDDao<T>{
+    /**
+     * The method inserts the entity object to a destination table
+     * @param entity The entity object from table
+     */
     void insert(T entity) throws DaoException;
+
+    /**
+     * The method searches the entity object in a destination table by its identifier
+     * @param id Long id
+     * @return The entity object from table
+     */
     T getById(long id) throws DaoException;
+
+    /**
+     * The method searches for all the entity objects in a destination table
+     * @return List of the entity objects from table
+     */
     List<T> getAll() throws DaoException;
+
+    /**
+     * The method removes the entity object in a destination table by its identifier
+     * @param id Long id
+     */
     void deleteByID(long id) throws DaoException;
 }

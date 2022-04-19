@@ -25,10 +25,7 @@ class SQLCreatorTest {
     @Test
     void createGetCertificateQuery() {
         String actualExpression = sqlCreator.createGetCertificateQuery(testMap);
-        String expectedExpression = "SELECT gift_certificate_name,description,price,duration,create_date,last_update_date \n" +
-                "FROM gift_certificate AS gc INNER JOIN gift_certificate_tag AS gct ON gc.gift_certificate_id = gct.gift_certificate_id LEFT JOIN tag AS t on t.tag_id = gct.tag_id WHERE tag_name='sea' \n" +
-                " AND description LIKE '%beach%' \n"+
-                " ORDER BY gift_certificate_name DESC\n";
+        String expectedExpression = "SELECT gc.gift_certificate_id, gift_certificate_name, description, price, duration, create_date, last_update_date FROM gift_certificate AS gc INNER JOIN gift_certificate_tag AS gct ON gc.gift_certificate_id = gct.gift_certificate_id INNER JOIN tag AS t on t.tag_id = gct.tag_id WHERE tag_name='sea' AND description LIKE '%beach%' ORDER BY gift_certificate_name DESC";
         assertEquals(expectedExpression,actualExpression);
     }
 }

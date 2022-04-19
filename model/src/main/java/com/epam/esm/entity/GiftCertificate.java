@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * GiftCertificate class extends AbstractEntity and presents creation of the GiftCertificate entity
+ */
 public class GiftCertificate extends AbstractEntity<Long> {
 
     private String giftCertificateName;
@@ -14,9 +17,7 @@ public class GiftCertificate extends AbstractEntity<Long> {
     private LocalDateTime lastUpdateDate;
     private List<Tag> tags;
 
-    public GiftCertificate() {
-
-    }
+    public GiftCertificate() {}
 
     public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
         this.giftCertificateName = name;

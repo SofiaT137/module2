@@ -1,6 +1,9 @@
 package com.epam.esm.exceptions;
 
 
+/**
+ * DaoException class presents creating of the DaoException entity
+ */
 public class DaoException extends Exception{
 
     private String errorCode;

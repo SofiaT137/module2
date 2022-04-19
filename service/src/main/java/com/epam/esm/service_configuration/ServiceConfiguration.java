@@ -1,6 +1,7 @@
 package com.epam.esm.service_configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -20,9 +21,9 @@ public class ServiceConfiguration {
         this.dataSource = dataSource;
     }
 
-    @Autowired
+    @Bean
     //системный менеджер в JBDC для работы в спринге
-    private DataSourceTransactionManager getDataSourceTransactionManager(){
+    public DataSourceTransactionManager getDataSourceTransactionManager(){
         return new DataSourceTransactionManager(dataSource);
     }
 }

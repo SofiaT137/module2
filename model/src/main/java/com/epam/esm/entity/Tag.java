@@ -1,9 +1,10 @@
 package com.epam.esm.entity;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Objects;
 
+/**
+ * Tag class extends AbstractEntity and presents creation of the Tag entity
+ */
 public class Tag extends AbstractEntity<Long> {
 
     private String name;

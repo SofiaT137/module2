@@ -7,6 +7,9 @@ import java.util.Map;
 import static com.epam.esm.jbdc.sql_queries.GiftCertificateQueries.*;
 import static com.epam.esm.entity.table_columns.GiftCertificateTableColumns.*;
 
+/**
+ * SQLCreator class helps to create complex SQL queries
+ */
 @Component
 public class SQLCreator {
 
@@ -17,8 +20,23 @@ public class SQLCreator {
     private static final String SORT_BY_DATE = "sortByCreationDateASC";
     private static final String SORT_BY_NAME_DESC = "sortByNameDESC";
     private static final String SORT_BY_DATE_DESC = "sortByCreationDateDESC";
+    private static final String WHERE = " WHERE ";
+    private static final String AND = " AND ";
+    private static final String EQUALS_QUOTE = "='";
+    private static final String EQUALS = "=";
+    private static final String LIKE_QUOTE_PERCENT = " LIKE '%";
+    private static final String PERCENT_QUOTE = "%'";
+    private static final String QUOTE = "'";
+    private static final String ORDER_BY = " ORDER BY ";
+    private static final String DESC = " DESC";
+    private static final String COMA = ", ";
 
 
+    /**
+     * Method createGetCertificateQuery helps to create complex GET SQL query using the passed parameters
+     * @param queryParts Map (key = constant parameter, value = passed parameter)
+     * @return The SQL query as String
+     */
     public String createGetCertificateQuery(Map<String, String> queryParts) {
 
         StringBuilder query = new StringBuilder(GET_GIFT_CERTIFICATES);
@@ -37,19 +55,16 @@ public class SQLCreator {
             }else if (key.equals(PART_OF_CERTIFICATE_DESCRIPTION)) {
                 addPartSearchParameter(partSearchPart,DESCRIPTION,value);
             }else if (key.equals(SORT_BY_NAME)){
-                addSort(orderPart,"gift_certificate_name",false);
+                addSort(orderPart,NAME,false);
             }else if (key.equals(SORT_BY_DATE)){
-                addSort(orderPart,"create_date",false);
+                addSort(orderPart,CREATE_DATE,false);
             }else if (key.equals(SORT_BY_NAME_DESC)){
-                addSort(orderPart,"gift_certificate_name",true);
+                addSort(orderPart,NAME,true);
             }else if (key.equals(SORT_BY_DATE_DESC)){
-                addSort(orderPart,"create_date",true);
+                addSort(orderPart,CREATE_DATE,true);
             }
         }
-
         StringBuilder checkQuery = query.append(joinPart);
-
-        System.out.println(getFinalQuery(checkQuery,checkForDoubleWhere(checkQuery,partSearchPart),orderPart));
         return getFinalQuery(checkQuery,checkForDoubleWhere(checkQuery,partSearchPart),orderPart);
     }
 
