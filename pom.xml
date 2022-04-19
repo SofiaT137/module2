@@ -68,7 +68,6 @@
 	</dependencies>
 
 	<build>
-
 		<!--This plugin provides goals to manipulate WAR projects within the Tomcat servlet container version 7.x-->
 		<plugins>
 			<plugin>
@@ -94,7 +93,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
 	</build>
 
 
