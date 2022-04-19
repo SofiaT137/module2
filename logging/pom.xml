@@ -23,14 +23,14 @@
 
         <!-- AspectJ dependencies -->
 
-        <!--A small library necessary to run Java programs enhanced by AspectJ aspects during a previous compile-time or post-compile-time (binary weaving) build step-->
+        <!--A small library necessary to run Java programs enhanced by AspectJ aspects-->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.9.9.1</version>
         </dependency>
 
-        <!-- The AspectJ weaver applies aspects to Java classes.-->
+        <!-- The AspectJ weaver applies aspects to Java classes-->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -40,6 +40,8 @@
 
         <!-- Logging with SLF4J & LogBack -->
 
+        <!-- It is a simple facade or abstraction for various logging frameworks,-->
+        <!--allows the end user to plug in the desired logging framework-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -47,12 +49,14 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Provides the core functionality of the logging framework.-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.6</version>
         </dependency>
 
+        <!-- Adds more features to the core functionality, e.g., native support for SLF4J-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
