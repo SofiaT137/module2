@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GiftCertificateController class presents REST controller for gif certificate entity
+ * GiftCertificateController class presents REST controller for GiftCertificate entity
  */
 @RestController
 @RequestMapping("/gift_certificates")
@@ -31,7 +31,7 @@ public class GiftCertificateController {
     }
 
     /**
-     * Method getCertificateByID returns GiftCertificateDTO entity by id
+     * Method getCertificateByID returns GiftCertificateDTO entity by its id
      * @param id Long id
      * @return GiftCertificateDTO entity
      */
@@ -61,24 +61,24 @@ public class GiftCertificateController {
     }
 
     /**
-     * Method getGiftCertificatesByParameter returns GiftCertificateDTO entity by all the transferred parameters
+     * Method giftCertificatesByParameter returns GiftCertificateDTO entity by all the transferred parameters
      * @param allRequestParams Map with parameters
      * @return List of GiftCertificateDTO entity
      */
     @GetMapping("/filter")
-    public List<GiftCertificateDto> getGiftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException, ServiceException {
+    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException, ServiceException {
           return giftCertificateService.getQueryWithConditions(allRequestParams);
     }
 
     /**
-     * Method deleteTagByID deletes GiftCertificateDTO entity by its id
+     * Method deleteGiftCertificateByID deletes GiftCertificateDTO entity by its id
      * @param id Long id
      * @return Response entity with HttpStatus "OK"
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteByID(@PathVariable long id) throws DaoException, ServiceException {
+    public ResponseEntity<Object> deleteGiftCertificateByID(@PathVariable long id) throws DaoException, ServiceException {
         giftCertificateService.deleteByID(id);
-        return ResponseEntity.status(HttpStatus.OK).body(DELETED_MESSAGE);
+        return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
     }
 
     /**
@@ -93,8 +93,4 @@ public class GiftCertificateController {
         giftCertificateService.update(id, giftCertificate);
         return ResponseEntity.status(HttpStatus.CREATED).body(UPDATED_MESSAGE);
     }
-
-
-
-
 }
