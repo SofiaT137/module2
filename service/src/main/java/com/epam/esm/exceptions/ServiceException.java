@@ -1,5 +1,8 @@
 package com.epam.esm.exceptions;
 
+/**
+ * ServiceException class presents creating of the ServiceException entity
+ */
 public class ServiceException extends Exception {
 
     private String errorCode;

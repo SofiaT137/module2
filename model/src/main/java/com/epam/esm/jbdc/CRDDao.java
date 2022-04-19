@@ -5,7 +5,7 @@ import com.epam.esm.exceptions.DaoException;
 import java.util.List;
 
 /**
- * CRDDao interface features CRD functionality
+ * CRDDao interface features CRD DAO functionality
  * @param <T> The entity object from table
  */
 public interface CRDDao<T>{

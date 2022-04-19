@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GiftCertificateDao interface implements CRUDDao functionality and adds a special GiftCertificate functionality
+ * GiftCertificateDao interface implements CRUDDao functionality and adds a special GiftCertificate DAO functionality
  */
 public interface GiftCertificateDao extends CRUDDao<GiftCertificate> {
 

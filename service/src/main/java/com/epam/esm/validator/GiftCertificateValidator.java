@@ -1,9 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,8 +13,11 @@ import java.util.regex.Pattern;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
+/**
+ * The GiftCertificateValidator class extents Validator class and provides validation for GiftCertificateDto entity
+ */
 @Component
-public final class GiftCertificateValidator extends Validator {
+public final class GiftCertificateValidator extends Validator<GiftCertificateDto> {
 
     private static final Integer MIN_GIFT_CERTIFICATE_NAME_LENGTH = 3;
     private static final Integer MAX_GIFT_CERTIFICATE_NAME_LENGTH = 45;
@@ -35,6 +36,7 @@ public final class GiftCertificateValidator extends Validator {
     private static final String INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION = "This gift certificate duration is forbidden!";
     private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "Check the values that you transferred!";
 
+    @Override
     public void validate(GiftCertificateDto giftCertificate) throws ServiceException {
         if (giftCertificate.getGiftCertificateName() != null) {
             validateName(giftCertificate.getGiftCertificateName());

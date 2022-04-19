@@ -1,5 +1,8 @@
 package com.epam.esm.exceptions;
 
+/**
+ * The ExceptionErrorCode final class contains all the DaoException custom codes
+ */
 public final class ExceptionErrorCode {
 
     private ExceptionErrorCode() {}

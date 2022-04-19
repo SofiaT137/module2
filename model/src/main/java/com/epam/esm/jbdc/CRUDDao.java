@@ -3,7 +3,7 @@ package com.epam.esm.jbdc;
 import com.epam.esm.exceptions.DaoException;
 
 /**
- * CRDDao interface features CRUDDao functionality and implements CRDDao interface
+ * CRDDao interface features CRUD DAO functionality and implements CRDDao interface
  * @param <T> The entity object from table
  */
 public interface CRUDDao<T> extends CRDDao<T> {

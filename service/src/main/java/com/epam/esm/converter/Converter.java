@@ -4,10 +4,10 @@ import com.epam.esm.dto.AbstractDto;
 import com.epam.esm.entity.AbstractEntity;
 
 /**
- * The converter
+ * The converter class
  * @param <T> AbstractEntity
- * @param <U> AbstractDto
- * @param <K> Integer
+ * @param <U> AbstractDto entity
+ * @param <K> Long id
  */
 public interface Converter<T extends AbstractEntity<K>, U extends AbstractDto<K>,K> {
     /**

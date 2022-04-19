@@ -1,11 +1,13 @@
 package com.epam.esm.dto.impl;
 
 import com.epam.esm.dto.AbstractDto;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class GiftCertificateDto extends AbstractDto and helps to create GiftCertificateDto entity
+ */
 public class GiftCertificateDto extends AbstractDto<Long> {
 
     private String giftCertificateName;

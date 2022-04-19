@@ -9,8 +9,11 @@ import java.util.regex.Pattern;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
+/**
+ * The TagValidator class extents Validator class and provides validation for Tag entity
+ */
 @Component
-public final class TagValidator extends Validator{
+public final class TagValidator extends Validator<Tag>{
 
     private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
 
@@ -20,6 +23,7 @@ public final class TagValidator extends Validator{
     private static final Integer MIN_TAG_NAME_LENGTH = 2;
     private static final Integer MAX_TAG_NAME_LENGTH = 30;
 
+    @Override
     public void validate(Tag tag) throws ServiceException {
         validateName(tag.getName());
     }

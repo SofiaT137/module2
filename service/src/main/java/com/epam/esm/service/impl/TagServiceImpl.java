@@ -12,11 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Class TagServiceImpl is implementation of interface TagService
+ * The class presents service layer logic for Tag entity
+ */
 @Service
 public class TagServiceImpl implements TagService {
 
-    private TagDao tagDao;
-    private TagValidator tagValidator;
+    private final TagDao tagDao;
+    private final TagValidator tagValidator;
 
     @Autowired
     public TagServiceImpl(TagDao tagDao, TagValidator tagValidator) {

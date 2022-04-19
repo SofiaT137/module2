@@ -19,8 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Class GiftCertificateServiceImpl is implementation of interface GiftCertificateService
+ * The class presents service layer logic for GiftCertificateService entity
+ */
 @Service
-//// @ наследник компонент рекомендуется использовать в тех случаях, когда вы можете отнести аннотируемый класс к определенному слою
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDao giftCertificateDao;
@@ -35,7 +38,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
     public void insert(GiftCertificateDto entityDto) throws DaoException, ServiceException {
         certificateValidator.validate(entityDto);
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
@@ -60,7 +63,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
     public void update(Long id,GiftCertificateDto entity) throws DaoException, ServiceException {
         entity.setId(id);
         entity.setLastUpdateDate(getCurrentDate());
