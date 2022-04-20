@@ -23,6 +23,7 @@
 	</properties>
 
 	<dependencies>
+
 		<!--Spring dependencies-->
 		<!--Dependency is responsible for injecting dependencies through either Constructor or Setter methods-->
 		<!--(DI)-->
@@ -63,6 +64,7 @@
 			<version>5.8.2</version>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -92,6 +94,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
