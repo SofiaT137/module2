@@ -19,7 +19,6 @@ CREATE TABLE tag (
 
 
 CREATE TABLE gift_certificate_tag (
-  id bigint NOT NULL AUTO_INCREMENT,
   gift_certificate_id bigint,
   tag_id bigint,
   CONSTRAINT gift_certificate_tag_fk1
@@ -27,5 +26,6 @@ CREATE TABLE gift_certificate_tag (
   ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT gift_certificate_tag_fk2
   FOREIGN KEY (tag_id) REFERENCES tag (tag_id)
-  ON DELETE CASCADE ON UPDATE CASCADE
+  ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT PK_gift_certificate_tag primary key (gift_certificate_id,tag_id)
 );
