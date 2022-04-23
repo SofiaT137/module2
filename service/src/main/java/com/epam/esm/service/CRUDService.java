@@ -1,7 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 
 /**
  * CRUDService interface features CRUD Service functionality and extends CRDService
@@ -13,5 +13,5 @@ public interface CRUDService<T> extends CRDService<T>{
      * @param id  Long id
      * @param entity The entity object
      */
-    void update(Long id,T entity) throws DaoException, ServiceException;
+    void update(Long id,T entity) throws DaoException, ValidatorException;
 }

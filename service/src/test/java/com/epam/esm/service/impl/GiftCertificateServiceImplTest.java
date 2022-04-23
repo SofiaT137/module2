@@ -5,18 +5,15 @@ import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.GiftCertificateDao;
 import com.epam.esm.validator.GiftCertificateValidator;
-import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
@@ -81,14 +78,14 @@ class GiftCertificateServiceImplTest {
     void insert() throws DaoException {
         try{
             giftCertificateService.insert(entity1DTO);
-        }catch (ServiceException exception){
+        }catch (ValidatorException exception){
             exception.getLocalizedMessage();
         }
         Mockito.verify(giftCertificateDao).insert(entity);
     }
 
     @Test
-    void getById() throws DaoException, ServiceException {
+    void getById() throws DaoException, ValidatorException {
         Long ID = entity1DTO.getId();
         Mockito.when(giftCertificateDao.getById(ID)).thenReturn(entity);
         GiftCertificateDto certificateActual = giftCertificateService.getById(ID);
@@ -109,14 +106,14 @@ class GiftCertificateServiceImplTest {
         Long id = entity.getId();
         try {
             giftCertificateService.deleteByID(id);
-        }catch (ServiceException exception){
+        }catch (ValidatorException exception){
             exception.printStackTrace();
         }
         Mockito.verify(giftCertificateDao, Mockito.times(1)).deleteByID(id);
     }
 
     @Test
-    void update() throws ServiceException, DaoException {
+    void update() throws ValidatorException, DaoException {
         entity2DTO.setGiftCertificateName(UPDATE_NAME);
         entity2DTO.setDescription(UPDATE_DESCRIPTION);
         giftCertificateService.update(entity2DTO.getId(),entity2DTO);
@@ -126,7 +123,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void getQueryWithConditions() throws ServiceException, DaoException {
+    void getQueryWithConditions() throws ValidatorException, DaoException {
         List<GiftCertificate> certificateList = Arrays.asList(entity,entity2);
         List<GiftCertificateDto> certificateDto = Arrays.asList(entity1DTO,entity2DTO);
         Mockito.when(giftCertificateDao.getQueryWithConditions(testMap)).thenReturn(certificateList);

@@ -1,7 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
@@ -24,18 +24,18 @@ public final class TagValidator extends Validator<Tag>{
     private static final Integer MAX_TAG_NAME_LENGTH = 30;
 
     @Override
-    public void validate(Tag tag) throws ServiceException {
+    public void validate(Tag tag) throws ValidatorException {
         validateName(tag.getName());
     }
 
-    private static void validateName(final String name) throws ServiceException {
+    private static void validateName(final String name) throws ValidatorException {
         if (name.length() < MIN_TAG_NAME_LENGTH || name.length() > MAX_TAG_NAME_LENGTH){
-            throw new ServiceException(INCORRECT_TAG_LENGTH_EXCEPTION,INCORRECT_TAG_LENGTH);
+            throw new ValidatorException(INCORRECT_TAG_LENGTH_EXCEPTION,INCORRECT_TAG_LENGTH);
         }
         Pattern namePattern = Pattern.compile(TAG_NAME_REGEX);
         Matcher matcher = namePattern.matcher(name);
         if(!matcher.find()){
-            throw new ServiceException(INCORRECT_TAG_NAME_EXCEPTION,INCORRECT_TAG_NAME);
+            throw new ValidatorException(INCORRECT_TAG_NAME_EXCEPTION,INCORRECT_TAG_NAME);
         }
     }
 }

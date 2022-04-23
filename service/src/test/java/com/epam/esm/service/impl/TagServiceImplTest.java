@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.TagDao;
 import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,7 +55,7 @@ class TagServiceImplTest {
     void insertValidTagEntity() throws DaoException {
         try{
             tagService.insert(TAG_1);
-        }catch (ServiceException exception){
+        }catch (ValidatorException exception){
             exception.getLocalizedMessage();
         }
         Mockito.verify(tagDao, Mockito.times(1)).insert(TAG_1);
@@ -65,7 +65,7 @@ class TagServiceImplTest {
     void insertInvalidTagEntity() throws DaoException {
         try{
             tagService.insert(INVALID_TAG);
-        }catch (ServiceException exception){
+        }catch (ValidatorException exception){
            exception.getLocalizedMessage();
         }
         Mockito.verify(tagDao, Mockito.times(0)).insert(INVALID_TAG);
@@ -76,7 +76,7 @@ class TagServiceImplTest {
         Long id = TAG_1.getId();
         try{
             tagService.getById(id);
-        }catch (ServiceException exception){
+        }catch (ValidatorException exception){
             exception.getLocalizedMessage();
         }
         Mockito.verify(tagDao, Mockito.times(1)).getById(id);
@@ -96,7 +96,7 @@ class TagServiceImplTest {
         Long id = TAG_1.getId();
         try {
             tagService.deleteByID(id);
-        }catch (ServiceException exception){
+        }catch (ValidatorException exception){
             exception.printStackTrace();
         }
         Mockito.verify(tagDao, Mockito.times(1)).deleteByID(id);

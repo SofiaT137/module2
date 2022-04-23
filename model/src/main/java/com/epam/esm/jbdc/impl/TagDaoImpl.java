@@ -5,10 +5,16 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.jbdc.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.epam.esm.jbdc.sql_queries.TagSQLQueries.*;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
@@ -34,8 +40,13 @@ public class TagDaoImpl implements TagDao {
 
 
     @Override
-    public void insert(Tag entity) throws DaoException {
-        int rows = jdbcTemplate.update(INSERT_TAG,entity.getName());
+    public void insert(Tag entity) {
+        int rows;
+        try{
+            rows = jdbcTemplate.update(INSERT_TAG,entity.getName());
+        }catch (DataAccessException exception){
+            throw new DaoException(exception.getLocalizedMessage(),DATASOURCE_SAVING_ERROR);
+        }
         if (rows == 0){
             throw new DaoException(INSERT_TAG_ERROR_MESSAGE,DATASOURCE_SAVING_ERROR);
         }
@@ -43,8 +54,13 @@ public class TagDaoImpl implements TagDao {
 
 
     @Override
-    public Tag getById(long id) throws DaoException {
-        List<Tag> tags = jdbcTemplate.query(GET_TAG_BY_ID, new TagMapper(),id);
+    public Tag getById(long id){
+        List<Tag> tags;
+        try{
+            tags = jdbcTemplate.query(GET_TAG_BY_ID, new TagMapper(),id);
+        }catch (DataAccessException exception){
+            throw new DaoException(exception.getLocalizedMessage(),DATASOURCE_NOT_FOUND_BY_ID);
+        }
         if (tags.isEmpty()){
             throw new DaoException(CANNOT_FIND_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);
         }
@@ -54,7 +70,12 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public List<Tag> getAll() throws DaoException {
-        List<Tag> tagList = jdbcTemplate.query(GET_TAG_TABLE_ALL_INFO, new TagMapper());
+        List<Tag> tagList;
+        try{
+            tagList = jdbcTemplate.query(GET_TAG_TABLE_ALL_INFO, new TagMapper());
+        }catch (DataAccessException exception){
+            throw new DaoException(exception.getLocalizedMessage(),DATASOURCE_NOT_FOUND);
+        }
         if (tagList.isEmpty()){
             throw new DaoException(CANNOT_FIND_ANY_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND);
         }
@@ -63,19 +84,48 @@ public class TagDaoImpl implements TagDao {
 
 
     @Override
-    public void deleteByID(long id) throws DaoException {
-        int rows = jdbcTemplate.update(DELETE_TAG,id);
+    public void deleteByID(long id){
+        int rows;
+        try{
+            rows = jdbcTemplate.update(DELETE_TAG,id);
+        }catch (DataAccessException exception){
+            throw new DaoException(exception.getLocalizedMessage(),DATASOURCE_NOT_FOUND_BY_ID);
+        }
         if (rows == 0){
             throw new DaoException(DELETE_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_ID);
         }
     }
 
     @Override
-    public Tag getTagByName(String name) throws DaoException {
-        List<Tag> tagList = jdbcTemplate.query(GET_TAG_BY_NAME, new TagMapper(),name);
+    public Tag getTagByName(String name) {
+        List<Tag> tagList;
+        try{
+            tagList = jdbcTemplate.query(GET_TAG_BY_NAME, new TagMapper(),name);
+        }catch (DataAccessException exception){
+            throw new DaoException(exception.getLocalizedMessage(),DATASOURCE_NOT_FOUND_BY_NAME);
+        }
         if (tagList.size()!=1){
             throw new DaoException(CANNOT_FIND_TAG_ERROR_MESSAGE,DATASOURCE_NOT_FOUND_BY_NAME);
         }
         return tagList.get(0);
+    }
+
+    public List<Long> getListWithTagsId(List<Tag> tagList) throws DaoException {
+        List<Long> getTagsId = new ArrayList<>();
+        for (Tag tag : tagList) {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            try{
+                jdbcTemplate.update(
+                        connection -> {
+                            PreparedStatement ps = connection.prepareStatement(GET_TAG_BY_ID_OR_INSERT_TAG_AND_GET_ID, new String[]{"tag_id"});
+                            ps.setString(1,tag.getName());
+                            return ps;
+                        }, keyHolder);
+                getTagsId.add(Objects.requireNonNull(keyHolder.getKey()).longValue());
+            }catch (DataAccessException exception){
+                throw new DaoException("Cannot add tag!");
+            }
+        }
+        return getTagsId;
     }
 }

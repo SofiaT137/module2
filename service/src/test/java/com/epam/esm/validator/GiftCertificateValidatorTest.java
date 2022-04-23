@@ -1,7 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,40 +55,40 @@ class GiftCertificateValidatorTest {
 
     @Test
     void validateInCorrectGiftCertificateName(){
-        ServiceException thrown = assertThrows(
-                ServiceException.class,
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(INCORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(NAME_IS_FORBIDDEN));
     }
 
     @Test
     void validateInCorrectGiftCertificateDescription(){
-        ServiceException thrown = assertThrows(
-                ServiceException.class,
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,INCORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(DESCRIPTION_IS_TOO_LONG));
     }
 
     @Test
     void validateInCorrectGiftCertificatePrice(){
-        ServiceException thrown = assertThrows(
-                ServiceException.class,
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,INCORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(PRICE_IS_FORBIDDEN));
     }
 
     @Test
     void validateInCorrectGiftCertificateDuration(){
-        ServiceException thrown = assertThrows(
-                ServiceException.class,
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
                 () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,INCORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(DURATION_IS_FORBIDDEN));
     }
 
     @Test
     void validateIncorrectMapKeys(){
-        ServiceException thrown = assertThrows(
-                ServiceException.class,
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
                 () -> giftCertificateValidator.validateMapKeys(stringStringMap));
         assertTrue(thrown.getMessage().contains(CHECK_THE_VALUES));
     }

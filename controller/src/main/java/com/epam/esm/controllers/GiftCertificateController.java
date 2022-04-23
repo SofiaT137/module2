@@ -2,7 +2,7 @@ package com.epam.esm.controllers;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class GiftCertificateController {
      * @return GiftCertificateDTO entity
      */
     @GetMapping("/{id}")
-    public GiftCertificateDto getCertificateByID(@PathVariable Long id) throws DaoException, ServiceException {
+    public GiftCertificateDto getCertificateByID(@PathVariable Long id) throws DaoException, ValidatorException {
         return giftCertificateService.getById(id);
     }
 
@@ -55,7 +55,7 @@ public class GiftCertificateController {
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
-    public ResponseEntity<Object> insertCertificate(@RequestBody GiftCertificateDto giftCertificate) throws DaoException, ServiceException {
+    public ResponseEntity<Object> insertCertificate(@RequestBody GiftCertificateDto giftCertificate) throws DaoException, ValidatorException {
         giftCertificateService.insert(giftCertificate);
         return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_MESSAGE);
     }
@@ -66,7 +66,7 @@ public class GiftCertificateController {
      * @return List of GiftCertificateDTO entity
      */
     @GetMapping("/filter")
-    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException, ServiceException {
+    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException, ValidatorException {
           return giftCertificateService.getQueryWithConditions(allRequestParams);
     }
 
@@ -76,7 +76,7 @@ public class GiftCertificateController {
      * @return Response entity with HttpStatus "OK"
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteGiftCertificateByID(@PathVariable long id) throws DaoException, ServiceException {
+    public ResponseEntity<Object> deleteGiftCertificateByID(@PathVariable long id) throws DaoException, ValidatorException {
         giftCertificateService.deleteByID(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
     }
@@ -89,7 +89,7 @@ public class GiftCertificateController {
      */
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateGiftCertificate(@PathVariable long id,
-                                                        @RequestBody GiftCertificateDto giftCertificate) throws DaoException, ServiceException {
+                                                        @RequestBody GiftCertificateDto giftCertificate) throws DaoException, ValidatorException {
         giftCertificateService.update(id, giftCertificate);
         return ResponseEntity.status(HttpStatus.CREATED).body(UPDATED_MESSAGE);
     }

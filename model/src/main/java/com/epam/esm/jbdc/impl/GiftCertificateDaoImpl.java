@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import com.epam.esm.jbdc.impl.sql_creator.SQLCreator;
 
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +76,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
                         return ps;
                     }, keyHolder);
             addTagsToCertificate(Objects.requireNonNull(keyHolder.getKey()).longValue(),entity.getTags());
-        }catch (Exception exception){
-            throw new DaoException(INSERT_CERTIFICATE_ERROR_MESSAGE,DATASOURCE_SAVING_ERROR);
+        }catch (DataAccessException exception){
+            throw new DaoException(exception.getLocalizedMessage(),DATASOURCE_SAVING_ERROR);
         }
     }
 
@@ -86,8 +85,13 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         if (tagList == null || tagList.isEmpty()){
             return;
         }
-        List<Long> tagsId = getListWithTagsId(tagList);
-        tagsId.forEach(tagId -> jdbcTemplate.update(ADD_CERTIFICATE_TAGS,id,tagId));
+        List<Long> tagsId = tagDao.getListWithTagsId(tagList);
+        try {
+            tagsId.forEach(tagId -> jdbcTemplate.update(ADD_CERTIFICATE_TAGS,id,tagId));
+        }catch (DataAccessException exception){
+            throw new DaoException("Cannot add tags to the certificate!");
+        }
+
     }
 
     private List<Tag> getCertificateTags(long id) throws DaoException {
@@ -97,30 +101,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
             throw new DaoException(CANNOT_GET_ALL_CERTIFICATE_TAGS_ERROR_MESSAGE,CANNOT_FIND_GIFT_CERTIFICATE_TAGS);
         }
     }
-
-    private List<Long> getListWithTagsId(List<Tag> tagList) throws DaoException {
-        List<Long> listOfTagsId = new ArrayList<>();
-        boolean isTagExist = false;
-        for (Tag tag : tagList) {
-            try {
-                listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
-                isTagExist = true;
-            } catch (DaoException exception) {
-                exception.getMessage();
-            }
-            if (!isTagExist){
-                try {
-                    tagDao.insert(tag);
-                    listOfTagsId.add(tagDao.getTagByName(tag.getName()).getId());
-                } catch (DaoException exception) {
-                    throw new DaoException(SOMETHING_WENT_WRONG_ERROR_MESSAGE,CANNOT_ADD_NEW_TAG);
-                }
-            }
-            isTagExist = false;
-        }
-        return listOfTagsId;
-    }
-
 
     @Override
     public GiftCertificate getById(long id) throws DaoException {
@@ -193,10 +173,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public void deleteListOfCertificateTags(long id) throws DaoException {
+        int rows;
         try {
-            jdbcTemplate.update(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID, id);
+            rows = jdbcTemplate.update(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID, id);
         }catch (DataAccessException exception){
             throw new DaoException(exception.getMessage(),DATASOURCE_NOT_FOUND_BY_ID);
+        }
+        if (rows == 0){
+            throw new DaoException(DELETE_TAG_FROM_GIFT_CERTIFICATE_BY_CERTIFICATE_ID,DATASOURCE_NOT_FOUND_BY_ID);
         }
     }
 

@@ -3,6 +3,8 @@ package com.epam.esm.jbdc;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 
+import java.util.List;
+
 /**
  * TagDao interface extends CRDDao functionality and adds a special Tag DAO functionality
  */
@@ -14,4 +16,5 @@ public interface TagDao extends CRDDao<Tag> {
      * @return The Tag entity
      */
     Tag getTagByName(String name) throws DaoException;
+    List<Long> getListWithTagsId(List<Tag> tagList);
 }

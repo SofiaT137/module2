@@ -5,7 +5,7 @@ CREATE TABLE gift_certificate (
   gift_certificate_name varchar(45) NOT NULL,
   description text(300),
   price decimal(6,2)  NOT NULL,
-  duration tinyint  NOT NULL,
+  duration integer  NOT NULL,
   create_date timestamp(6) NOT NULL,
   last_update_date timestamp(6) NOT NULL
 );
@@ -13,7 +13,7 @@ CREATE TABLE gift_certificate (
 
 CREATE TABLE tag (
   tag_id bigint  NOT NULL AUTO_INCREMENT,
-  tag_name varchar(25) NOT NULL,
+  tag_name varchar(25) NOT NULL UNIQUE,
   PRIMARY KEY (tag_id)
 );
 
@@ -27,5 +27,5 @@ CREATE TABLE gift_certificate_tag (
   CONSTRAINT gift_certificate_tag_fk2
   FOREIGN KEY (tag_id) REFERENCES tag (tag_id)
   ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT PK_gift_certificate_tag primary key (gift_certificate_id,tag_id)
+  CONSTRAINT pk_gift_certificate_tag primary key (gift_certificate_id,tag_id)
 );

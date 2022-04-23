@@ -5,7 +5,7 @@ import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.GiftCertificateDao;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
@@ -38,15 +38,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
-    public void insert(GiftCertificateDto entityDto) throws DaoException, ServiceException {
+    @Transactional(rollbackFor = {DaoException.class, ValidatorException.class})
+    public void insert(GiftCertificateDto entityDto) throws DaoException, ValidatorException {
         certificateValidator.validate(entityDto);
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
         giftCertificateDao.insert(entity);
     }
 
     @Override
-    public GiftCertificateDto getById(long id) throws DaoException, ServiceException {
+    public GiftCertificateDto getById(long id) throws DaoException, ValidatorException {
         certificateValidator.checkID(id);
         return giftCertificateConverter.convert(giftCertificateDao.getById(id));
     }
@@ -57,25 +57,29 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public void deleteByID(long id) throws DaoException, ServiceException {
+    public void deleteByID(long id) throws DaoException, ValidatorException {
         certificateValidator.checkID(id);
         giftCertificateDao.deleteByID(id);
     }
 
     @Override
-    @Transactional(rollbackFor = {DaoException.class,ServiceException.class})
-    public void update(Long id,GiftCertificateDto entity) throws DaoException, ServiceException {
+    @Transactional(rollbackFor = {DaoException.class, ValidatorException.class})
+    public void update(Long id,GiftCertificateDto entity) throws DaoException, ValidatorException {
+        preparingForUpdate(id,entity);
+        certificateValidator.validate(entity);
+        GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
+        giftCertificateDao.update(giftCertificateEntity);
+    }
+
+    private void preparingForUpdate(Long id,GiftCertificateDto entity){
         entity.setId(id);
         entity.setLastUpdateDate(getCurrentDate());
-        certificateValidator.validate(entity);
         List<String> tagNames = entity.getTags();
         List<Tag> tags = null;
         if (tagNames != null) {
             tags = getNewTagList(tagNames);
             giftCertificateDao.deleteListOfCertificateTags(id);
         }
-        GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
-        giftCertificateDao.update(giftCertificateEntity);
         giftCertificateDao.addTagsToCertificate(id,tags);
     }
 
@@ -89,7 +93,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException, ServiceException {
+    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException, ValidatorException {
         certificateValidator.validateMapKeys(mapWithFilters);
         return giftCertificateDao.getQueryWithConditions(mapWithFilters).stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }
