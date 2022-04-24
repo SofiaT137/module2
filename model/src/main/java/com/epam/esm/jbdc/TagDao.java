@@ -15,6 +15,13 @@ public interface TagDao extends CRDDao<Tag> {
      * @param name String tag name
      * @return The Tag entity
      */
-    Tag getTagByName(String name) throws DaoException;
+    Tag getTagByName(String name);
+
+    /**
+     * The method returns a list of all the identifiers in the list of past Tag entities.
+     * If one of the past tags does not exist, method creates a new one and puts its id in the list.
+     * @param tagList Tag list
+     * @return List of Tags id
+     */
     List<Long> getListWithTagsId(List<Tag> tagList);
 }

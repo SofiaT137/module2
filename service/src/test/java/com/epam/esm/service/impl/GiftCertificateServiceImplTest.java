@@ -7,6 +7,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.GiftCertificateDao;
+import com.epam.esm.service.business_service.impl.GiftCertificateServiceImpl;
 import com.epam.esm.validator.GiftCertificateValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

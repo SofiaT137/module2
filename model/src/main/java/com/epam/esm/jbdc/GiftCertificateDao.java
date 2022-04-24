@@ -17,18 +17,18 @@ public interface GiftCertificateDao extends CRUDDao<GiftCertificate> {
      * @param mapWithFilters Map(key=filter, value=passed value)
      * @return list of the GiftCertificate entities
      */
-    List<GiftCertificate> getQueryWithConditions(Map<String,String> mapWithFilters) throws DaoException;
+    List<GiftCertificate> getQueryWithConditions(Map<String,String> mapWithFilters);
 
     /**
      * The method adds tags to the GiftCertificate entity in a 'gift_certificate_tag' table.
      * @param id GiftCertificate id
      * @param tagList list of tags
      */
-    void addTagsToCertificate(long id, List<Tag> tagList) throws DaoException;
+    void addTagsToCertificate(long id, List<Tag> tagList);
 
     /**
      * The method deletes GiftCertificate entity relations in a 'gift_certificate_tag' table
      * @param id GiftCertificate id
      */
-    void deleteListOfCertificateTags(long id) throws DaoException;
+    void deleteListOfCertificateTags(long id);
 }

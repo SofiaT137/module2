@@ -1,8 +1,6 @@
-package com.epam.esm.service;
+package com.epam.esm.service.business_service;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
-import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ValidatorException;
 
 import java.util.List;
 import java.util.Map;
@@ -16,5 +14,5 @@ public interface GiftCertificateService extends CRUDService<GiftCertificateDto> 
      * @param mapWithFilters Map(key=filter, value=passed value)
      * @return The GiftCertificateDto object
      */
-    List<GiftCertificateDto> getQueryWithConditions(Map<String,String> mapWithFilters) throws DaoException, ValidatorException;
+    List<GiftCertificateDto> getQueryWithConditions(Map<String,String> mapWithFilters);
 }

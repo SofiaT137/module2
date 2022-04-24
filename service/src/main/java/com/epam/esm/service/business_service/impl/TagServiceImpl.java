@@ -1,10 +1,10 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.business_service.impl;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.TagDao;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.business_service.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

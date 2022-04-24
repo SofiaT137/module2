@@ -3,7 +3,7 @@ package com.epam.esm.controllers;
 import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
-import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.business_service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -13,24 +13,24 @@ public interface CRDDao<T>{
      * The method inserts the entity object to a destination table
      * @param entity The entity object from table
      */
-    void insert(T entity) throws DaoException;
+    void insert(T entity);
 
     /**
      * The method searches the entity object in a destination table by its identifier
      * @param id Long id
      * @return The entity object from table
      */
-    T getById(long id) throws DaoException;
+    T getById(long id);
 
     /**
      * The method searches for all the entity objects in a destination table
      * @return List of the entity objects from table
      */
-    List<T> getAll() throws DaoException;
+    List<T> getAll();
 
     /**
      * The method removes the entity object in a destination table by its identifier
      * @param id Long id
      */
-    void deleteByID(long id) throws DaoException;
+    void deleteByID(long id);
 }

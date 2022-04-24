@@ -4,6 +4,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.TagDao;
+import com.epam.esm.service.business_service.impl.TagServiceImpl;
 import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

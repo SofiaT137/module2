@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.business_service.impl;
 
 import com.epam.esm.converter.impl.GiftCertificateConverter;
 import com.epam.esm.dto.impl.GiftCertificateDto;
@@ -7,7 +7,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.GiftCertificateDao;
-import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.business_service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,32 +39,32 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional(rollbackFor = {DaoException.class, ValidatorException.class})
-    public void insert(GiftCertificateDto entityDto) throws DaoException, ValidatorException {
+    public void insert(GiftCertificateDto entityDto){
         certificateValidator.validate(entityDto);
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
         giftCertificateDao.insert(entity);
     }
 
     @Override
-    public GiftCertificateDto getById(long id) throws DaoException, ValidatorException {
+    public GiftCertificateDto getById(long id){
         certificateValidator.checkID(id);
         return giftCertificateConverter.convert(giftCertificateDao.getById(id));
     }
 
     @Override
-    public List<GiftCertificateDto> getAll() throws DaoException {
+    public List<GiftCertificateDto> getAll(){
         return giftCertificateDao.getAll().stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteByID(long id) throws DaoException, ValidatorException {
+    public void deleteByID(long id) {
         certificateValidator.checkID(id);
         giftCertificateDao.deleteByID(id);
     }
 
     @Override
     @Transactional(rollbackFor = {DaoException.class, ValidatorException.class})
-    public void update(Long id,GiftCertificateDto entity) throws DaoException, ValidatorException {
+    public void update(Long id,GiftCertificateDto entity) {
         preparingForUpdate(id,entity);
         certificateValidator.validate(entity);
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
@@ -93,7 +93,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters) throws DaoException, ValidatorException {
+    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters){
         certificateValidator.validateMapKeys(mapWithFilters);
         return giftCertificateDao.getQueryWithConditions(mapWithFilters).stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }

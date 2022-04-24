@@ -3,7 +3,7 @@ package com.epam.esm.controllers;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.business_service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

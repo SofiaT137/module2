@@ -1,5 +1,7 @@
 CREATE SCHEMA certificate_base;
 
+set mode MySQL;
+
 CREATE TABLE gift_certificate (
   gift_certificate_id bigint primary key NOT NULL AUTO_INCREMENT,
   gift_certificate_name varchar(45) NOT NULL,
