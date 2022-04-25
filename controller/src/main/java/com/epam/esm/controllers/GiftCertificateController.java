@@ -1,10 +1,13 @@
 package com.epam.esm.controllers;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
-import com.epam.esm.service.business_service.GiftCertificateService;
+import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.business_service.GiftCertificateBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +22,15 @@ import java.util.Map;
 @RequestMapping("/gift_certificates")
 public class GiftCertificateController {
 
-    private final GiftCertificateService giftCertificateService;
+    private GiftCertificateService<GiftCertificateDto> giftCertificateService;
 
     private static final String CREATED_MESSAGE = "Created!";
     private static final String UPDATED_MESSAGE = "Updated!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
     @Autowired
-    public GiftCertificateController(GiftCertificateService giftCertificateService) {
+    @Qualifier("giftCertificateBusinessService")
+    public void setGiftCertificateService(GiftCertificateService<GiftCertificateDto> giftCertificateService){
         this.giftCertificateService = giftCertificateService;
     }
 
@@ -90,7 +94,7 @@ public class GiftCertificateController {
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateGiftCertificate(@PathVariable long id,
                                                         @RequestBody GiftCertificateDto giftCertificate) throws DaoException, ValidatorException {
-        giftCertificateService.update(id, giftCertificate);
+        giftCertificateService.update(id, null, giftCertificate);
         return ResponseEntity.status(HttpStatus.CREATED).body(UPDATED_MESSAGE);
     }
 }

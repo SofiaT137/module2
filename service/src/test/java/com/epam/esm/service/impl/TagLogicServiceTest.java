@@ -4,7 +4,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.TagDao;
-import com.epam.esm.service.business_service.impl.TagServiceImpl;
+import com.epam.esm.service.logic_service.TagLogicService;
 import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,17 +25,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith({SpringExtension.class})
 @ComponentScan("com.epam.esm")
 @ContextConfiguration(classes = TagValidator.class)
-class TagServiceImplTest {
+class TagLogicServiceTest {
 
     @Mock
     private TagDao tagDao = Mockito.mock(TagDao.class);
 
     @InjectMocks
-    private TagServiceImpl tagService;
+    private TagLogicService tagService;
 
     @Autowired
-    public TagServiceImplTest(TagValidator tagValidator) {
-        this.tagService = new TagServiceImpl(this.tagDao,tagValidator);
+    public TagLogicServiceTest(TagValidator tagValidator) {
+        this.tagService = new TagLogicService(this.tagDao,tagValidator);
     }
 
     private static final String TAG_NAME = "happiness";

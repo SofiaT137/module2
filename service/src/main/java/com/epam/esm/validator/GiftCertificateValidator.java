@@ -1,6 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.*;
  * The GiftCertificateValidator class extents Validator class and provides validation for GiftCertificateDto entity
  */
 @Component
-public final class GiftCertificateValidator extends Validator<GiftCertificateDto> {
+public final class GiftCertificateValidator extends Validator<GiftCertificate> {
 
     private static final Integer MIN_GIFT_CERTIFICATE_NAME_LENGTH = 3;
     private static final Integer MAX_GIFT_CERTIFICATE_NAME_LENGTH = 45;
@@ -37,7 +38,7 @@ public final class GiftCertificateValidator extends Validator<GiftCertificateDto
     private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "Check the values that you transferred!";
 
     @Override
-    public void validate(GiftCertificateDto giftCertificate) throws ValidatorException {
+    public void validate(GiftCertificate giftCertificate) throws ValidatorException {
         if (giftCertificate.getGiftCertificateName() != null) {
             validateName(giftCertificate.getGiftCertificateName());
         }
