@@ -10,6 +10,7 @@ import com.epam.esm.jbdc.GiftCertificateDao;
 import com.epam.esm.service.business_service.GiftCertificateBusinessService;
 import com.epam.esm.service.logic_service.GiftCertificateLogicService;
 import com.epam.esm.validator.GiftCertificateValidator;
+import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,9 +43,9 @@ class GiftCertificateBusinessServiceTest {
     private GiftCertificateBusinessService giftCertificateBusinessService;
 
     @Autowired
-    public GiftCertificateBusinessServiceTest( GiftCertificateConverter giftCertificateConverter,GiftCertificateValidator giftCertificateValidator) {
+    public GiftCertificateBusinessServiceTest(GiftCertificateConverter giftCertificateConverter, GiftCertificateValidator giftCertificateValidator, TagValidator tagValidator) {
         this.giftCertificateBusinessService = new GiftCertificateBusinessService(giftCertificateConverter);
-        giftCertificateBusinessService.setGiftCertificateLogicService(new GiftCertificateLogicService(this.giftCertificateDao,giftCertificateValidator));
+        giftCertificateBusinessService.setGiftCertificateLogicService(new GiftCertificateLogicService(this.giftCertificateDao,giftCertificateValidator,tagValidator));
     }
 
 

@@ -4,6 +4,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,7 @@ public final class TagValidator extends Validator<Tag>{
 
     private static final String INCORRECT_TAG_LENGTH_EXCEPTION = "This tag length is forbidden!";
     private static final String INCORRECT_TAG_NAME_EXCEPTION = "This tag name is forbidden!";
+    private static final String TAG_NAME = " Tag name: ";
 
     private static final Integer MIN_TAG_NAME_LENGTH = 2;
     private static final Integer MAX_TAG_NAME_LENGTH = 30;
@@ -35,7 +37,7 @@ public final class TagValidator extends Validator<Tag>{
         Pattern namePattern = Pattern.compile(TAG_NAME_REGEX);
         Matcher matcher = namePattern.matcher(name);
         if(!matcher.find()){
-            throw new ValidatorException(INCORRECT_TAG_NAME_EXCEPTION,INCORRECT_TAG_NAME);
+            throw new ValidatorException(INCORRECT_TAG_NAME_EXCEPTION + TAG_NAME + name,INCORRECT_TAG_NAME);
         }
     }
 }

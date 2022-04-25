@@ -7,6 +7,7 @@ import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.GiftCertificateDao;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
+import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,17 +20,21 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     private final GiftCertificateDao giftCertificateDao;
     private final GiftCertificateValidator certificateValidator;
+    private final TagValidator tagValidator;
 
     @Autowired
-    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao, GiftCertificateValidator certificateValidator) {
+    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao, GiftCertificateValidator certificateValidator,TagValidator tagValidator) {
         this.giftCertificateDao = giftCertificateDao;
         this.certificateValidator = certificateValidator;
+        this.tagValidator = tagValidator;
     }
 
     @Override
     @Transactional(rollbackFor = {DaoException.class, ValidatorException.class})
     public void insert(GiftCertificate entity) {
         certificateValidator.validate(entity);
+        List<Tag> entityHasTags = entity.getTags();
+        entityHasTags.forEach(tagValidator::validate);
         giftCertificateDao.insert(entity);
     }
 
@@ -50,9 +55,10 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         certificateValidator.validate(entity);
         giftCertificateDao.update(entity);
         if (tags != null) {
+            tags.forEach(tagValidator::validate);
             giftCertificateDao.deleteListOfCertificateTags(entity.getId());
+            giftCertificateDao.addTagsToCertificate(entity.getId(),tags);
         }
-        giftCertificateDao.addTagsToCertificate(entity.getId(),tags);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.ValidatorException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -36,62 +38,61 @@ class GiftCertificateValidatorTest {
     private static final Double INCORRECT_PRICE = 111111111.9990;
     private static final Integer CORRECT_DURATION = 15;
     private static final Integer INCORRECT_DURATION= 150;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-    private static final String date = LocalDateTime.now().format(formatter);
-    private static final List<String> list = Arrays.asList("joy","happiness","seal");
+    private static final LocalDateTime date = LocalDateTime.now();
+    private static final List<Tag> list = Arrays.asList(new Tag("joy"),new Tag("happiness"),new Tag("seal"));
     private static final Map<String,String> stringStringMap = new HashMap<>();
 
-//    @BeforeAll
-//    static void init(){
-//        stringStringMap.put("name_tag","joy");
-//    }
-//
-//
-//    @Test
-//    void validateCorrectGiftCertificate(){
-//        assertDoesNotThrow(()->giftCertificateValidator
-//                .validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-//    }
-//
-//    @Test
-//    void validateInCorrectGiftCertificateName(){
-//        ValidatorException thrown = assertThrows(
-//                ValidatorException.class,
-//                () -> giftCertificateValidator.validate(new GiftCertificateDto(INCORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-//        assertTrue(thrown.getMessage().contains(NAME_IS_FORBIDDEN));
-//    }
-//
-//    @Test
-//    void validateInCorrectGiftCertificateDescription(){
-//        ValidatorException thrown = assertThrows(
-//                ValidatorException.class,
-//                () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,INCORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-//        assertTrue(thrown.getMessage().contains(DESCRIPTION_IS_TOO_LONG));
-//    }
-//
-//    @Test
-//    void validateInCorrectGiftCertificatePrice(){
-//        ValidatorException thrown = assertThrows(
-//                ValidatorException.class,
-//                () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,INCORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-//        assertTrue(thrown.getMessage().contains(PRICE_IS_FORBIDDEN));
-//    }
-//
-//    @Test
-//    void validateInCorrectGiftCertificateDuration(){
-//        ValidatorException thrown = assertThrows(
-//                ValidatorException.class,
-//                () -> giftCertificateValidator.validate(new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,INCORRECT_DURATION,date,date,list)));
-//        assertTrue(thrown.getMessage().contains(DURATION_IS_FORBIDDEN));
-//    }
-//
-//    @Test
-//    void validateIncorrectMapKeys(){
-//        ValidatorException thrown = assertThrows(
-//                ValidatorException.class,
-//                () -> giftCertificateValidator.validateMapKeys(stringStringMap));
-//        assertTrue(thrown.getMessage().contains(CHECK_THE_VALUES));
-//    }
+    @BeforeAll
+    static void init(){
+        stringStringMap.put("name_tag","joy");
+    }
+
+
+    @Test
+    void validateCorrectGiftCertificate(){
+        assertDoesNotThrow(()->giftCertificateValidator
+                .validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
+    }
+
+    @Test
+    void validateInCorrectGiftCertificateName(){
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
+                () -> giftCertificateValidator.validate(new GiftCertificate(INCORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
+        assertTrue(thrown.getMessage().contains(NAME_IS_FORBIDDEN));
+    }
+
+    @Test
+    void validateInCorrectGiftCertificateDescription(){
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
+                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,INCORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
+        assertTrue(thrown.getMessage().contains(DESCRIPTION_IS_TOO_LONG));
+    }
+
+    @Test
+    void validateInCorrectGiftCertificatePrice(){
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
+                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,INCORRECT_PRICE,CORRECT_DURATION,date,date,list)));
+        assertTrue(thrown.getMessage().contains(PRICE_IS_FORBIDDEN));
+    }
+
+    @Test
+    void validateInCorrectGiftCertificateDuration(){
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
+                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,INCORRECT_DURATION,date,date,list)));
+        assertTrue(thrown.getMessage().contains(DURATION_IS_FORBIDDEN));
+    }
+
+    @Test
+    void validateIncorrectMapKeys(){
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
+                () -> giftCertificateValidator.validateMapKeys(stringStringMap));
+        assertTrue(thrown.getMessage().contains(CHECK_THE_VALUES));
+    }
 }
 
 
