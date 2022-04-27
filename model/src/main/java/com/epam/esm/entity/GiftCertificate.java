@@ -1,5 +1,12 @@
 package com.epam.esm.entity;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -7,14 +14,25 @@ import java.util.Objects;
 /**
  * GiftCertificate class extends AbstractEntity and presents creation of the GiftCertificate entity
  */
+@Entity
+@Table(name = "gift_certificate")
+//@Audited
 public class GiftCertificate extends AbstractEntity<Long> {
 
+    @Column(name = "gift_certificate_name")
     private String giftCertificateName;
+    @Column(name = "description")
+//    @NotAudited
     private String description;
+    @Column(name = "price")
     private Double price;
+    @Column(name = "duration")
     private Integer duration;
+    @Column(name = "create_date")
     private LocalDateTime createDate;
+    @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
+    @ManyToMany
     private List<Tag> tags;
 
     public GiftCertificate() {}

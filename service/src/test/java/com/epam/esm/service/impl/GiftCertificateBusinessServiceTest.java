@@ -17,7 +17,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -31,21 +34,30 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith({SpringExtension.class})
+@ExtendWith({MockitoExtension.class})
 @ComponentScan("com.epam.esm")
 @ContextConfiguration(classes = {GiftCertificateValidator.class, GiftCertificateConverter.class})
+//@SpringBootTest(classes = {GiftCertificateValidator.class, GiftCertificateConverter.class})
 class GiftCertificateBusinessServiceTest {
 
     @Mock
     private final GiftCertificateDao giftCertificateDao = Mockito.mock(GiftCertificateDao.class);
 
+    @Spy
+    private final GiftCertificateConverter giftCertificateConverter = Mockito.spy(GiftCertificateConverter.class);
+
+    @Spy
+    private final TagValidator tagValidator = Mockito.spy(TagValidator.class);
+
+    @Spy
+    private final GiftCertificateValidator giftCertificateValidator = Mockito.spy(GiftCertificateValidator.class);
+
     @InjectMocks
     private GiftCertificateBusinessService giftCertificateBusinessService;
 
-    @Autowired
-    public GiftCertificateBusinessServiceTest(GiftCertificateConverter giftCertificateConverter, GiftCertificateValidator giftCertificateValidator, TagValidator tagValidator) {
-        this.giftCertificateBusinessService = new GiftCertificateBusinessService(giftCertificateConverter);
-        giftCertificateBusinessService.setGiftCertificateLogicService(new GiftCertificateLogicService(this.giftCertificateDao,giftCertificateValidator,tagValidator));
+    public GiftCertificateBusinessServiceTest() {
+        this.giftCertificateBusinessService = new GiftCertificateBusinessService(this.giftCertificateConverter);
+        giftCertificateBusinessService.setGiftCertificateLogicService(new GiftCertificateLogicService(this.giftCertificateDao,this.giftCertificateValidator,this.tagValidator));
     }
 
 

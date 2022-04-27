@@ -19,24 +19,6 @@
     </properties>
 
     <dependencies>
-
-        <!--Spring JBDC dependencies-->
-        <!--Connect to the database and execute SQL queries-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>5.3.10</version>
-        </dependency>
-
-        <!--Connect to H2 database(Very fast, open source, JDBC API)-->
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.1.210</version>
-            <scope>test</scope>
-        </dependency>
-
         <!--Connect to mysql database-->
         <dependency>
             <groupId>mysql</groupId>
@@ -44,13 +26,13 @@
             <version>8.0.26</version>
         </dependency>
 
-        <!--Provides a BasicDataSource class which creates a PoolingDataSource-->
+        <!--The library that helps us to easily achieve audit functionality-->
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+            <version>5.6.5.Final</version>
         </dependency>
-
     </dependencies>
+
 
 </project>

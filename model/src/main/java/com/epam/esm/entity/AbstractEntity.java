@@ -1,13 +1,18 @@
 package com.epam.esm.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
  * The abstract class AbstractEntity presents creation of the abstract entity
  * @param <K>
  */
+@MappedSuperclass
 public abstract class AbstractEntity<K> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     protected AbstractEntity(){}

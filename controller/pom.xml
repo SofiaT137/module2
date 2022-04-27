@@ -18,10 +18,10 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
-
     <dependencies>
 
         <!-- Internal dependencies -->
+
         <dependency>
             <groupId>com.epam.esm</groupId>
             <artifactId>service</artifactId>
@@ -32,48 +32,6 @@
             <groupId>com.epam.esm</groupId>
             <artifactId>logging</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Spring Web MVC dependencies -->
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>5.3.10</version>
-        </dependency>
-
-        <!-- JAVA Servlet API dependencies -->
-        <!--Java Servlets is a JCP Standard technology for interacting with the web on the Java EE platform.-->
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Jackson dependencies -->
-
-        <!--General data-binding functionality for Jackson: works on core streaming API-->
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
-        </dependency>
-
-        <!--Add-on module to support JSR-310 (Java 8 Date & Time API) data types-->
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.9.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.9.8</version>
         </dependency>
 
     </dependencies>

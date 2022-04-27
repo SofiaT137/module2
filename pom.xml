@@ -3,6 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<!--The parent POM providing dependency and plugin management for Spring Boot-based applications-->
+		<!-- It contains the default versions of Java to use, the default versions of dependencies that Spring Boot uses, and the default configuration of the Maven plugins.-->
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.3</version> <!-- spring boot version number -->
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
 	<modules>
 		<module>model</module>
 		<module>controller</module>
@@ -14,83 +23,46 @@
 	<artifactId>module-2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<description>This is REST.API.Basic project.</description>
+	<description>This is REST.API project.</description>
 
 	<properties>
-		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
-
-		<!--Spring dependencies-->
-		<!--Dependency is responsible for injecting dependencies through either Constructor or Setter methods-->
-		<!--(DI)-->
+		<!--Starter packages are a collection of useful dependency descriptors that you can include in your application.-->
+		<!--Starter for building web, including RESTful, applications using Spring MVC. Uses Tomcat as the default embedded container-->
+		<!--Contains dependencies : spring-core,spring-bean, spring-web, spring-webmvc, servlet api, jackson-databind...-->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>5.3.18</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<!--Dependency is responsible for instantiating, configuring, and assembling beans by reading configuration metadata from XML, Java annotations, and/or Java code in the configuration files-->
-		<!--(the Spring IoC container)-->
+		<!--Starter for using Spring Data JPA with Hibernate-->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>5.3.10</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		<!--Starter for testing Spring Boot applications with libraries including JUnit Jupiter, Hamcrest and Mockito-->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>5.3.10</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!--JUnit dependencies-->
-		<!--The main module where all core annotations are located, such as @Test, Lifecycle method annotations and assertions-->
+		<!--Starter for building hypermedia-based RESTful web application with Spring MVC and Spring HATEOAS-->
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.1</version>
-			<scope>test</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
-
-		<!--It has test engine implementation which is required at runtime to execute the tests-->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.8.2</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>
-		<!--This plugin provides goals to manipulate WAR projects within the Tomcat servlet container version 7.x-->
 		<plugins>
+			<!--The plugin provides Spring Boot support in Apache Maven. It allows you to package executable jar or war archives, run Spring Boot applications, generate build information
+				and start your Spring Boot application prior to running integration tests-->
 			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<!-- http port -->
-					<port>8080</port>
-					<!-- application path always starts with /-->
-					<path>/</path>
-				</configuration>
-			</plugin>
-
-			<!-- This plugin is responsible for collecting and compiling all the dependencies, classes, and resources of the web application into a web application archive-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.3.2</version>
-				<configuration>
-					<!--Don't need to add a useless web.xml to the project-->
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

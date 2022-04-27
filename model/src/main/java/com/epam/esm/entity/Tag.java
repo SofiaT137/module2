@@ -1,12 +1,21 @@
 package com.epam.esm.entity;
 
+import org.hibernate.envers.Audited;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 /**
  * Tag class extends AbstractEntity and presents creation of the Tag entity
  */
+@Entity
+@Table(name = "tag")
+//@Audited
 public class Tag extends AbstractEntity<Long> {
 
+    @Column(name = "tag_name")
     private String name;
 
     public Tag(String name) {
@@ -18,9 +27,7 @@ public class Tag extends AbstractEntity<Long> {
         this.name = name;
     }
 
-    public Tag(){
-
-    }
+    public Tag(){}
 
     public String getName() {
         return name;
