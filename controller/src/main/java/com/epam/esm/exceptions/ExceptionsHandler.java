@@ -35,8 +35,8 @@ public class ExceptionsHandler {
      * @param exception Service exception
      * @return new ResponseEntity<>(Exception entity, HttpStatus);
      */
-    @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<Object> badRequestException(ServiceException exception) {
+    @ExceptionHandler(ValidatorException.class)
+    public ResponseEntity<Object> badRequestException(ValidatorException exception) {
         String exceptionMessage = exception.getLocalizedMessage();
         String exceptionCode = exception.getErrorCode();
         ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage,exceptionCode);

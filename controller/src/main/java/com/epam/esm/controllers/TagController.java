@@ -2,7 +2,7 @@ package com.epam.esm.controllers;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +18,12 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagService tagService;
+    private final TagService<Tag> tagService;
     private static final String CREATED_MESSAGE = "Created!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService<Tag> tagService) {
         this.tagService = tagService;
     }
 
@@ -33,7 +33,7 @@ public class TagController {
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
-    public ResponseEntity<Object> insertTag(@RequestBody Tag tag) throws DaoException, ServiceException {
+    public ResponseEntity<Object> insertTag(@RequestBody Tag tag) throws DaoException, ValidatorException {
         tagService.insert(tag);
         return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
     }
@@ -44,7 +44,7 @@ public class TagController {
      * @return Tag entity
      */
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable Long id) throws DaoException, ServiceException {
+    public Tag getTagById(@PathVariable Long id) throws DaoException, ValidatorException {
         return tagService.getById(id);
     }
 
@@ -73,7 +73,7 @@ public class TagController {
      * @return Response entity with HttpStatus "FOUND"
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteTagByID(@PathVariable long id) throws DaoException, ServiceException {
+    public ResponseEntity<Object> deleteTagByID(@PathVariable long id) throws DaoException, ValidatorException {
         tagService.deleteByID(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
     }

@@ -12,6 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("dev")
 class TagDaoImplTest {
 
-    private TagDao tagDao;
+    private final TagDao tagDao;
 
     @Autowired
     public TagDaoImplTest(TagDao tagDao) {
@@ -29,37 +31,44 @@ class TagDaoImplTest {
     }
 
     private static final String newTagName = "happiness";
-    private static final String tagNameToFind = "sea";
+    private static final String tagNameToFind = "dolphin";
 
     @Test
-    void insert() throws DaoException {
+    void insert(){
         tagDao.insert(new Tag(newTagName));
         Long id2 = tagDao.getTagByName(newTagName).getId();
         assertNotNull(id2);
     }
 
     @Test
-    void getById() throws DaoException {
+    void getById(){
         Tag tag = tagDao.getById(1);
         assertEquals(1,tag.getId());
     }
 
     @Test
-    void getAll() throws DaoException {
+    void getAll() {
         List<Tag> allTheTags = tagDao.getAll();
         assertEquals(3,allTheTags.size());
     }
 
     @Test
-    void deleteByID() throws DaoException {
+    void deleteByID()  {
         tagDao.deleteByID(2);
         List<Tag> allTags = tagDao.getAll();
-        assertEquals(3, allTags.size());
+        assertEquals(4, allTags.size());
     }
 
     @Test
-    void getTagByName() throws DaoException {
+    void getTagByName(){
         Tag happinessTag = tagDao.getTagByName(tagNameToFind);
         assertNotNull(happinessTag.getId());
+    }
+
+    @Test
+    void getListWithTagsId(){
+        List<Tag> list = Collections.singletonList(new Tag("shark"));
+        List<Long> listOfTagID = tagDao.getListWithTagsId(list);
+        assertEquals(5L,listOfTagID.get(0));
     }
 }

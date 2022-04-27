@@ -1,7 +1,8 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.dto.impl.GiftCertificateDto;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.*;
  * The GiftCertificateValidator class extents Validator class and provides validation for GiftCertificateDto entity
  */
 @Component
-public final class GiftCertificateValidator extends Validator<GiftCertificateDto> {
+public final class GiftCertificateValidator extends Validator<GiftCertificate> {
 
     private static final Integer MIN_GIFT_CERTIFICATE_NAME_LENGTH = 3;
     private static final Integer MAX_GIFT_CERTIFICATE_NAME_LENGTH = 45;
@@ -37,7 +38,7 @@ public final class GiftCertificateValidator extends Validator<GiftCertificateDto
     private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "Check the values that you transferred!";
 
     @Override
-    public void validate(GiftCertificateDto giftCertificate) throws ServiceException {
+    public void validate(GiftCertificate giftCertificate) throws ValidatorException {
         if (giftCertificate.getGiftCertificateName() != null) {
             validateName(giftCertificate.getGiftCertificateName());
         }
@@ -52,40 +53,40 @@ public final class GiftCertificateValidator extends Validator<GiftCertificateDto
         }
     }
 
-    private void validateName(final String name) throws ServiceException {
+    private void validateName(final String name) throws ValidatorException {
         if (name.length() < MIN_GIFT_CERTIFICATE_NAME_LENGTH || name.length() > MAX_GIFT_CERTIFICATE_NAME_LENGTH) {
-            throw new ServiceException(INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH);
+            throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH);
         }
         Pattern namePattern = Pattern.compile(TAG_NAME_REGEX);
         Matcher matcher = namePattern.matcher(name);
         if (!matcher.find()) {
-            throw new ServiceException(INCORRECT_GIFT_CERTIFICATE_NAME_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_NAME);
+            throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_NAME_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_NAME);
         }
     }
 
-    private void validateDescription(String description) throws ServiceException {
+    private void validateDescription(String description) throws ValidatorException {
         if (description.length() > MAX_GIFT_CERTIFICATE_DESCRIPTION_LENGTH) {
-            throw new ServiceException(INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_LENGTH);
+            throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_LENGTH);
         }
     }
 
-    private void validatePrice(Double price) throws ServiceException {
+    private void validatePrice(Double price) throws ValidatorException {
         if (price == null || price < MIN_GIFT_CERTIFICATE_PRICE || price > MAX_GIFT_CERTIFICATE_PRICE) {
-            throw new ServiceException(INCORRECT_GIFT_CERTIFICATE_PRICE_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_PRICE);
+            throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_PRICE_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_PRICE);
         }
     }
 
-    private void validateDuration(int duration) throws ServiceException {
+    private void validateDuration(int duration) throws ValidatorException {
         if (duration < MIN_DURATION || duration > MAX_DURATION) {
-            throw new ServiceException(INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_DURATION);
+            throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_DURATION);
         }
     }
 
-    public void validateMapKeys(Map<String, String> mapWithParameters) throws ServiceException {
+    public void validateMapKeys(Map<String, String> mapWithParameters) throws ValidatorException {
         List<String> transferredKeys = new ArrayList<>(mapWithParameters.keySet());
         for (String transferredKey : transferredKeys) {
             if (!allowedKeys.contains(transferredKey)) {
-                throw new ServiceException(INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION, INCORRECT_TRANSFERRED_PARAMETERS);
+                throw new ValidatorException(INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION, INCORRECT_TRANSFERRED_PARAMETERS);
             }
         }
     }

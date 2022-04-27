@@ -1,7 +1,7 @@
 package com.epam.esm.exceptions;
 
 /**
- * The ExceptionErrorCode final class contains all the ServerException custom codes
+ * The ExceptionErrorCode final class contains all the ValidatorException custom codes
  */
 public final class ExceptionErrorCode {
 

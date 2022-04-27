@@ -1,7 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ class TagValidatorTest {
     private static final String INCORRECT_NAME = "$52-vmt[****";
     @Test
     void validateIncorrectId() {
-        assertThrows(ServiceException.class,()-> tagValidator.checkID(INCORRECT_ID));
+        assertThrows(ValidatorException.class,()-> tagValidator.checkID(INCORRECT_ID));
     }
 
     @Test
@@ -31,7 +31,7 @@ class TagValidatorTest {
 
     @Test
     void validateIncorrectName() {
-        assertThrows(ServiceException.class,()->tagValidator.validate(new Tag(INCORRECT_NAME)));
+        assertThrows(ValidatorException.class,()->tagValidator.validate(new Tag(INCORRECT_NAME)));
     }
 
     @Test

@@ -5,8 +5,10 @@ import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.jbdc.GiftCertificateDao;
+import com.epam.esm.service.business_service.GiftCertificateBusinessService;
+import com.epam.esm.service.logic_service.GiftCertificateLogicService;
 import com.epam.esm.validator.GiftCertificateValidator;
 import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,8 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,23 +29,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith({SpringExtension.class})
 @ComponentScan("com.epam.esm")
 @ContextConfiguration(classes = {GiftCertificateValidator.class, GiftCertificateConverter.class})
-class GiftCertificateServiceImplTest {
+class GiftCertificateBusinessServiceTest {
 
     @Mock
     private final GiftCertificateDao giftCertificateDao = Mockito.mock(GiftCertificateDao.class);
 
     @InjectMocks
-    private GiftCertificateServiceImpl giftCertificateService;
+    private GiftCertificateBusinessService giftCertificateBusinessService;
 
     @Autowired
-    public GiftCertificateServiceImplTest(GiftCertificateValidator giftCertificateValidator,GiftCertificateConverter giftCertificateConverter ) {
-        this.giftCertificateService = new GiftCertificateServiceImpl(this.giftCertificateDao,giftCertificateConverter,giftCertificateValidator);
+    public GiftCertificateBusinessServiceTest(GiftCertificateConverter giftCertificateConverter, GiftCertificateValidator giftCertificateValidator, TagValidator tagValidator) {
+        this.giftCertificateBusinessService = new GiftCertificateBusinessService(giftCertificateConverter);
+        giftCertificateBusinessService.setGiftCertificateLogicService(new GiftCertificateLogicService(this.giftCertificateDao,giftCertificateValidator,tagValidator));
     }
+
 
     private static final String CORRECT_NAME = "Swimming with seals";
     private static final String UPDATE_NAME = "Swimming with dolphins";
@@ -80,18 +82,18 @@ class GiftCertificateServiceImplTest {
     @Test
     void insert() throws DaoException {
         try{
-            giftCertificateService.insert(entity1DTO);
-        }catch (ServiceException exception){
+            giftCertificateBusinessService.insert(entity1DTO);
+        }catch (ValidatorException exception){
             exception.getLocalizedMessage();
         }
         Mockito.verify(giftCertificateDao).insert(entity);
     }
 
     @Test
-    void getById() throws DaoException, ServiceException {
+    void getById() throws DaoException, ValidatorException {
         Long ID = entity1DTO.getId();
         Mockito.when(giftCertificateDao.getById(ID)).thenReturn(entity);
-        GiftCertificateDto certificateActual = giftCertificateService.getById(ID);
+        GiftCertificateDto certificateActual = giftCertificateBusinessService.getById(ID);
         assertEquals(entity1DTO,certificateActual);
     }
 
@@ -100,7 +102,7 @@ class GiftCertificateServiceImplTest {
         List<GiftCertificate> certificateList = Arrays.asList(entity,entity2);
         List<GiftCertificateDto> certificateDto = Arrays.asList(entity1DTO,entity2DTO);
         Mockito.when(giftCertificateDao.getAll()).thenReturn(certificateList);
-        List<GiftCertificateDto> actual = giftCertificateService.getAll();
+        List<GiftCertificateDto> actual = giftCertificateBusinessService.getAll();
         assertEquals(certificateDto, actual);
     }
 
@@ -108,29 +110,29 @@ class GiftCertificateServiceImplTest {
     void deleteByID() throws DaoException {
         Long id = entity.getId();
         try {
-            giftCertificateService.deleteByID(id);
-        }catch (ServiceException exception){
+            giftCertificateBusinessService.deleteByID(id);
+        }catch (ValidatorException exception){
             exception.printStackTrace();
         }
         Mockito.verify(giftCertificateDao, Mockito.times(1)).deleteByID(id);
     }
 
     @Test
-    void update() throws ServiceException, DaoException {
+    void update() throws ValidatorException, DaoException {
         entity2DTO.setGiftCertificateName(UPDATE_NAME);
         entity2DTO.setDescription(UPDATE_DESCRIPTION);
-        giftCertificateService.update(entity2DTO.getId(),entity2DTO);
+        giftCertificateBusinessService.update(entity2DTO.getId(),null,entity2DTO);
         Mockito.verify(giftCertificateDao).deleteListOfCertificateTags(updateEntity2.getId());
         Mockito.verify(giftCertificateDao).update(updateEntity2);
         Mockito.verify(giftCertificateDao).addTagsToCertificate(updateEntity2.getId(),tag_list);
     }
 
     @Test
-    void getQueryWithConditions() throws ServiceException, DaoException {
+    void getQueryWithConditions() throws ValidatorException, DaoException {
         List<GiftCertificate> certificateList = Arrays.asList(entity,entity2);
         List<GiftCertificateDto> certificateDto = Arrays.asList(entity1DTO,entity2DTO);
         Mockito.when(giftCertificateDao.getQueryWithConditions(testMap)).thenReturn(certificateList);
-        List<GiftCertificateDto> actual = giftCertificateService.getQueryWithConditions(testMap);
+        List<GiftCertificateDto> actual = giftCertificateBusinessService.getQueryWithConditions(testMap);
         assertEquals(certificateDto,actual);
     }
 }

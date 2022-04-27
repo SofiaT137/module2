@@ -65,14 +65,6 @@ class GiftCertificateDaoImplTest {
     }
 
     @Test
-    void addTagsToCertificate() throws DaoException {
-        giftCertificateDao.getById(3);
-        giftCertificateDao.addTagsToCertificate(3,newTags);
-        Integer certificateListSize = giftCertificateDao.getById(3).getTags().size();
-        assertEquals(2,certificateListSize);
-    }
-
-    @Test
     void getById() throws DaoException {
         GiftCertificate giftCertificate = giftCertificateDao.getById(2);
         assertEquals(2,giftCertificate.getId());

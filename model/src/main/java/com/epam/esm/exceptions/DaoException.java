@@ -4,7 +4,7 @@ package com.epam.esm.exceptions;
 /**
  * DaoException class presents creating of the DaoException entity
  */
-public class DaoException extends Exception{
+public class DaoException extends RuntimeException{
 
     private String errorCode;
 
@@ -30,9 +30,5 @@ public class DaoException extends Exception{
 
     public DaoException(Throwable cause) {
         super(cause);
-    }
-
-    public DaoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

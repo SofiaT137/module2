@@ -1,8 +1,6 @@
 package com.epam.esm.validator;
 
-import com.epam.esm.dto.AbstractDto;
-import com.epam.esm.entity.AbstractEntity;
-import com.epam.esm.exceptions.ServiceException;
+import com.epam.esm.exceptions.ValidatorException;
 import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_ID;
 
 /**
@@ -17,15 +15,15 @@ public abstract class Validator<T> {
      * The method checkID checks transferred long id value
      * @param id Long id
      */
-   public void checkID(Long id) throws ServiceException {
+   public void checkID(Long id) throws ValidatorException {
         if (id < MIN_ID){
-            throw new ServiceException(WRONG_ID_MESSAGE,INCORRECT_ID);
+            throw new ValidatorException(WRONG_ID_MESSAGE,INCORRECT_ID);
         }
     }
     /**
      * The validate method helps validate transferred abstractEntity
      * @param abstractEntity T abstractEntity
      */
-    public abstract void validate(T abstractEntity) throws ServiceException;
+    public abstract void validate(T abstractEntity) throws ValidatorException;
 
 }
