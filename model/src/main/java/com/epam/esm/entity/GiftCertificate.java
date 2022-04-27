@@ -1,13 +1,14 @@
 package com.epam.esm.entity;
 
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,48 +16,37 @@ import java.util.Objects;
  * GiftCertificate class extends AbstractEntity and presents creation of the GiftCertificate entity
  */
 @Entity
-@Table(name = "gift_certificate")
+@Table(name = "gift_certificates")
 //@Audited
 public class GiftCertificate extends AbstractEntity<Long> {
 
     @Column(name = "gift_certificate_name")
     private String giftCertificateName;
+
     @Column(name = "description")
-//    @NotAudited
     private String description;
+
     @Column(name = "price")
     private Double price;
+
     @Column(name = "duration")
     private Integer duration;
+
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
-    @ManyToMany
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH})
+    @JoinTable(
+            name = "gift_certificate_tag",
+            joinColumns = @JoinColumn(name = "gift_certificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     private List<Tag> tags;
 
     public GiftCertificate() {}
-
-    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
-        this.giftCertificateName = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
-    }
-
-    public GiftCertificate(Long id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
-        super(id);
-        this.giftCertificateName = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
-    }
 
     public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate) {
         this.giftCertificateName = name;
@@ -66,6 +56,14 @@ public class GiftCertificate extends AbstractEntity<Long> {
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
     }
+
+    public void addTagToGiftCertificate(Tag tag){
+        if (tags == null){
+            tags = new ArrayList<>();
+        }
+        tags.add(tag);
+    }
+
     public String getGiftCertificateName() {
         return giftCertificateName;
     }

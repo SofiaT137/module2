@@ -1,4 +1,4 @@
-package com.epam.esm.jbdc.sql_queries;
+package com.epam.esm.dao.sql_queries;
 
 /**
  * The final class TagSQLQueries presents all SQL queries connected with 'tag' table

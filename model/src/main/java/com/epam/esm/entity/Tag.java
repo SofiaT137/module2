@@ -11,7 +11,7 @@ import java.util.Objects;
  * Tag class extends AbstractEntity and presents creation of the Tag entity
  */
 @Entity
-@Table(name = "tag")
+@Table(name = "tags")
 //@Audited
 public class Tag extends AbstractEntity<Long> {
 
@@ -54,6 +54,7 @@ public class Tag extends AbstractEntity<Long> {
     @Override
     public String toString() {
         return "Tag{" +
+                "id='" + super.getId() +'\''+
                 "name='" + name + '\'' +
                 '}';
     }
