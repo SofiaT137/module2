@@ -4,10 +4,10 @@
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 <session-factory>
-<property name="connection.url">jdbc:mysql://localhost:3306/certificate_base?useSSL=false&amp;serverTimezone=UTC</property>
+<property name="connection.url">jdbc:mysql://localhost:3306/certificate_base?useSSL=false</property>
 <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 <property name="connection.username">root</property>
-<property name="connection.password">13041993Sofia</property>
+<property name="connection.password">root</property>
 
 <property name="current_session_context_class">thread</property>
 <property name="dialect">org.hibernate.dialect.MySQLDialect</property>

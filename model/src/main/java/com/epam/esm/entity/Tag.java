@@ -5,6 +5,7 @@ import org.hibernate.envers.Audited;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tags")
 //@Audited
-public class Tag extends AbstractEntity<Long> {
+public class Tag extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "tag_name")
     private String name;

@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
@@ -26,16 +27,7 @@ public class Test {
             session = factory.getCurrentSession();
             Order order = new Order(78.19, LocalDateTime.now());
             session.beginTransaction();
-            GiftCertificate giftCertificate1 = session.get(GiftCertificate.class, 1L);
-            Tag tag1 = session.get(Tag.class, 1L);
-            Tag tag2 = session.get(Tag.class, 2L);
-            Tag tag3 = session.get(Tag.class, 3L);
-            Tag tag4 = session.get(Tag.class, 4L);
-            giftCertificate1.addTagToGiftCertificate(tag1);
-            giftCertificate1.addTagToGiftCertificate(tag2);
-            giftCertificate1.addTagToGiftCertificate(tag3);
-            giftCertificate1.addTagToGiftCertificate(tag4);
-            session.save(giftCertificate1);
+            List<Tag> list = session.createQuery("select t from Tag t",Tag.class).getResultList();
             session.getTransaction().commit();
         }
         finally{

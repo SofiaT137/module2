@@ -1,6 +1,5 @@
 package com.epam.esm.service;
 
-import com.epam.esm.exceptions.DaoException;
 import com.epam.esm.exceptions.ValidatorException;
 
 import java.util.List;
