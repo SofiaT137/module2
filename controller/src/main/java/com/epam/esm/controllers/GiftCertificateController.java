@@ -1,100 +1,94 @@
-//package com.epam.esm.controllers;
-//
-//import com.epam.esm.dto.impl.GiftCertificateDto;
-//import com.epam.esm.entity.GiftCertificate;
-//import com.epam.esm.exceptions.DaoException;
-//import com.epam.esm.exceptions.ValidatorException;
-//import com.epam.esm.service.GiftCertificateService;
-//import com.epam.esm.service.business_service.GiftCertificateBusinessService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//import java.util.Map;
-//
-///**
-// * GiftCertificateController class presents REST controller for GiftCertificate entity
-// */
-//@RestController
-//@RequestMapping("/gift_certificates")
-//public class GiftCertificateController {
-//
-//    private GiftCertificateService<GiftCertificateDto> giftCertificateService;
-//
-//    private static final String CREATED_MESSAGE = "Created!";
-//    private static final String UPDATED_MESSAGE = "Updated!";
-//    private static final String DELETED_MESSAGE = "Deleted!";
-//
-//    @Autowired
-//    @Qualifier("giftCertificateBusinessService")
-//    public void setGiftCertificateService(GiftCertificateService<GiftCertificateDto> giftCertificateService){
-//        this.giftCertificateService = giftCertificateService;
-//    }
-//
-//    /**
-//     * Method getCertificateByID returns GiftCertificateDTO entity by its id
-//     * @param id Long id
-//     * @return GiftCertificateDTO entity
-//     */
-//    @GetMapping("/{id}")
-//    public GiftCertificateDto getCertificateByID(@PathVariable Long id) throws DaoException, ValidatorException {
-//        return giftCertificateService.getById(id);
-//    }
-//
-//    /**
-//     * Method getAllGiftCertificates returns all the GiftCertificateDTO entity
-//     * @return List of GiftCertificateDTO entity
-//     */
-//    @GetMapping
-//    public List<GiftCertificateDto> getAllGiftCertificates() throws DaoException {
-//        return giftCertificateService.getAll();
-//    }
-//
-//    /**
-//     * Method insertCertificate insert the GiftCertificateDTO entity
-//     * @param giftCertificate  GiftCertificateDto giftCertificate
-//     * @return Response entity with HttpStatus "CREATED"
-//     */
-//    @PostMapping
-//    public ResponseEntity<Object> insertCertificate(@RequestBody GiftCertificateDto giftCertificate) throws DaoException, ValidatorException {
-//        giftCertificateService.insert(giftCertificate);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_MESSAGE);
-//    }
-//
-//    /**
-//     * Method giftCertificatesByParameter returns GiftCertificateDTO entity by all the transferred parameters
-//     * @param allRequestParams Map with parameters
-//     * @return List of GiftCertificateDTO entity
-//     */
-//    @GetMapping("/filter")
-//    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam Map<String, String> allRequestParams) throws DaoException, ValidatorException {
-//          return giftCertificateService.getQueryWithConditions(allRequestParams);
-//    }
-//
-//    /**
-//     * Method deleteGiftCertificateByID deletes GiftCertificateDTO entity by its id
-//     * @param id Long id
-//     * @return Response entity with HttpStatus "OK"
-//     */
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Object> deleteGiftCertificateByID(@PathVariable long id) throws DaoException, ValidatorException {
-//        giftCertificateService.deleteByID(id);
-//        return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
-//    }
-//
-//    /**
-//     * Method updateGiftCertificate updates GiftCertificateDTO entity by its id
-//     * @param id Long id
-//     * @param giftCertificate GiftCertificateDto entity
-//     * @return Response entity with HttpStatus "OK"
-//     */
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Object> updateGiftCertificate(@PathVariable long id,
-//                                                        @RequestBody GiftCertificateDto giftCertificate) throws DaoException, ValidatorException {
-//        giftCertificateService.update(id, null, giftCertificate);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(UPDATED_MESSAGE);
-//    }
-//}
+package com.epam.esm.controllers;
+
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
+
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
+import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * GiftCertificateController class presents REST controller for GiftCertificate entity
+ */
+@RestController
+@RequestMapping("/gift_certificates")
+public class GiftCertificateController {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private static final String TAG_NAME = "tag_name";
+    private static final String PERCENT = "%";
+    private static final String JOIN_TAGS = "tags";
+    private static final String NAME_COLUMN = "name";
+    private static final String TAG_PARAMETER = "tag_name";
+    private static final String PART_OF_CERTIFICATE_NAME = "partName";
+    private static final String PART_OF_CERTIFICATE_DESCRIPTION = "partDescription";
+    private static final String GIFT_CERTIFICATE_NAME = "giftCertificateName";
+    private static final String SORT_BY_NAME = "sortByName";
+    private static final String SORT_BY_DATE = "sortByCreationDate";
+    private static final String DESCRIPTION = "description";
+
+    @GetMapping("/filter")
+    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(@RequestParam MultiValueMap<String, String> mapWithFilters) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(mapWithFilters.get(TAG_PARAMETER)!=null){
+            List<String> tags = mapWithFilters.get(TAG_PARAMETER);
+            for (String tag:tags){
+                Join<GiftCertificate,Tag> joinTags = root.join(JOIN_TAGS);
+                predicates.add(
+                        criteriaBuilder.equal(joinTags.get(NAME_COLUMN),tag));
+            }
+        }
+        if( mapWithFilters.get(PART_OF_CERTIFICATE_NAME)!=null){
+            String name = mapWithFilters.get(PART_OF_CERTIFICATE_NAME).get(0);
+            predicates.add(
+                    criteriaBuilder.like(root.get(GIFT_CERTIFICATE_NAME),PERCENT+ name +PERCENT));
+        }
+
+        if( mapWithFilters.get(PART_OF_CERTIFICATE_DESCRIPTION)!=null){
+            String description = mapWithFilters.get(PART_OF_CERTIFICATE_DESCRIPTION).get(0);
+            predicates.add(
+                    criteriaBuilder.like(root.get(DESCRIPTION),PERCENT+ description +PERCENT));
+        }
+
+        criteriaQuery.where(predicates.toArray(new Predicate[]{}));
+        CriteriaQuery<GiftCertificate> select = criteriaQuery.select(root);
+
+        List<GiftCertificate> resultList = entityManager.createQuery(select).getResultList();
+
+        if(mapWithFilters.get(SORT_BY_NAME) != null){
+            if(mapWithFilters.get(SORT_BY_NAME).get(0).equalsIgnoreCase("asc")){
+                return resultList.stream()
+                        .sorted(Comparator.comparing(GiftCertificate::getGiftCertificateName)).collect(Collectors.toList());
+            }else{
+                return resultList.stream()
+                        .sorted(Comparator.comparing(GiftCertificate::getGiftCertificateName).reversed()).collect(Collectors.toList());
+            }
+        }
+
+        if(mapWithFilters.get(SORT_BY_DATE) != null){
+            if(mapWithFilters.get(SORT_BY_DATE).get(0).equalsIgnoreCase("asc")){
+                return resultList.stream()
+                        .sorted(Comparator.comparing(GiftCertificate::getCreateDate)).collect(Collectors.toList());
+            }else{
+                return resultList.stream()
+                        .sorted(Comparator.comparing(GiftCertificate::getCreateDate).reversed()).collect(Collectors.toList());
+            }
+        }
+        return resultList;
+    }
+}

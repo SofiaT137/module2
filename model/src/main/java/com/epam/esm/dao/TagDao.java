@@ -10,5 +10,5 @@ import java.util.Optional;
  */
 public interface TagDao extends CRDDao<Tag> {
 
-    Optional<Tag> findTheMostWidelyUsedTagOfAUserWithTheHighestCostOfAllOrders(User user);
+    Optional<Tag> findTheMostWidelyUsedUserTag(User user);
 }
