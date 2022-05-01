@@ -39,7 +39,7 @@ public class GiftCertificateController {
     private static final String DESCRIPTION = "description";
 
     @GetMapping("/filter")
-    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(@RequestParam MultiValueMap<String, String> mapWithFilters) {
+    public List<GiftCertificate> findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam MultiValueMap<String, String> mapWithFilters) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);

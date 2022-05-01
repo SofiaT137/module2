@@ -1,13 +1,14 @@
 package com.epam.esm.controllers;
 
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * TagController class presents REST controller for tag entity
@@ -16,15 +17,17 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
+    private final TagDao tagDao;
+
+    @Autowired
+    public TagController(TagDao tagDao) {
+        this.tagDao = tagDao;
+    }
+
     private static final String CREATED_MESSAGE = "Created!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
-    private final TagService<Tag> tagService;
 
-    @Autowired
-    public TagController(TagService<Tag> tagService) {
-        this.tagService = tagService;
-    }
 
     /**
      * Method insertTag insert the Tag entity
@@ -33,7 +36,7 @@ public class TagController {
      */
     @PostMapping
     public ResponseEntity<Object> insertTag(@RequestBody Tag tag) {
-        tagService.insert(tag);
+        tagDao.insert(tag);
         return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
     }
 
@@ -43,8 +46,8 @@ public class TagController {
      * @return Tag entity
      */
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable Long id) {
-        return tagService.getById(id);
+    public Optional<Tag> getTagById(@PathVariable Long id) {
+        return tagDao.getById(id);
     }
 
 
@@ -53,25 +56,16 @@ public class TagController {
      *
      * @return List of Tag entity
      */
-    @GetMapping
-    public List<Tag> getAllTags() {
-        return tagService.getAll();
+    @GetMapping("/filter")
+    public Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
+        return tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(userId);
     }
 
+    @GetMapping
+    public List<Tag> getAllTags() {
+        return tagDao.getAll();
+    }
 
-//    @GetMapping(params = { "page", "size" })
-//    public List<Foo> findPaginated(@RequestParam("page") int page,
-//                                   @RequestParam("size") int size, UriComponentsBuilder uriBuilder,
-//                                   HttpServletResponse response) {
-//        Page<Foo> resultPage = service.findPaginated(page, size);
-//        if (page > resultPage.getTotalPages()) {
-//            throw new MyResourceNotFoundException();
-//        }
-//        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<Foo>(
-//                Foo.class, uriBuilder, response, page, resultPage.getTotalPages(), size));
-//
-//        return resultPage.getContent();
-//    }
     /**
      * Method deleteTagByID deletes Tag entity by its id
      * @param id Long id
@@ -79,7 +73,7 @@ public class TagController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTagByID(@PathVariable long id) {
-        tagService.deleteByID(id);
+        tagDao.deleteByID(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
     }
 }
