@@ -16,7 +16,7 @@ public class Order extends AbstractEntity<Long>{
     @Column(name = "purchase_time")
     private LocalDateTime purchaseTime;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "order_certificate",
             joinColumns = @JoinColumn(name = "order_id"),

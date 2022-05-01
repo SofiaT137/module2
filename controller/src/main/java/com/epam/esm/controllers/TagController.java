@@ -59,16 +59,19 @@ public class TagController {
     }
 
 
-//    /**
-//     * Method getTagByName returns Tag entity by its name
-//     * @param name Tag name
-//     * @return the Tag entity
-//     */
-//    @GetMapping("/filter")
-//    public Tag getTagByName(String name) throws DaoException {
-//        return tagService.getTagByName(name);
-//    }
+//    @GetMapping(params = { "page", "size" })
+//    public List<Foo> findPaginated(@RequestParam("page") int page,
+//                                   @RequestParam("size") int size, UriComponentsBuilder uriBuilder,
+//                                   HttpServletResponse response) {
+//        Page<Foo> resultPage = service.findPaginated(page, size);
+//        if (page > resultPage.getTotalPages()) {
+//            throw new MyResourceNotFoundException();
+//        }
+//        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<Foo>(
+//                Foo.class, uriBuilder, response, page, resultPage.getTotalPages(), size));
 //
+//        return resultPage.getContent();
+//    }
     /**
      * Method deleteTagByID deletes Tag entity by its id
      * @param id Long id

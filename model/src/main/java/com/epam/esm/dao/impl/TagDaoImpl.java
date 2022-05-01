@@ -3,6 +3,8 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,26 +19,26 @@ import java.util.Optional;
  * This class is intended for work with 'tag' and 'gift_certificate_tag' tables
  */
 @Repository
-public class TagDaoImpl implements TagDao {
+public class TagDaoImpl implements TagDao  {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     private static final String ID_COLUMN = "id";
-    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "SELECT tags.id,tags.tag_name FROM tags as tags RIGHT JOIN (SELECT t.id,tag_name,count(tag_name) as count_tag FROM users AS us "+
-            "INNER JOIN orders AS ord ON ord.user_id=us.id "+
-            "INNER JOIN order_certificate as ord_cer ON ord.id=ord_cer.order_id "+
-            "INNER JOIN gift_certificates as gif_cer ON gif_cer.id=ord_cer.gift_certificate_id "+
-            "INNER JOIN gift_certificate_tag as gif_cer_tag ON gif_cer_tag.gift_certificate_id=gif_cer.id "+
-            "INNER JOIN tags as t ON t.id=gif_cer_tag.tag_id WHERE user_id=:id_f group by gif_cer_tag.tag_id order by count_tag desc limit 1) as m "+
-            " ON m.id = tags.id";
+    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "SELECT m.tag_id,m.tag_name FROM (SELECT s.tag_name,SUM(s.price) as summa "+
+            "FROM (SELECT t.tag_name,ord.price FROM tags AS t "+
+            "INNER JOIN gift_certificate_tag AS gst ON gst.tag_id=t.id "+
+            "INNER JOIN gift_certificates AS gs ON gst.gift_certificate_id=gs.id "+
+            "INNER JOIN order_certificate AS ord_cer ON gs.id=ord_cer.gift_certificate_id "+
+            "INNER JOIN orders AS ord ON ord_cer.order_id=ord.id WHERE ord.user_id = :id_user group by order_id,tag_name) " +
+            "AS s group by s.tag_name order by summa desc) as m limit 1";
 
     @Override
-    public Optional<Tag> insert(Tag tag) {
+    public Optional<Tag> insert(Tag entity) {
         entityManager.getTransaction().begin();
-        entityManager.persist(tag);
+        entityManager.persist(entity);
         entityManager.getTransaction().commit();
-        return Optional.of(tag);
+        return Optional.of(entity);
     }
 
     @Override
@@ -60,10 +62,10 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public  Optional<Tag>  findTheMostWidelyUsedUserTag(User user) {
+    public Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(User user) {
         User foundUser = entityManager.find(User.class,user.getId());
         Query query = entityManager.createNativeQuery(GET_MOST_POPULAR_USER_TAG_QUERY,Tag.class);
-        query.setParameter("id_f",foundUser.getId());
+        query.setParameter("id_user",foundUser.getId());
         Tag foundTag = (Tag) query.getSingleResult();
         return foundTag != null? Optional.of(foundTag) : Optional.empty();
     }
