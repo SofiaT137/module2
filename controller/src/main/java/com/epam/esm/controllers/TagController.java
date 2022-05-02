@@ -2,6 +2,7 @@ package com.epam.esm.controllers;
 
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.service.logic_service.TagLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,11 @@ import java.util.Optional;
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagDao tagDao;
+    private final TagLogicService tagLogicService;
 
     @Autowired
-    public TagController(TagDao tagDao) {
-        this.tagDao = tagDao;
+    public TagController(TagLogicService tagLogicService) {
+        this.tagLogicService = tagLogicService;
     }
 
     private static final String CREATED_MESSAGE = "Created!";
@@ -35,7 +36,7 @@ public class TagController {
      */
     @PostMapping
     public ResponseEntity<Object> insertTag(@RequestBody Tag tag) {
-        tagDao.insert(tag);
+        tagLogicService.insert(tag);
         return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
     }
 
@@ -45,8 +46,8 @@ public class TagController {
      * @return Tag entity
      */
     @GetMapping("/{id}")
-    public Optional<Tag> getTagById(@PathVariable Long id) {
-        return tagDao.getById(id);
+    public Tag getTagById(@PathVariable Long id) {
+        return tagLogicService.getById(id);
     }
 
 
@@ -56,13 +57,14 @@ public class TagController {
      * @return List of Tag entity
      */
     @GetMapping("/filter")
-    public Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
-        return tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(userId);
+    public Tag findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
+//        return tagLogicService.findTheMostWidelyUsedUserTagWithHighersOrderCost(userId);
+        return null;
     }
 
     @GetMapping
     public List<Tag> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return tagDao.getAll(pageSize,pageNumber);
+        return tagLogicService.getAll(pageSize,pageNumber);
     }
 
     /**
@@ -72,7 +74,7 @@ public class TagController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTagByID(@PathVariable long id) {
-        tagDao.deleteByID(id);
+        tagLogicService.deleteByID(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
     }
 }

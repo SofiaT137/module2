@@ -7,6 +7,8 @@ public final class ExceptionErrorCode {
 
     private ExceptionErrorCode() {}
 
+    public static final String NO_SUCH_ENTITY_CODE = "404001";
+    public static final String CANNOT_INSERT_ENTITY_CODE = "404002";
     public static final String INCORRECT_ID = "40300";
     public static final String INCORRECT_TAG_NAME = "40301";
     public static final String INCORRECT_TAG_LENGTH = "40302";
