@@ -28,7 +28,6 @@ public class TagController {
     private static final String DELETED_MESSAGE = "Deleted!";
 
 
-
     /**
      * Method insertTag insert the Tag entity
      * @param tag Tag entity
@@ -62,8 +61,8 @@ public class TagController {
     }
 
     @GetMapping
-    public List<Tag> getAllTags() {
-        return tagDao.getAll();
+    public List<Tag> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
+        return tagDao.getAll(pageSize,pageNumber);
     }
 
     /**

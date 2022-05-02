@@ -14,5 +14,5 @@ public interface RDao<T> {
      * The method searches for all the entity objects in a destination table
      * @return List of the entity objects from table
      */
-    List<T> getAll();
+    List<T> getAll(int pageSize,int pageNumber);
 }

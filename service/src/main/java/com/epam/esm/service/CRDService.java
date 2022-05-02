@@ -27,7 +27,7 @@ public interface CRDService<T> {
      * The method provides service layer logic for searching all the entity objects
      * @return List of the entity objects
      */
-    List<T> getAll();
+    List<T> getAll(int offset, int limit);
 
     /**
      * The method provides service layer logic for removing the entity object by its identifier

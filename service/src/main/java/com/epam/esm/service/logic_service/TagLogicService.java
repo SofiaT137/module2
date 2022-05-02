@@ -43,8 +43,8 @@ public class TagLogicService implements TagService<Tag> {
     }
 
     @Override
-    public List<Tag> getAll(){
-        return tagDao.getAll();
+    public List<Tag> getAll(int pageSize,int pageNumber){
+        return tagDao.getAll(pageSize,pageNumber);
     }
 
     @Override
