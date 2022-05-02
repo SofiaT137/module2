@@ -68,14 +68,14 @@ public class TagLogicService implements TagService<Tag> {
     }
 
     @Override
-    public Tag findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId) {
+    public Tag findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
         Optional<User> receivedUserById = userDao.getById(userId);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException("No user with that id!",NO_SUCH_ENTITY_CODE);
         }
         Optional<Tag> receivedTagByConditions = tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(userId);
         if (!receivedTagByConditions.isPresent()){
-            throw new NoSuchEntityException("Cannot find the most widely used user tag with highers order cost!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException("Cannot find the most widely used user tag with higher order cost!",NO_SUCH_ENTITY_CODE);
         }
         return receivedTagByConditions.get();
     }
