@@ -4,6 +4,7 @@ import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,7 +83,7 @@ public final class GiftCertificateValidator extends Validator<GiftCertificate> {
         }
     }
 
-    public void validateMapKeys(Map<String, String> mapWithParameters) throws ValidatorException {
+    public void validateMapKeys(MultiValueMap<String, String> mapWithParameters) throws ValidatorException {
         List<String> transferredKeys = new ArrayList<>(mapWithParameters.keySet());
         for (String transferredKey : transferredKeys) {
             if (!allowedKeys.contains(transferredKey)) {

@@ -49,25 +49,19 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public Optional<GiftCertificate> insert(GiftCertificate entity) {
-        entityManager.getTransaction().begin();
         entityManager.persist(entity);
-        entityManager.getTransaction().commit();
         return Optional.of(entity);
     }
 
     @Override
     public void deleteByID(long id) {
-        entityManager.getTransaction().begin();
         GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, id);
         entityManager.remove(giftCertificate);
-        entityManager.getTransaction().commit();
     }
 
     @Override
     public Optional<GiftCertificate> update(GiftCertificate entity) {
-        entityManager.getTransaction().begin();
         entityManager.merge(entity);
-        entityManager.getTransaction().commit();
         return Optional.of(entity);
     }
 
@@ -86,7 +80,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(@RequestParam MultiValueMap<String, String> mapWithFilters){
+    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String, String> mapWithFilters){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);

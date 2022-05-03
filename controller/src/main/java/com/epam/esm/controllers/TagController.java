@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * TagController class presents REST controller for tag entity
@@ -28,15 +27,14 @@ public class TagController {
     private static final String CREATED_MESSAGE = "Created!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
-
     /**
      * Method insertTag insert the Tag entity
-     * @param tag Tag entity
+     * @param entity Tag entity
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
-    public ResponseEntity<Object> insertTag(@RequestBody Tag tag) {
-        tagLogicService.insert(tag);
+    public ResponseEntity<Object> insertTag(@RequestBody Tag entity) {
+        tagLogicService.insert(entity);
         return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
     }
 
@@ -58,8 +56,7 @@ public class TagController {
      */
     @GetMapping("/filter")
     public Tag findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
-//        return tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
-        return null;
+        return tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
     }
 
     @GetMapping

@@ -1,6 +1,9 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
-public class Order extends AbstractEntity<Long>{
+public class Order extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "price")
     private double price;
@@ -24,7 +27,8 @@ public class Order extends AbstractEntity<Long>{
     )
     private List<GiftCertificate> giftCertificateList;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+    @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -65,6 +69,14 @@ public class Order extends AbstractEntity<Long>{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<GiftCertificate> getGiftCertificateList() {
+        return giftCertificateList;
+    }
+
+    public void setGiftCertificateList(List<GiftCertificate> giftCertificateList) {
+        this.giftCertificateList = giftCertificateList;
     }
 
     @Override

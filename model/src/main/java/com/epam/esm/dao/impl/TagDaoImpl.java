@@ -4,15 +4,11 @@ import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -37,14 +33,12 @@ public class TagDaoImpl implements TagDao  {
             "AS s group by s.tag_name order by summa desc) as m limit 1";
 
     @Override
-    @Transactional
     public Optional<Tag> insert(Tag entity) {
         entityManager.persist(entity);
         return Optional.of(entity);
     }
 
     @Override
-    @Transactional
     public void deleteByID(long id) {
         Tag tag = entityManager.find(Tag.class, id);
         entityManager.remove(tag);

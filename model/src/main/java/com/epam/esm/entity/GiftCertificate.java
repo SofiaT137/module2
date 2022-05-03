@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "gift_certificates")
 //@Audited
-public class GiftCertificate extends AbstractEntity<Long> {
+public class GiftCertificate extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "gift_certificate_name")
     private String giftCertificateName;
@@ -48,7 +49,22 @@ public class GiftCertificate extends AbstractEntity<Long> {
 
     public GiftCertificate() {}
 
-    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate) {
+    public GiftCertificate(Long id) {super(id);}
+
+    public GiftCertificate(Long id, String giftCertificateName, String description, Double price,
+                           Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+        super(id);
+        this.giftCertificateName = giftCertificateName;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
+
+    public GiftCertificate(String name, String description, Double price, Integer duration,
+                           LocalDateTime createDate, LocalDateTime lastUpdateDate) {
         this.giftCertificateName = name;
         this.description = description;
         this.price = price;

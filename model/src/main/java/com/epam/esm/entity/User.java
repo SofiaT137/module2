@@ -1,13 +1,17 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity<Long>{
+//@Audited
+public class User extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "first_name")
     private String firstName;
@@ -15,7 +19,8 @@ public class User extends AbstractEntity<Long>{
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Order> orderList;
 
     public User() {
@@ -73,6 +78,7 @@ public class User extends AbstractEntity<Long>{
     @Override
     public String toString() {
         return "User{" +
+                "id='" + super.getId() +'\''+
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';

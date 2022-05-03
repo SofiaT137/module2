@@ -18,18 +18,14 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Optional<Order> insert(Order entity) {
-        entityManager.getTransaction().begin();
         entityManager.persist(entity);
-        entityManager.getTransaction().commit();
         return Optional.of(entity);
     }
 
     @Override
     public void deleteByID(long id) {
-        entityManager.getTransaction().begin();
         Order order = entityManager.find(Order.class, id);
         entityManager.remove(order);
-        entityManager.getTransaction().commit();
     }
 
     @Override
