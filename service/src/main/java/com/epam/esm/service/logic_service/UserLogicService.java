@@ -1,7 +1,6 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.dao.UserDao;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;

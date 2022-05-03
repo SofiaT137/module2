@@ -5,9 +5,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +29,10 @@ public class TagDaoImpl implements TagDao  {
             "INNER JOIN order_certificate AS ord_cer ON gs.id=ord_cer.gift_certificate_id "+
             "INNER JOIN orders AS ord ON ord_cer.order_id=ord.id WHERE ord.user_id = :userId group by order_id,tag_name) "+
             "AS s group by s.tag_name order by summa desc) as m limit 1";
+    private static final String FIND_TAG_BY_NAME_QUERY = "SELECT id, tag_name FROM tags WHERE tag_name = :tagName";
+    private static final String GET_ALL_TAGS_QUERY = "from Tag order by id";
+    private static final String USER_ID = "userId";
+    private static final String TAG_NAME = "tagName";
 
     @Override
     public Optional<Tag> insert(Tag entity) {
@@ -53,7 +55,7 @@ public class TagDaoImpl implements TagDao  {
 
     @Override
     public List<Tag> getAll(int pageSize, int pageNumber){
-       Query query = entityManager.createQuery("from Tag order by id");
+       Query query = entityManager.createQuery(GET_ALL_TAGS_QUERY);
        query.setFirstResult((pageNumber-1) * pageSize);
        query.setMaxResults(pageSize);
        return query.getResultList();
@@ -63,8 +65,20 @@ public class TagDaoImpl implements TagDao  {
     public Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId) {
         User foundUser = entityManager.find(User.class,userId);
         Query query = entityManager.createNativeQuery(GET_MOST_POPULAR_USER_TAG_QUERY,Tag.class);
-        query.setParameter("userId",foundUser.getId());
+        query.setParameter(USER_ID,foundUser.getId());
         Tag foundTag = (Tag) query.getSingleResult();
         return foundTag != null? Optional.of(foundTag) : Optional.empty();
+    }
+
+    public Optional<Tag> findTagByTagName(String name){
+        Query query = entityManager.createNativeQuery(FIND_TAG_BY_NAME_QUERY,Tag.class);
+        query.setParameter(TAG_NAME,name);
+        Tag tag;
+        try{
+            tag = (Tag) query.getSingleResult();
+        }catch (NoResultException exception){
+            return Optional.empty();
+        }
+        return Optional.of(tag);
     }
 }

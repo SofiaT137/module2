@@ -1,6 +1,7 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.CannotInsertEntityException;
@@ -15,7 +16,6 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
@@ -25,12 +25,14 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
 public class GiftCertificateLogicService implements GiftCertificateService<GiftCertificate> {
 
     private final GiftCertificateDao giftCertificateDao;
+    private final TagDao tagDao;
     private final GiftCertificateValidator certificateValidator;
     private final TagValidator tagValidator;
 
     @Autowired
-    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao, GiftCertificateValidator certificateValidator,TagValidator tagValidator) {
+    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao, TagDao tagDao, GiftCertificateValidator certificateValidator, TagValidator tagValidator) {
         this.giftCertificateDao = giftCertificateDao;
+        this.tagDao = tagDao;
         this.certificateValidator = certificateValidator;
         this.tagValidator = tagValidator;
     }
@@ -41,7 +43,17 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         certificateValidator.validate(entity);
         List<Tag> entityHasTags = entity.getTags();
         entityHasTags.forEach(tagValidator::validate);
-        entity.setTags(entityHasTags);
+        entity.setTags(null);
+        for (Tag entityHasTag : entityHasTags) {
+            Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getName());
+            if (!currentTag.isPresent()){
+                currentTag = tagDao.insert(entityHasTag);
+                if (!currentTag.isPresent()){
+                    throw new CannotInsertEntityException("Cannot insert this tag",CANNOT_INSERT_ENTITY_CODE);
+                }
+            }
+            entity.addTagToGiftCertificate(currentTag.get());
+        }
         Optional<GiftCertificate> insertedTag = giftCertificateDao.insert(entity);
         if (!insertedTag.isPresent()){
             throw new CannotInsertEntityException("Cannot insert this tag!",CANNOT_INSERT_ENTITY_CODE);
