@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,25 +58,11 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public void update(Long id,List<Tag> tags,GiftCertificateDto entity) {
-        entity.setId(id);
-        entity.setLastUpdateDate(getCurrentDate());
-        List<String> tagNames = entity.getTags();
-        if (tagNames != null) {
-            tags = getNewTagList(tagNames);
-        }
+    public void update(Long id,GiftCertificateDto entity) {
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
-        giftCertificateLogicService.update(id,tags,giftCertificateEntity);
+        giftCertificateLogicService.update(id,giftCertificateEntity);
     }
 
-    private String getCurrentDate(){
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return LocalDateTime.now().format(formatter);
-    }
-
-    private List<Tag> getNewTagList(List<String> listOfTagNames){
-        return listOfTagNames.stream().map(Tag::new).collect(Collectors.toList());
-    }
     @Override
     public List<GiftCertificateDto> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters){
         List<GiftCertificate> giftCertificateList = giftCertificateLogicService.getQueryWithConditions(mapWithFilters);

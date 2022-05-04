@@ -1,13 +1,12 @@
 package com.epam.esm.exceptions;
 
-
-public class CannotInsertEntityException extends RuntimeException{
+public class NoPermissionException extends RuntimeException{
 
     private String errorCode;
 
-    public CannotInsertEntityException() {
+    public NoPermissionException() {
     }
-    public CannotInsertEntityException(String message, String errorCode) {
+    public NoPermissionException(String message, String errorCode) {
         super(message);
         this.errorCode = errorCode;
     }

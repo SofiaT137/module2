@@ -1,5 +1,6 @@
 package com.epam.esm.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,5 +13,5 @@ public interface CRUDDao<T> extends CRDDao<T> {
      * @param entity The entity object from table
      * @return The updated entity object from table
      */
-   Optional<T> update(T entity);
+   Optional<T> update(int duration,T entity);
 }

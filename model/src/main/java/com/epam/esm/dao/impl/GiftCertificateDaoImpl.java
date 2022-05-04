@@ -5,12 +5,12 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,9 +60,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public Optional<GiftCertificate> update(GiftCertificate entity) {
-        entityManager.merge(entity);
-        return Optional.of(entity);
+    public Optional<GiftCertificate> update(int duration,GiftCertificate entity) {
+        GiftCertificate mergedCertificate = entityManager.merge(entity);
+        entity.setDuration(duration);
+        entity.setLastUpdateDate(LocalDateTime.now());
+        return mergedCertificate != null ? Optional.of(mergedCertificate) : Optional.empty();
     }
 
     @Override

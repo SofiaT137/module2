@@ -15,5 +15,5 @@ public interface CRUDService<T> extends CRDService<T> {
      * @param id  Long id
      * @param entity The entity object
      */
-    void update(Long id, List<Tag> tags, T entity);
+    void update(Long id, T entity);
 }

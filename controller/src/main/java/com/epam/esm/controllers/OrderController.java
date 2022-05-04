@@ -1,9 +1,8 @@
 package com.epam.esm.controllers;
 
 import com.epam.esm.entity.Order;
-import com.epam.esm.service.OrderService;
+import com.epam.esm.service.logic_service.OrderLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +13,15 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private OrderService<Order> orderService;
+    private final OrderLogicService orderService;
 
     private static final String CREATED_MESSAGE = "Created!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
     @Autowired
-    @Qualifier("orderBusinessService")
-    public void setOrderService(OrderService<Order> orderService) {
+    public OrderController(OrderLogicService orderService) {
         this.orderService = orderService;
     }
-
 
     @PostMapping("/{userId}")
     public ResponseEntity<Object> insertOrder(@PathVariable Long userId,@RequestBody Order order) {

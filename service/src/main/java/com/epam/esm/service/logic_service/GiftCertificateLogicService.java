@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,9 +40,17 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Transactional
     public void insert(GiftCertificate entity) {
         certificateValidator.validate(entity);
+        entity.setTags(null);
+        addTagsToCertificate(entity);
+        Optional<GiftCertificate> insertedTag = giftCertificateDao.insert(entity);
+        if (!insertedTag.isPresent()){
+            throw new CannotInsertEntityException("Cannot insert this tag!",CANNOT_INSERT_ENTITY_CODE);
+        }
+    }
+
+    private void addTagsToCertificate(GiftCertificate entity){
         List<Tag> entityHasTags = entity.getTags();
         entityHasTags.forEach(tagValidator::validate);
-        entity.setTags(null);
         for (Tag entityHasTag : entityHasTags) {
             Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getName());
             if (!currentTag.isPresent()){
@@ -53,10 +60,6 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
                 }
             }
             entity.addTagToGiftCertificate(currentTag.get());
-        }
-        Optional<GiftCertificate> insertedTag = giftCertificateDao.insert(entity);
-        if (!insertedTag.isPresent()){
-            throw new CannotInsertEntityException("Cannot insert this tag!",CANNOT_INSERT_ENTITY_CODE);
         }
     }
 
@@ -77,14 +80,13 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     @Transactional
-    public void update(Long id, List<Tag> tags, GiftCertificate entity) {
-        certificateValidator.validate(entity);
-        if (tags != null) {
-            tags.forEach(tagValidator::validate);
-            entity.setTags(new ArrayList<>());
-            entity.setTags(tags);
+    public void update(Long id, GiftCertificate entity) {
+        Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.getById(id);
+        if (!foundedCertificateById.isPresent()){
+            throw new NoSuchEntityException("No gift certificate with that id!",NO_SUCH_ENTITY_CODE);
         }
-        giftCertificateDao.update(entity);
+        certificateValidator.validate(entity);
+        giftCertificateDao.update(entity.getDuration(),foundedCertificateById.get());
     }
 
     @Override

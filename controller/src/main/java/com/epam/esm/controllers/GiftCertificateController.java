@@ -91,7 +91,7 @@ public class GiftCertificateController {
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateGiftCertificate(@PathVariable long id,
                                                         @RequestBody GiftCertificateDto giftCertificate){
-        giftCertificateService.update(id, null, giftCertificate);
+        giftCertificateService.update(id, giftCertificate);
         return ResponseEntity.status(HttpStatus.OK).body(UPDATED_MESSAGE);
     }
 }
