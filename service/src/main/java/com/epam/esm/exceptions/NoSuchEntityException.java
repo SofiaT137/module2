@@ -14,7 +14,7 @@ public class NoSuchEntityException extends RuntimeException{
         this.errorCode = errorCode;
     }
 
-    public String getErrorMessage() {
+    public String getErrorCode() {
         return errorCode;
     }
 }

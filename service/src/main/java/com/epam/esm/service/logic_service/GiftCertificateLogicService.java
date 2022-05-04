@@ -5,6 +5,7 @@ import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.CannotInsertEntityException;
+import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.GiftCertificateValidator;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
 import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
+import static com.epam.esm.exceptions.ExceptionErrorCode.YOU_NOT_HAVE_PERMISSION_ENTITY_CODE;
 
 @Service("giftCertificateLogicService")
 public class GiftCertificateLogicService implements GiftCertificateService<GiftCertificate> {
@@ -85,8 +87,18 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException("No gift certificate with that id!",NO_SUCH_ENTITY_CODE);
         }
+        checkIfEntityHasMoreThatOneTransferredParameter(entity);
         certificateValidator.validate(entity);
         giftCertificateDao.update(entity.getDuration(),foundedCertificateById.get());
+    }
+
+    private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
+        if (entity.getPrice() != null || entity.getDescription()!= null
+            || entity.getGiftCertificateName()!= null || entity.getCreateDate()!=null
+            || entity.getLastUpdateDate()!=null || entity.getTags()!=null){
+            throw new NoPermissionException("There is too much transferred parameters! You can update only 'duration' field!"
+                    ,YOU_NOT_HAVE_PERMISSION_ENTITY_CODE);
+        }
     }
 
     @Override
