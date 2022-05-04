@@ -159,7 +159,6 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate=" + createDate +
-                ", tags=" + tags +
                 '}';
     }
 }

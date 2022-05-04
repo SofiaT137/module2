@@ -72,6 +72,7 @@ public class TagLogicService implements TagService<Tag> {
 
     @Override
     public Tag findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
+        tagValidator.checkID(userId);
         Optional<User> receivedUserById = userDao.getById(userId);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException("No user with that id!",NO_SUCH_ENTITY_CODE);
