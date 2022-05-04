@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
 
-@Service
+@Service("userLogicService")
 public class UserLogicService implements UserService<User> {
 
     private final UserDao userDao;

@@ -35,9 +35,11 @@ public class Order extends AbstractEntity<Long> implements Serializable {
     public Order() {
     }
 
-    public Order(double price, LocalDateTime purchaseTime) {
+    public Order(double price, LocalDateTime purchaseTime, List<GiftCertificate> giftCertificateList, User user) {
         this.price = price;
         this.purchaseTime = purchaseTime;
+        this.giftCertificateList = giftCertificateList;
+        this.user = user;
     }
 
     public void addGiftCertificateToOrder(GiftCertificate giftCertificate){

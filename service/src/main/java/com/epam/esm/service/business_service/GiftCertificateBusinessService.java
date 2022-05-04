@@ -3,7 +3,6 @@ package com.epam.esm.service.business_service;
 import com.epam.esm.converter.impl.GiftCertificateConverter;
 import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

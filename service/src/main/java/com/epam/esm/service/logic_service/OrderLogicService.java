@@ -7,6 +7,7 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
+import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
-import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
+import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
-@Service
+@Service("orderLogicService")
 public class OrderLogicService implements OrderService<Order> {
 
     private final OrderDao orderDao;
@@ -36,18 +36,23 @@ public class OrderLogicService implements OrderService<Order> {
     private static final String NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE = "No order with that id!";
     private static final String CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE = "No order with that id!";
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE = "No user with that id!";
+    private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "User id cannot be null!";
 
     @Override
-    public Order saveOrder(long userId, Order entity) {
-        Optional<User> user = userDao.getById(userId);
-        if (!user.isPresent()){
-            throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
+    public Order saveOrder(Order entity) {
+        if (entity.getId() != null) {
+            Optional<User> user = userDao.getById(entity.getId());
+            if (!user.isPresent()) {
+                throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE, NO_SUCH_ENTITY_CODE);
+            }
+            entity.setUser(null);
+            entity.setUser(user.get());
+        }else{
+            throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE, INCORRECT_ID);
         }
         double totalCertificatePrice = saveGiftCertificatesToOrder(entity);
-        entity.setUser(user.get());
         entity.setPrice(totalCertificatePrice);
         entity.setPurchaseTime(LocalDateTime.now());
-
         Optional<Order> insertedOrder = orderDao.insert(entity);
         if (!insertedOrder.isPresent()){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE,CANNOT_INSERT_ENTITY_CODE);

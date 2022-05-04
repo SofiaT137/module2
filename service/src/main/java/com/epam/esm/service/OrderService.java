@@ -4,7 +4,7 @@ import com.epam.esm.entity.Order;
 
 public interface OrderService<T> extends RService<T>{
 
-    Order saveOrder(long userId,Order entity);
+    Order saveOrder(T entity);
 
     void deleteOrder(long orderId);
 }

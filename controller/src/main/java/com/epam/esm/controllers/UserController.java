@@ -1,9 +1,15 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.entity.User;
-import com.epam.esm.service.logic_service.UserLogicService;
+import com.epam.esm.dto.impl.UserDto;
+import com.epam.esm.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -11,29 +17,22 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserLogicService userLogicService;
+    private UserService<UserDto> userService;
 
     @Autowired
-    public UserController(UserLogicService userLogicService) {
-        this.userLogicService = userLogicService;
+    @Qualifier("userBusinessService")
+    public void setUserService(UserService<UserDto> userService) {
+        this.userService = userService;
     }
 
-    /**
-     * Method getUserByID returns User entity by its id
-     * @param id Long id
-     * @return User entity
-     */
     @GetMapping("/{id}")
-    public User getUserByID(@PathVariable Long id){
-        return userLogicService.getById(id);
+    public UserDto getUserByID(@PathVariable Long id){
+        return userService.getById(id);
     }
 
-    /**
-     * Method getAllGiftCertificates returns all the User entity
-     * @return List of User entity
-     */
+
     @GetMapping
-    public List<User> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return userLogicService.getAll(pageSize,pageNumber);
+    public List<UserDto> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
+        return userService.getAll(pageSize,pageNumber);
     }
 }
