@@ -2,6 +2,8 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.OrderDao;
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.Tag;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,6 +17,9 @@ public class OrderDaoImpl implements OrderDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private static final String FIND_ORDERS_BY_USER_ID_QUERY = "SELECT id,price,purchase_time,user_id FROM orders WHERE user_id = :userId";
+    private static final String USER_ID = "userId";
 
     @Override
     public Optional<Order> insert(Order entity) {
@@ -37,6 +42,16 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> getAll(int pageSize,int pageNumber) {
         Query query = entityManager.createQuery("from Order order by id");
+        query.setFirstResult((pageNumber-1) * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
+
+
+    @Override
+    public List<Order> ordersByUserId(long userId, int pageSize, int pageNumber) {
+        Query query = entityManager.createNativeQuery(FIND_ORDERS_BY_USER_ID_QUERY, Order.class);
+        query.setParameter(USER_ID,userId);
         query.setFirstResult((pageNumber-1) * pageSize);
         query.setMaxResults(pageSize);
         return query.getResultList();

@@ -46,4 +46,9 @@ public class OrderController {
         orderService.deleteOrder(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(DELETED_MESSAGE);
     }
+
+    @GetMapping("/users/{userId}")
+    public List<OrderDto> ordersByUserId(@PathVariable long userId,@RequestParam int pageSize, @RequestParam int pageNumber) {
+        return orderService.ordersByUserId(userId, pageSize, pageNumber);
+    }
 }

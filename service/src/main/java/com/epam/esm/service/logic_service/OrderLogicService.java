@@ -102,4 +102,9 @@ public class OrderLogicService implements OrderService<Order> {
         return orderDao.getAll(pageSize,pageNumber);
     }
 
+    @Override
+    public List<Order> ordersByUserId(long userId,int pageSize, int pageNumber){
+        return orderDao.ordersByUserId(userId,pageSize,pageNumber);
+    }
+
 }
