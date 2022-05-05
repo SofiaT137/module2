@@ -1,5 +1,7 @@
 package com.epam.esm.exceptions;
 
+import com.epam.esm.internalization.Translation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -15,12 +17,18 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class ExceptionsHandler {
 
-    private static final String STRING_MESSAGE = "Message: ";
+    private final Translation translation;
 
+    @Autowired
+    public ExceptionsHandler(Translation translation) {
+        this.translation = translation;
+    }
+
+    private static final String STRING_MESSAGE = "Message: ";
 
     @ExceptionHandler(NoSuchEntityException.class)
     public ResponseEntity<Object> resourceNotFoundException(NoSuchEntityException exception) {
-        String exceptionMessage = exception.getLocalizedMessage();
+        String exceptionMessage = translation.translate(exception.getMessage());
         String exceptionCode = exception.getErrorCode();
         ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage,exceptionCode);
         return new ResponseEntity<>(exceptionEntity, HttpStatus.NOT_FOUND);

@@ -2,8 +2,6 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.OrderDao;
 import com.epam.esm.entity.Order;
-import com.epam.esm.entity.Tag;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

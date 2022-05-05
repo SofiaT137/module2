@@ -8,7 +8,6 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +17,7 @@ public class OderConverter implements Converter<Order, OrderDto,Long> {
 
     @Override
     public Order convert(OrderDto value) {
-        Double price = 0.0;
+        double price = 0.0;
         List<GiftCertificate> giftCertificates = getGiftCertificatesList(value.getGiftCertificateId());
         User user = getNewUser(value.getUserId());
         return new Order(price, null,giftCertificates,user);

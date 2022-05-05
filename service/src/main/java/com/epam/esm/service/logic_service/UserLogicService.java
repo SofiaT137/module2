@@ -17,6 +17,8 @@ public class UserLogicService implements UserService<User> {
 
     private final UserDao userDao;
 
+    private static final String NO_USER_WITH_THAT_ID_EXCEPTION = "noUserWithId";
+
     @Autowired
     public UserLogicService(UserDao userDao) {
         this.userDao = userDao;
@@ -26,7 +28,7 @@ public class UserLogicService implements UserService<User> {
     public User getById(long id) {
         Optional<User> receivedOrderById = userDao.getById(id);
         if (!receivedOrderById.isPresent()){
-            throw new NoSuchEntityException("No user with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION,NO_SUCH_ENTITY_CODE);
         }
         return receivedOrderById.get();
     }

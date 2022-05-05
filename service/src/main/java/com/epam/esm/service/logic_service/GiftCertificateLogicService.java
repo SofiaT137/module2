@@ -30,6 +30,11 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     private final GiftCertificateValidator certificateValidator;
     private final TagValidator tagValidator;
 
+    private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "cannotInsertThisCertificate";
+    private static final String CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE = "noGiftCertificateWithThatId";
+    private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
+    private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
+
     @Autowired
     public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao, TagDao tagDao, GiftCertificateValidator certificateValidator, TagValidator tagValidator) {
         this.giftCertificateDao = giftCertificateDao;
@@ -44,9 +49,9 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         certificateValidator.validate(entity);
         entity.setTags(null);
         addTagsToCertificate(entity);
-        Optional<GiftCertificate> insertedTag = giftCertificateDao.insert(entity);
-        if (!insertedTag.isPresent()){
-            throw new CannotInsertEntityException("Cannot insert this tag!",CANNOT_INSERT_ENTITY_CODE);
+        Optional<GiftCertificate> insertedCertificate = giftCertificateDao.insert(entity);
+        if (!insertedCertificate.isPresent()){
+            throw new CannotInsertEntityException(CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
     }
 
@@ -58,7 +63,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
             if (!currentTag.isPresent()){
                 currentTag = tagDao.insert(entityHasTag);
                 if (!currentTag.isPresent()){
-                    throw new CannotInsertEntityException("Cannot insert this tag",CANNOT_INSERT_ENTITY_CODE);
+                    throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
                 }
             }
             entity.addTagToGiftCertificate(currentTag.get());
@@ -70,7 +75,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         certificateValidator.checkID(id);
         Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.getById(id);
         if (!receivedGiftCertificateById.isPresent()){
-            throw new NoSuchEntityException("No tag with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         return receivedGiftCertificateById.get();
     }
@@ -85,7 +90,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     public void update(Long id, GiftCertificate entity) {
         Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.getById(id);
         if (!foundedCertificateById.isPresent()){
-            throw new NoSuchEntityException("No gift certificate with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
         certificateValidator.validate(entity);
@@ -96,7 +101,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (entity.getPrice() != null || entity.getDescription()!= null
             || entity.getGiftCertificateName()!= null || entity.getCreateDate()!=null
             || entity.getLastUpdateDate()!=null || entity.getTags()!=null){
-            throw new NoPermissionException("There is too much transferred parameters! You can update only 'duration' field!"
+            throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE
                     ,YOU_NOT_HAVE_PERMISSION_ENTITY_CODE);
         }
     }
@@ -106,7 +111,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     public void deleteByID(long id) {
         Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.getById(id);
         if (!receivedGiftCertificateById.isPresent()){
-            throw new NoSuchEntityException("No tag with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         giftCertificateDao.deleteByID(id);
     }

@@ -12,12 +12,7 @@ public class OrderDto extends AbstractDto<Long> {
     private List<Long> giftCertificateId;
     private Long userId;
 
-    public OrderDto(List<Long> giftCertificateId, Long userId) {
-        this.giftCertificateId=giftCertificateId;
-        this.userId = userId;
-    }
-
-    public OrderDto() {
+   public OrderDto() {
     }
 
     public OrderDto(long id,Double price, String purchaseTime, List<Long> giftCertificateId, Long userId) {

@@ -34,10 +34,11 @@ public class OrderLogicService implements OrderService<Order> {
         this.giftCertificateDao = giftCertificateDao;
     }
 
-    private static final String NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE = "No order with that id!";
-    private static final String CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE = "No order with that id!";
-    private static final String NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE = "No user with that id!";
-    private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "User id cannot be null!";
+    private static final String NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noOrderWithThatId";
+    private static final String CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE = "cannotInsertThisOrder!";
+    private static final String NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noUserWithId";
+    private static final String NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE = "noGiftCertificateWithThatId";
+    private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "userIdCannotBeNull";
 
     @Override
     @Transactional
@@ -69,7 +70,7 @@ public class OrderLogicService implements OrderService<Order> {
         for (GiftCertificate giftCertificate : list) {
             Optional<GiftCertificate> certificateById = giftCertificateDao.getById(giftCertificate.getId());
             if (!certificateById.isPresent()){
-                throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
+                throw new NoSuchEntityException(NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
             }else{
                 entity.addGiftCertificateToOrder(certificateById.get());
                 price+=certificateById.get().getPrice();

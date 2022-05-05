@@ -18,8 +18,8 @@ public final class TagValidator extends Validator<Tag>{
 
     private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
 
-    private static final String INCORRECT_TAG_LENGTH_EXCEPTION = "This tag length is forbidden!";
-    private static final String INCORRECT_TAG_NAME_EXCEPTION = "This tag name is forbidden!";
+    private static final String INCORRECT_TAG_LENGTH_EXCEPTION = "thisTagLengthIsForbidden!";
+    private static final String INCORRECT_TAG_NAME_EXCEPTION = "thisTagNameIsForbidden!";
     private static final String TAG_NAME = " Tag name: ";
 
     private static final Integer MIN_TAG_NAME_LENGTH = 2;

@@ -28,6 +28,11 @@ public class TagLogicService implements TagService<Tag> {
     private final UserDao userDao;
     private final TagValidator tagValidator;
 
+    private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
+    private static final String CANNOT_FIND_THIS_TAG_MESSAGE = "noTagWithThatId";
+    private static final String CANNOT_FIND_THIS_USER_MESSAGE = "noUserWithId";
+    private static final String CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG = "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
+
     @Autowired
     public TagLogicService(TagDao tagDao, UserDao userDao, TagValidator tagValidator) {
         this.tagDao = tagDao;
@@ -41,7 +46,7 @@ public class TagLogicService implements TagService<Tag> {
         tagValidator.validate(entity);
         Optional<Tag> insertedTag = tagDao.insert(entity);
         if (!insertedTag.isPresent()){
-            throw new CannotInsertEntityException("Cannot insert this tag!",CANNOT_INSERT_ENTITY_CODE);
+            throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
     }
 
@@ -49,7 +54,7 @@ public class TagLogicService implements TagService<Tag> {
     public Tag getById(long id) {
         Optional<Tag> receivedTagById = tagDao.getById(id);
         if (!receivedTagById.isPresent()){
-            throw new NoSuchEntityException("No tag with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         return receivedTagById.get();
     }
@@ -65,7 +70,7 @@ public class TagLogicService implements TagService<Tag> {
         tagValidator.checkID(id);
         Optional<Tag> receivedTagById = tagDao.getById(id);
         if (!receivedTagById.isPresent()){
-            throw new NoSuchEntityException("No tag with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         tagDao.deleteByID(id);
     }
@@ -75,11 +80,11 @@ public class TagLogicService implements TagService<Tag> {
         tagValidator.checkID(userId);
         Optional<User> receivedUserById = userDao.getById(userId);
         if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException("No user with that id!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_USER_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         Optional<Tag> receivedTagByConditions = tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(userId);
         if (!receivedTagByConditions.isPresent()){
-            throw new NoSuchEntityException("Cannot find the most widely used user tag with higher order cost!",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG,NO_SUCH_ENTITY_CODE);
         }
         return receivedTagByConditions.get();
     }

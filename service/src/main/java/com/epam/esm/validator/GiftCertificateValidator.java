@@ -31,12 +31,12 @@ public final class GiftCertificateValidator extends Validator<GiftCertificate> {
     private final List<String> allowedKeys = Arrays.asList("tag_name", "partName", "partDescription", "sortByNameASC", "sortByCreationDateASC", "sortByNameDESC", "sortByCreationDateDESC");
 
     private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
-    private static final String INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION = "This gift certificate length is forbidden!";
-    private static final String INCORRECT_GIFT_CERTIFICATE_NAME_EXCEPTION = "This gift certificate name is forbidden!";
-    private static final String INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_EXCEPTION = "This gift certificate description is too long!";
-    private static final String INCORRECT_GIFT_CERTIFICATE_PRICE_EXCEPTION = "This gift certificate price is forbidden!";
-    private static final String INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION = "This gift certificate duration is forbidden!";
-    private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "Check the values that you transferred!";
+    private static final String INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION = "thisGiftCertificateLengthIsForbidden!";
+    private static final String INCORRECT_GIFT_CERTIFICATE_NAME_EXCEPTION = "thisGiftCertificateNameIsForbidden!";
+    private static final String INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_EXCEPTION = "thisGiftCertificateDescriptionIsTooLong!";
+    private static final String INCORRECT_GIFT_CERTIFICATE_PRICE_EXCEPTION = "thisGiftCertificatePriceIsForbidden!";
+    private static final String INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION = "thisGiftCertificateDurationIsForbidden!";
+    private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "checkTheValuesThatYouTransferred!";
 
     @Override
     public void validate(GiftCertificate giftCertificate) throws ValidatorException {
