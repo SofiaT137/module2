@@ -12,6 +12,7 @@ import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,9 +40,10 @@ public class OrderLogicService implements OrderService<Order> {
     private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "User id cannot be null!";
 
     @Override
+    @Transactional
     public Order saveOrder(Order entity) {
-        if (entity.getId() != null) {
-            Optional<User> user = userDao.getById(entity.getId());
+        if (entity.getUser().getId() != null) {
+            Optional<User> user = userDao.getById(entity.getUser().getId());
             if (!user.isPresent()) {
                 throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE, NO_SUCH_ENTITY_CODE);
             }
@@ -77,6 +79,7 @@ public class OrderLogicService implements OrderService<Order> {
     }
 
     @Override
+    @Transactional
     public void deleteOrder(long orderId) {
         Optional<Order> receivedOrderById = orderDao.getById(orderId);
         if (!receivedOrderById.isPresent()){

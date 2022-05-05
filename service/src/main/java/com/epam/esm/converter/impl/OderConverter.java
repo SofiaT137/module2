@@ -18,11 +18,10 @@ public class OderConverter implements Converter<Order, OrderDto,Long> {
 
     @Override
     public Order convert(OrderDto value) {
-        Double price = value.getPrice();
-        LocalDateTime purchaseTime = LocalDateTime.parse(value.getPurchaseTime());
+        Double price = 0.0;
         List<GiftCertificate> giftCertificates = getGiftCertificatesList(value.getGiftCertificateId());
         User user = getNewUser(value.getUserId());
-        return new Order(price,purchaseTime,giftCertificates,user);
+        return new Order(price, null,giftCertificates,user);
     }
 
     private List<GiftCertificate> getGiftCertificatesList(List<Long> giftCertificateId){

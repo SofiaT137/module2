@@ -25,7 +25,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<Object> insertOrder(@RequestBody OrderDto order) {
         orderService.saveOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_MESSAGE);
