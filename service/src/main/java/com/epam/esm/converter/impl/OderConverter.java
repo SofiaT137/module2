@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OderConverter implements Converter<Order, OrderDto,Long> {
+public class OderConverter implements Converter<Order, OrderDto> {
 
     @Override
     public Order convert(OrderDto value) {

@@ -1,27 +1,23 @@
 package com.epam.esm.converter;
 
-import com.epam.esm.dto.AbstractDto;
 import com.epam.esm.entity.AbstractEntity;
 
 /**
  * The converter class
- * @param <T> AbstractEntity
- * @param <U> AbstractDto entity
- * @param <K> Long id
  */
-public interface Converter<T extends AbstractEntity<K>, U extends AbstractDto<K>,K> {
+public interface Converter<T extends AbstractEntity,K> {
     /**
      * Convert AbstractDto Object into AbstractEntity Object
      * @param value AbstractDto Object
      * @return AbstractEntity Object
      */
-    T convert(U value);
+    T convert(K value);
 
     /**
      * Convert  AbstractEntity Object into AbstractDto Object
      * @param value AbstractEntity Object
      * @return AbstractDto Object
      */
-    U convert(T value);
+    K convert(T value);
 }
 

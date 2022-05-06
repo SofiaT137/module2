@@ -21,7 +21,7 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.*;
  * Class TagServiceImpl is implementation of interface TagService
  * The class presents service layer logic for Tag entity
  */
-@Service
+@Service("tagLogicService")
 public class TagLogicService implements TagService<Tag> {
 
     private final TagDao tagDao;

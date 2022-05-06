@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class GiftCertificateConverter implements Converter<GiftCertificate, GiftCertificateDto,Long> {
+public class GiftCertificateConverter implements Converter<GiftCertificate, GiftCertificateDto> {
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
@@ -25,7 +25,8 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         List<String> valueTagsList = value.getTags();
         List<Tag> finalTagList = convertNamesToTagList(valueTagsList);
 
-        return new GiftCertificate(value.getId(),value.getGiftCertificateName(),value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,finalTagList);
+        return new GiftCertificate(value.getId(),value.getGiftCertificateName(),
+                value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,finalTagList);
     }
 
     private LocalDateTime validateDate(String dateTime){
@@ -66,6 +67,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         String createDate = value.getCreateDate().format(formatter);
         String lastUpdateDate = value.getLastUpdateDate().format(formatter);
-        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(), value.getPrice(), value.getDuration(), createDate,lastUpdateDate, getNamesOfTagsList(value.getTags()));
+        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
+                value.getPrice(), value.getDuration(), createDate,lastUpdateDate, getNamesOfTagsList(value.getTags()));
     }
 }

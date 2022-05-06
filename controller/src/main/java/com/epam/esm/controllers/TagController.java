@@ -1,9 +1,9 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.dao.TagDao;
-import com.epam.esm.entity.Tag;
-import com.epam.esm.service.logic_service.TagLogicService;
+import com.epam.esm.dto.impl.TagDto;
+import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +17,12 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagLogicService tagLogicService;
+    private TagService<TagDto> tagLogicService;
 
     @Autowired
-    public TagController(TagLogicService tagLogicService) {
-        this.tagLogicService = tagLogicService;
+    @Qualifier("tagBusinessService")
+    public void setUserService(TagService<TagDto> tagService) {
+        this.tagLogicService = tagService;
     }
 
     private static final String CREATED_MESSAGE = "Created!";
@@ -33,7 +34,7 @@ public class TagController {
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
-    public ResponseEntity<Object> insertTag(@RequestBody Tag entity) {
+    public ResponseEntity<Object> insertTag(@RequestBody TagDto entity) {
         tagLogicService.insert(entity);
         return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
     }
@@ -44,7 +45,7 @@ public class TagController {
      * @return Tag entity
      */
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable Long id) {
+    public TagDto getTagById(@PathVariable Long id) {
         return tagLogicService.getById(id);
     }
 
@@ -55,12 +56,12 @@ public class TagController {
      * @return List of Tag entity
      */
     @GetMapping("/filter")
-    public Tag findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
+    public TagDto findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
         return tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
     }
 
     @GetMapping
-    public List<Tag> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public List<TagDto> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
         return tagLogicService.getAll(pageSize,pageNumber);
     }
 

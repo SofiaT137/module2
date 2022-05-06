@@ -1,26 +1,30 @@
 package com.epam.esm.dto.impl;
 
-import com.epam.esm.dto.AbstractDto;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Objects;
 
-public class UserDto extends AbstractDto<Long> {
+public class UserDto extends RepresentationModel<UserDto> {
 
+    private Long id;
     private String firstName;
     private String lastName;
 
-    public UserDto(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public UserDto(Long id, String firstName, String lastName) {
+    public UserDto(long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
     public UserDto() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -43,14 +47,15 @@ public class UserDto extends AbstractDto<Long> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserDto)) return false;
+        if (!super.equals(o)) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(getFirstName(), userDto.getFirstName())
+        return getId() == userDto.getId() && Objects.equals(getFirstName(), userDto.getFirstName())
                 && Objects.equals(getLastName(), userDto.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName());
+        return Objects.hash(super.hashCode(), getId(), getFirstName(), getLastName());
     }
 
     @Override

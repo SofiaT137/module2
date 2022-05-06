@@ -1,6 +1,6 @@
 package com.epam.esm.dto.impl;
 
-import com.epam.esm.dto.AbstractDto;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,8 +8,9 @@ import java.util.Objects;
 /**
  * Class GiftCertificateDto extends AbstractDto and helps to create GiftCertificateDto entity
  */
-public class GiftCertificateDto extends AbstractDto<Long> {
+public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 
+    private Long id;
     private String giftCertificateName;
     private String description;
     private Double price;
@@ -29,17 +30,15 @@ public class GiftCertificateDto extends AbstractDto<Long> {
         this.tags = tags;
     }
 
-    public GiftCertificateDto(String giftCertificateName, String description, Double price, Integer duration, String createDate, String lastUpdateDate, List<String> tags) {
-        this.giftCertificateName = giftCertificateName;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
+    public GiftCertificateDto() {
     }
 
-    public GiftCertificateDto() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getGiftCertificateName() {
@@ -102,23 +101,22 @@ public class GiftCertificateDto extends AbstractDto<Long> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof GiftCertificateDto)) return false;
+        if (!super.equals(o)) return false;
         GiftCertificateDto that = (GiftCertificateDto) o;
-        return Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
+        return Objects.equals(getId(), that.getId())
+                && Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
                 && Objects.equals(getDescription(), that.getDescription())
                 && Objects.equals(getPrice(), that.getPrice())
                 && Objects.equals(getDuration(), that.getDuration())
                 && Objects.equals(getCreateDate(), that.getCreateDate())
+                && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate())
                 && Objects.equals(getTags(), that.getTags());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getGiftCertificateName(),
-                getDescription(),
-                getPrice(),
-                getDuration(),
-                getCreateDate(),
-                getTags());
+        return Objects.hash(super.hashCode(), getId(), getGiftCertificateName(),
+                getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), getTags());
     }
 
     @Override
@@ -130,6 +128,7 @@ public class GiftCertificateDto extends AbstractDto<Long> {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate='" + createDate + '\'' +
+                ", lastUpdateDate='" + lastUpdateDate + '\'' +
                 ", tags=" + tags +
                 '}';
     }

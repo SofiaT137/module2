@@ -6,18 +6,19 @@ import com.epam.esm.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserConverter implements Converter<User, UserDto,Long> {
-    
+public class UserConverter implements Converter<User,UserDto> {
+
     @Override
     public User convert(UserDto value) {
+        long id = value.getId();
         String firstName = value.getFirstName();
         String lastName = value.getLastName();
-        return new User(firstName,lastName);
+        return new User(id,firstName,lastName);
     }
 
     @Override
     public UserDto convert(User value) {
-        long id = value.getId();
+        Long id = value.getId();
         String firstName = value.getFirstName();
         String lastName = value.getLastName();
         return new UserDto(id,firstName,lastName);

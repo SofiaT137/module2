@@ -26,7 +26,8 @@ public class User extends AbstractEntity<Long> implements Serializable {
     public User() {
     }
 
-    public User(String firstName, String lastName) {
+    public User(Long id,String firstName, String lastName) {
+        super(id);
         this.firstName = firstName;
         this.lastName = lastName;
     }
