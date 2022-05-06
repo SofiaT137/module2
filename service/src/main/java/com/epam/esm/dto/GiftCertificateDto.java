@@ -1,5 +1,6 @@
-package com.epam.esm.dto.impl;
+package com.epam.esm.dto;
 
+import com.epam.esm.entity.Tag;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
@@ -17,9 +18,9 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     private Integer duration;
     private String createDate;
     private String lastUpdateDate;
-    private List<String> tags;
+    private List<TagDto> tags;
 
-    public GiftCertificateDto(Long id, String giftCertificateName, String description, Double price, Integer duration, String createDate, String lastUpdateDate, List<String> tags) {
+    public GiftCertificateDto(Long id, String giftCertificateName, String description, Double price, Integer duration, String createDate, String lastUpdateDate, List<TagDto> tags) {
         this.id = id;
         this.giftCertificateName = giftCertificateName;
         this.description = description;
@@ -89,11 +90,11 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<String> getTags() {
+    public List<TagDto> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(List<TagDto> tags) {
         this.tags = tags;
     }
 

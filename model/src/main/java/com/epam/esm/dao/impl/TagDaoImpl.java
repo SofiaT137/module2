@@ -22,13 +22,13 @@ public class TagDaoImpl implements TagDao  {
     private EntityManager entityManager;
 
     private static final String ID_COLUMN = "id";
-    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "SELECT m.id, m.tag_name FROM (SELECT s.id,s.tag_name,SUM(s.price) as summa "+
-            "FROM (SELECT t.id,t.tag_name,ord.price FROM tags AS t "+
-            "INNER JOIN gift_certificate_tag AS gst ON gst.tag_id=t.id "+
-            "INNER JOIN gift_certificates AS gs ON gst.gift_certificate_id=gs.id "+
-            "INNER JOIN order_certificate AS ord_cer ON gs.id=ord_cer.gift_certificate_id "+
-            "INNER JOIN orders AS ord ON ord_cer.order_id=ord.id WHERE ord.user_id = :userId group by order_id,tag_name) "+
-            "AS s group by s.tag_name order by summa desc) as m limit 1";
+    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "(SELECT t.id,t.tag_name, g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
+            "FROM tags AS t inner join gift_certificate_tag AS g_cer_tag on t.id=g_cer_tag.tag_id "+
+            "INNER join gift_certificates AS g_cer On g_cer_tag.gift_certificate_id=g_cer.id "+
+            "INNER join order_certificate AS ord_cer on g_cer.id = ord_cer.gift_certificate_id "+
+            "INNER join orders AS ord ON ord.id=ord_cer.order_id where user_id = :userId "+
+            "group by tag_name order by count desc, sum desc) limit 1 ";
+
     private static final String FIND_TAG_BY_NAME_QUERY = "SELECT id, tag_name FROM tags WHERE tag_name = :tagName";
     private static final String GET_ALL_TAGS_QUERY = "from Tag order by id";
     private static final String USER_ID = "userId";
@@ -70,6 +70,7 @@ public class TagDaoImpl implements TagDao  {
         return foundTag != null? Optional.of(foundTag) : Optional.empty();
     }
 
+    @Override
     public Optional<Tag> findTagByTagName(String name){
         Query query = entityManager.createNativeQuery(FIND_TAG_BY_NAME_QUERY,Tag.class);
         query.setParameter(TAG_NAME,name);

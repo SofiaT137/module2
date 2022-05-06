@@ -1,7 +1,7 @@
 package com.epam.esm.service.business_service;
 
 import com.epam.esm.converter.impl.TagConverter;
-import com.epam.esm.dto.impl.TagDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +54,12 @@ public class TagBusinessService implements TagService<TagDto> {
     @Override
     public TagDto findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
         Tag tag = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
+        return tagConverter.convert(tag);
+    }
+
+    @Override
+    public TagDto findTagByTagName(String name) {
+        Tag tag = tagLogicService.findTagByTagName(name);
         return tagConverter.convert(tag);
     }
 }

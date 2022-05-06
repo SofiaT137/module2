@@ -1,4 +1,4 @@
-package com.epam.esm.dto.impl;
+package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 

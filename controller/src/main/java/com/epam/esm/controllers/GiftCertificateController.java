@@ -1,7 +1,9 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateDto;
 
+import com.epam.esm.dto.OrderDto;
+import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +22,12 @@ import java.util.List;
 public class GiftCertificateController {
 
     private GiftCertificateService<GiftCertificateDto> giftCertificateService;
+    private final Hateoas<GiftCertificateDto> giftCertificateDtoHateoas;
+
+    @Autowired
+    public GiftCertificateController(Hateoas<GiftCertificateDto> giftCertificateDtoHateoas) {
+        this.giftCertificateDtoHateoas = giftCertificateDtoHateoas;
+    }
 
     private static final String CREATED_MESSAGE = "Created!";
     private static final String UPDATED_MESSAGE = "Updated!";
@@ -37,8 +45,10 @@ public class GiftCertificateController {
      * @return GiftCertificateDTO entity
      */
     @GetMapping("/{id}")
-    public GiftCertificateDto getCertificateByID(@PathVariable Long id){
-        return giftCertificateService.getById(id);
+    public ResponseEntity<Object> getCertificateByID(@PathVariable Long id){
+       GiftCertificateDto giftCertificateDto = giftCertificateService.getById(id);
+       giftCertificateDtoHateoas.addLinks(giftCertificateDto);
+       return new ResponseEntity<>(giftCertificateDto,HttpStatus.OK);
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.dto.impl.TagDto;
+import com.epam.esm.dto.TagDto;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +20,12 @@ import java.util.List;
 public class TagController {
 
     private TagService<TagDto> tagLogicService;
+    private final Hateoas<TagDto> tagDtoHateoas;
+
+    @Autowired
+    public TagController(Hateoas<TagDto> tagDtoHateoas) {
+        this.tagDtoHateoas = tagDtoHateoas;
+    }
 
     @Autowired
     @Qualifier("tagBusinessService")
@@ -36,7 +44,7 @@ public class TagController {
     @PostMapping
     public ResponseEntity<Object> insertTag(@RequestBody TagDto entity) {
         tagLogicService.insert(entity);
-        return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
@@ -45,24 +53,36 @@ public class TagController {
      * @return Tag entity
      */
     @GetMapping("/{id}")
-    public TagDto getTagById(@PathVariable Long id) {
-        return tagLogicService.getById(id);
+    public ResponseEntity<Object> getTagById(@PathVariable Long id) {
+        TagDto tagDto = tagLogicService.getById(id);
+        tagDtoHateoas.addLinks(tagDto);
+        return new ResponseEntity<>(tagDto,HttpStatus.OK);
     }
-
 
     /**
      * Method getAllTags returns all the Tag entity
      *
      * @return List of Tag entity
      */
-    @GetMapping("/filter")
-    public TagDto findTheMostWidelyUsedUserTagWithHighersOrderCost(@RequestParam Long userId) {
-        return tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
+    @GetMapping("/filter/{userId}")
+    public ResponseEntity<Object> findTheMostWidelyUsedUserTagWithHighersOrderCost(@PathVariable Long userId) {
+       TagDto tagDto = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
+        tagDtoHateoas.addLinks(tagDto);
+        return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     @GetMapping
-    public List<TagDto> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return tagLogicService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
+        List<TagDto> tagDtoList = tagLogicService.getAll(pageSize,pageNumber);
+        tagDtoList.forEach(tagDtoHateoas::addLinks);
+        return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/filter/{tagName}")
+    public ResponseEntity<Object> findTagByName(@PathVariable String tagName) {
+        TagDto tagDto = tagLogicService.findTagByTagName(tagName);
+        tagDtoHateoas.addLinks(tagDto);
+        return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     /**
@@ -71,8 +91,9 @@ public class TagController {
      * @return Response entity with HttpStatus "FOUND"
      */
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Object> deleteTagByID(@PathVariable long id) {
         tagLogicService.deleteByID(id);
-        return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

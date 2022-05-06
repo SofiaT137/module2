@@ -9,4 +9,6 @@ import com.epam.esm.service.CRDService;
 public interface TagService<T> extends CRDService<T> {
 
     T findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId);
+
+    T findTagByTagName(String name);
 }

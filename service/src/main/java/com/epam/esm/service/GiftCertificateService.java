@@ -1,10 +1,8 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dto.impl.GiftCertificateDto;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * GiftCertificateService interface features CRUD Service functionality and extends CRUDService

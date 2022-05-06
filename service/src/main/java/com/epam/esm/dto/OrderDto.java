@@ -1,6 +1,5 @@
-package com.epam.esm.dto.impl;
+package com.epam.esm.dto;
 
-import org.aspectj.weaver.ast.Or;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
@@ -11,13 +10,13 @@ public class OrderDto extends RepresentationModel<OrderDto> {
     private Long id;
     private Double price;
     private String purchaseTime;
-    private List<Long> giftCertificateId;
+    private List<GiftCertificateDto> giftCertificateId;
     private Long userId;
 
    public OrderDto() {
     }
 
-    public OrderDto(long id,Double price, String purchaseTime, List<Long> giftCertificateId, Long userId) {
+    public OrderDto(long id,Double price, String purchaseTime, List<GiftCertificateDto> giftCertificateId, Long userId) {
         this.id = id;
         this.price = price;
         this.purchaseTime = purchaseTime;
@@ -49,11 +48,11 @@ public class OrderDto extends RepresentationModel<OrderDto> {
         this.purchaseTime = purchaseTime;
     }
 
-    public List<Long> getGiftCertificateId() {
+    public List<GiftCertificateDto> getGiftCertificateId() {
         return giftCertificateId;
     }
 
-    public void setGiftCertificateId(List<Long> giftCertificateId) {
+    public void setGiftCertificateId(List<GiftCertificateDto> giftCertificateId) {
         this.giftCertificateId = giftCertificateId;
     }
 

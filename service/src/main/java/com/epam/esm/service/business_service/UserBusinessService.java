@@ -1,7 +1,7 @@
 package com.epam.esm.service.business_service;
 
 import com.epam.esm.converter.impl.UserConverter;
-import com.epam.esm.dto.impl.UserDto;
+import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

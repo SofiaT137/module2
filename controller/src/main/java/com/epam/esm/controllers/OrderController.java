@@ -1,6 +1,7 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.dto.impl.OrderDto;
+import com.epam.esm.dto.OrderDto;
+import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,41 +15,54 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private OrderService<OrderDto> orderService;
+    private OrderService<OrderDto> orderLogicService;
+    private final Hateoas<OrderDto> orderDtoHateoas;
+
+    @Autowired
+    public OrderController(Hateoas<OrderDto> orderDtoHateoas) {
+        this.orderDtoHateoas = orderDtoHateoas;
+    }
+
+    @Autowired
+    @Qualifier("orderBusinessService")
+    public void setUserService(OrderService<OrderDto> orderLogicService) {
+        this.orderLogicService = orderLogicService;
+    }
 
     private static final String CREATED_MESSAGE = "Created!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
-    @Autowired
-    @Qualifier("orderBusinessService")
-    public void setOrderService(OrderService<OrderDto> orderService) {
-        this.orderService = orderService;
-    }
 
     @PostMapping
     public ResponseEntity<Object> insertOrder(@RequestBody OrderDto order) {
-        orderService.saveOrder(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_MESSAGE);
+        orderLogicService.saveOrder(order);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public OrderDto getOrderByID(@PathVariable Long id){
-        return orderService.getById(id);
+    public ResponseEntity<Object> getOrderByID(@PathVariable Long id){
+        OrderDto order = orderLogicService.getById(id);
+        orderDtoHateoas.addLinks(order);
+        return new ResponseEntity<>(order,HttpStatus.OK);
     }
 
     @GetMapping
-    public List<OrderDto> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return orderService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
+        List<OrderDto> orderDtoList = orderLogicService.getAll(pageSize,pageNumber);
+        orderDtoList.forEach(orderDtoHateoas::addLinks);
+        return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteGiftCertificateByID(@PathVariable long id){
-        orderService.deleteOrder(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(DELETED_MESSAGE);
+        orderLogicService.deleteOrder(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/users/{userId}")
-    public List<OrderDto> ordersByUserId(@PathVariable long userId,@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return orderService.ordersByUserId(userId, pageSize, pageNumber);
+    public ResponseEntity<Object> ordersByUserId(@PathVariable long userId,@RequestParam int pageSize, @RequestParam int pageNumber) {
+        List<OrderDto> orderDtoList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
+        orderDtoList.forEach(orderDtoHateoas::addLinks);
+        return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }
 }

@@ -1,6 +1,5 @@
 package com.epam.esm.validator;
 
-import com.epam.esm.dto.impl.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,6 @@ import org.springframework.util.MultiValueMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

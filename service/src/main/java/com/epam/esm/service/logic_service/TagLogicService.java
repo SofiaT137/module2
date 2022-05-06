@@ -88,4 +88,13 @@ public class TagLogicService implements TagService<Tag> {
         }
         return receivedTagByConditions.get();
     }
+
+    @Override
+    public Tag findTagByTagName(String name) {
+        Optional<Tag> tag = tagDao.findTagByTagName(name);
+        if (!tag.isPresent()){
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
+        }
+        return tag.get();
+    }
 }

@@ -1,7 +1,7 @@
 package com.epam.esm.service.business_service;
 
 import com.epam.esm.converter.impl.OderConverter;
-import com.epam.esm.dto.impl.OrderDto;
+import com.epam.esm.dto.OrderDto;
 import com.epam.esm.entity.Order;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

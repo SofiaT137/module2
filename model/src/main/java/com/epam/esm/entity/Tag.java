@@ -23,11 +23,6 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
         this.name = name;
     }
 
-    public Tag(Long id, String name) {
-        super(id);
-        this.name = name;
-    }
-
     public Tag(){}
 
     public String getName() {

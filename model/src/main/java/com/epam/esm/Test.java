@@ -21,13 +21,12 @@ public class Test {
 //            "INNER JOIN tags as t ON t.id=gif_cer_tag.tag_id WHERE user_id=:id_f group by gif_cer_tag.tag_id order by count_tag desc limit 1) as m "+
 //            " ON m.id = tags.id";
 
-    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "SELECT m.id, m.tag_name FROM (SELECT s.id,s.tag_name,SUM(s.price) as summa "+
-            "FROM (SELECT t.id,t.tag_name,ord.price FROM tags AS t "+
-            "INNER JOIN gift_certificate_tag AS gst ON gst.tag_id=t.id "+
-            "INNER JOIN gift_certificates AS gs ON gst.gift_certificate_id=gs.id "+
-            "INNER JOIN order_certificate AS ord_cer ON gs.id=ord_cer.gift_certificate_id "+
-            "INNER JOIN orders AS ord ON ord_cer.order_id=ord.id WHERE ord.user_id = :id_f group by order_id,tag_name) "+
-            "AS s group by s.tag_name order by summa desc) as m limit 1";
+    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "(SELECT t.id,t.tag_name, g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
+            "FROM tags AS t inner join gift_certificate_tag AS g_cer_tag on t.id=g_cer_tag.tag_id "+
+            "INNER join gift_certificates AS g_cer On g_cer_tag.gift_certificate_id=g_cer.id "+
+            "INNER join order_certificate AS ord_cer on g_cer.id = ord_cer.gift_certificate_id "+
+            "INNER join orders AS ord ON ord.id=ord_cer.order_id where user_id = :id_f "+
+            "group by tag_name order by count desc, sum desc) limit 1 ";
 
     public static void main(String[] args) {
         SessionFactory factory = new Configuration()
