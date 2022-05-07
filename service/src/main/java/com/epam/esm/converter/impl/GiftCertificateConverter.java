@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,10 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         LocalDateTime createDate = validateDate(createDateDto);
         LocalDateTime lastUpdateDate = validateDate(lastUpdateDateDto);
         List<TagDto> valueTagDtoList = value.getTags();
-        List<Tag> valueTagList = valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
+        List<Tag> valueTagList = new ArrayList<>();
+        if(valueTagDtoList!=null){
+            valueTagList = valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
+        }
         return new GiftCertificate(value.getId(),value.getGiftCertificateName(),
                 value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,valueTagList);
     }

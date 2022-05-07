@@ -3,6 +3,7 @@ package com.epam.esm.controllers;
 import com.epam.esm.dto.GiftCertificateDto;
 
 import com.epam.esm.dto.OrderDto;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,10 @@ public class GiftCertificateController {
      * @return List of GiftCertificateDTO entity
      */
     @GetMapping
-    public List<GiftCertificateDto> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return giftCertificateService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
+        List<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageSize,pageNumber);
+        giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
+        return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }
 
     /**
@@ -68,7 +71,7 @@ public class GiftCertificateController {
     @PostMapping
     public ResponseEntity<Object> insertCertificate(@RequestBody GiftCertificateDto giftCertificate){
         giftCertificateService.insert(giftCertificate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_MESSAGE);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
@@ -77,8 +80,10 @@ public class GiftCertificateController {
      * @return List of GiftCertificateDTO entity
      */
     @GetMapping("/filter")
-    public List<GiftCertificateDto> giftCertificatesByParameter(@RequestParam MultiValueMap<String, String> allRequestParams){
-        return giftCertificateService.getQueryWithConditions(allRequestParams);
+    public ResponseEntity<Object> giftCertificatesByParameter(@RequestParam MultiValueMap<String, String> allRequestParams){
+        List<GiftCertificateDto> giftCertificates =  giftCertificateService.getQueryWithConditions(allRequestParams);
+        giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
+        return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }
 
     /**
@@ -89,7 +94,7 @@ public class GiftCertificateController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteGiftCertificateByID(@PathVariable long id){
         giftCertificateService.deleteByID(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(DELETED_MESSAGE);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -102,7 +107,7 @@ public class GiftCertificateController {
     public ResponseEntity<Object> updateGiftCertificate(@PathVariable long id,
                                                         @RequestBody GiftCertificateDto giftCertificate){
         giftCertificateService.update(id, giftCertificate);
-        return ResponseEntity.status(HttpStatus.OK).body(UPDATED_MESSAGE);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 

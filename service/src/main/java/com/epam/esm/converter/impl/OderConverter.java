@@ -27,7 +27,7 @@ public class OderConverter implements Converter<Order, OrderDto> {
                 .map(gs->giftCertificateConverter.convert(gs))
                 .collect(Collectors.toList());
         User user = getNewUser(value.getUserId());
-        return new Order(price, null,giftCertificates,user);
+        return new Order(price, null,user);
     }
 
     private User getNewUser(Long userId){

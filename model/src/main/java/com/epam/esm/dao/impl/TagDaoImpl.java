@@ -76,7 +76,7 @@ public class TagDaoImpl implements TagDao  {
         query.setParameter(TAG_NAME,name);
         Tag tag;
         try{
-            tag = (Tag) query.getSingleResult();
+            tag = (Tag) query.setMaxResults(1).getSingleResult();
         }catch (NoResultException exception){
             return Optional.empty();
         }
