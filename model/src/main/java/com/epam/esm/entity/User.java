@@ -13,32 +13,34 @@ import java.util.Objects;
 //@Audited
 public class User extends AbstractEntity<Long> implements Serializable {
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "user_name")
+    private String name;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Order> orderList;
 
-    public User() {
-    }
+    public User() {}
 
     public User(Long id){
         super(id);
     }
 
-    public User(Long id,String firstName, String lastName) {
+    public User(Long id, String name) {
         super(id);
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
     }
 
-    public User(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void addOrderToUser(Order order){
@@ -49,46 +51,24 @@ public class User extends AbstractEntity<Long> implements Serializable {
         order.setUser(this);
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
+        if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(getFirstName(), user.getFirstName())
-                && Objects.equals(getLastName(), user.getLastName());
+        return Objects.equals(getName(), user.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFirstName(), getLastName());
+        return Objects.hash(super.hashCode(), name);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id='" + super.getId() +'\''+
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "name='" + name + '\'' +
                 '}';
     }
 }

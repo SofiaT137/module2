@@ -7,13 +7,11 @@ import java.util.Objects;
 public class UserDto extends RepresentationModel<UserDto> {
 
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String name;
 
-    public UserDto(long id, String firstName, String lastName) {
+    public UserDto(Long id,String name) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
     }
 
     public UserDto() {
@@ -27,43 +25,32 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserDto)) return false;
-        if (!super.equals(o)) return false;
         UserDto userDto = (UserDto) o;
-        return  Objects.equals(getFirstName(), userDto.getFirstName())
-                && Objects.equals(getLastName(), userDto.getLastName());
+        return Objects.equals(getName(), userDto.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFirstName(), getLastName());
+        return Objects.hash(super.hashCode(), getName());
     }
 
     @Override
     public String toString() {
         return "UserDto{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

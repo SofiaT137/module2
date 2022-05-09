@@ -31,11 +31,6 @@ class GiftCertificateConverterTest {
     @Spy
     private static TagConverter tagConverter = Mockito.spy(TagConverter.class);
 
-    @BeforeAll
-    static void setUp(){
-        giftCertificateConverter = new GiftCertificateConverter(tagConverter);
-    }
-
     private static final String CORRECT_NAME = "Swimming with seals";
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";
     private static final Double CORRECT_PRICE = 56.13;
@@ -45,22 +40,31 @@ class GiftCertificateConverterTest {
     private static final String date = localDate.format(formatter);
     private static final List<TagDto> tag_list = Arrays.asList(new TagDto(1L,"joy")
             ,new TagDto(2L,"happiness"),new TagDto(3L,"seal"));
-    private final List<Tag> tag_list_convert = tag_list.stream().map(tagConverter::convert).collect(Collectors.toList());
-    private static final GiftCertificateDto DTOEntity = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION
-            ,CORRECT_PRICE,CORRECT_DURATION,date,date,tag_list);
-    private final GiftCertificate entity = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE
-            ,CORRECT_DURATION,localDate,localDate,tag_list_convert);
+    private static List<Tag> tag_list_convert;
+    private static GiftCertificateDto giftCertificateDto;
+    private static GiftCertificate giftCertificate;
+
+
+    @BeforeAll
+    static void setUp(){
+        giftCertificateConverter = new GiftCertificateConverter(tagConverter);
+        tag_list_convert = tag_list.stream().map(tagConverter::convert).collect(Collectors.toList());
+        giftCertificateDto = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION
+                ,CORRECT_PRICE,CORRECT_DURATION,date,date,tag_list);
+        giftCertificate = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE
+                ,CORRECT_DURATION,localDate,localDate,tag_list_convert);
+    }
 
     @Test
     void convertDTOEntityToEntity() {
-        GiftCertificate giftCertificate = giftCertificateConverter.convert(DTOEntity);
-        assertEquals(giftCertificate,entity);
+        GiftCertificate convertGiftCertificate = giftCertificateConverter.convert(giftCertificateDto);
+        assertEquals(giftCertificate,convertGiftCertificate);
     }
 
     @Test
     void convertEntityToDTOEntity() {
-        GiftCertificateDto giftCertificateDto = giftCertificateConverter.convert(entity);
-        assertEquals(DTOEntity,giftCertificateDto);
+        GiftCertificateDto convertGiftCertificateDto = giftCertificateConverter.convert(giftCertificate);
+        assertEquals(giftCertificateDto,convertGiftCertificateDto);
     }
 
     @AfterAll

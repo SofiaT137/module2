@@ -23,8 +23,8 @@ insert into gift_certificate_tag (gift_certificate_id, tag_id) VALUES (1,3);
 insert into gift_certificate_tag (gift_certificate_id, tag_id) VALUES (2,1);
 insert into gift_certificate_tag (gift_certificate_id, tag_id) VALUES (2,3);
 
-insert into users(first_name,last_name)
-VALUES ('Sofiya','Tkachenia'),('Anna','Tkachenia');
+insert into users(user_name)
+VALUES ('Sofiya'),('Anna');
 
 insert into orders(price,purchase_time,user_id)
 VALUES (108.13, '2022-05-07 10:14:13', 1),

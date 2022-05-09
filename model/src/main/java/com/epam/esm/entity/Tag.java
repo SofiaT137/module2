@@ -19,11 +19,11 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
     @Column(name = "tag_name")
     private String name;
 
+    public Tag(){}
+
     public Tag(String name) {
         this.name = name;
     }
-
-    public Tag(){}
 
     public String getName() {
         return name;
@@ -37,6 +37,7 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tag)) return false;
+        if (!super.equals(o)) return false;
         Tag tag = (Tag) o;
         return Objects.equals(getName(), tag.getName());
     }
@@ -49,7 +50,6 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
     @Override
     public String toString() {
         return "Tag{" +
-                "id='" + super.getId() +'\''+
                 "name='" + name + '\'' +
                 '}';
     }

@@ -8,8 +8,7 @@ CREATE TABLE tags (
 
 CREATE TABLE users (
   id bigint unsigned NOT NULL AUTO_INCREMENT,
-  first_name varchar(25) NOT NULL,
-  last_name varchar(25) NOT NULL,
+  user_name varchar(25) NOT NULL unique,
   PRIMARY KEY (id)
 );
 
@@ -34,7 +33,7 @@ CREATE TABLE gift_certificate_tag (
 
 CREATE TABLE orders (
   id bigint unsigned NOT NULL AUTO_INCREMENT,
-  price decimal(8,2) unsigned NOT NULL,
+  price decimal(8,2) NOT NULL,
   purchase_time timestamp NOT NULL,
   user_id bigint unsigned DEFAULT NULL,
   PRIMARY KEY (id),

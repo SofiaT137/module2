@@ -2,6 +2,8 @@ package com.epam.esm.converter.impl;
 
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,8 +20,16 @@ class TagConverterTest {
     @InjectMocks
     private static TagConverter tagConverter;
 
-    private final Tag tag = new Tag("sea");
-    private final TagDto tagDto = new TagDto(1L,"sea");
+    private static final Long TAG_ID = 1L;
+    private static final String TAG_NAME = "sea";
+    private static Tag tag;
+    private static TagDto tagDto;
+
+    @BeforeAll
+    static void init(){
+        tag = new Tag(TAG_NAME);
+        tagDto = new TagDto(TAG_ID,TAG_NAME);
+    }
 
     @Test
     void convertDTOEntityToEntity() {
@@ -29,7 +39,12 @@ class TagConverterTest {
 
     @Test
     void convertEntityToDTOEntity(){
-        TagDto convertedDtoTag = tagConverter.convert(tag);
-        assertEquals(tagDto,convertedDtoTag);
+        TagDto convertedTagDto = tagConverter.convert(tag);
+        assertEquals(tagDto,convertedTagDto);
+    }
+
+    @AfterAll
+    static void destroy(){
+        tagConverter = null;
     }
 }

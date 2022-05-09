@@ -10,17 +10,15 @@ public class UserConverter implements Converter<User,UserDto> {
 
     @Override
     public User convert(UserDto value) {
-        String firstName = value.getFirstName();
-        String lastName = value.getLastName();
-        return new User(firstName,lastName);
+        String name = value.getName();
+        return new User(name);
     }
 
     @Override
     public UserDto convert(User value) {
         Long id = value.getId();
-        String firstName = value.getFirstName();
-        String lastName = value.getLastName();
-        return new UserDto(id,firstName,lastName);
+        String name = value.getName();
+        return new UserDto(id,name);
     }
 }
 
