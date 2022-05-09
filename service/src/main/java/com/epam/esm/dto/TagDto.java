@@ -9,14 +9,11 @@ public class TagDto extends RepresentationModel<TagDto> {
     private Long id;
     private String name;
 
-    public TagDto(String name) {
-        this.name = name;
-    }
-
     public TagDto(Long id,String name) {
         this.id = id;
         this.name = name;
     }
+
     public TagDto() {
     }
 
@@ -40,14 +37,13 @@ public class TagDto extends RepresentationModel<TagDto> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TagDto)) return false;
-        if (!super.equals(o)) return false;
         TagDto tagDto = (TagDto) o;
-        return getId() == tagDto.getId() && Objects.equals(getName(), tagDto.getName());
+        return Objects.equals(getName(), tagDto.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getName());
+        return Objects.hash(super.hashCode(), getName());
     }
 
     @Override

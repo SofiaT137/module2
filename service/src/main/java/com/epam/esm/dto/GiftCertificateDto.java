@@ -20,8 +20,22 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     private String lastUpdateDate;
     private List<TagDto> tags;
 
-    public GiftCertificateDto(Long id, String giftCertificateName, String description, Double price, Integer duration, String createDate, String lastUpdateDate, List<TagDto> tags) {
+    public GiftCertificateDto(Long id, String giftCertificateName,
+                              String description, Double price, Integer duration,
+                              String createDate, String lastUpdateDate, List<TagDto> tags) {
         this.id = id;
+        this.giftCertificateName = giftCertificateName;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
+
+    public GiftCertificateDto(String giftCertificateName, String description,
+                              Double price, Integer duration,
+                              String createDate, String lastUpdateDate, List<TagDto> tags) {
         this.giftCertificateName = giftCertificateName;
         this.description = description;
         this.price = price;

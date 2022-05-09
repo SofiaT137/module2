@@ -37,7 +37,6 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tag)) return false;
-        if (!super.equals(o)) return false;
         Tag tag = (Tag) o;
         return Objects.equals(getName(), tag.getName());
     }

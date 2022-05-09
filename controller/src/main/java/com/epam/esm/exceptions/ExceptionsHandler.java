@@ -78,7 +78,7 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> internalServerErrorException(Exception exception) {
-        Throwable exceptionMessage = exception.getCause();
+        String exceptionMessage = exception.getLocalizedMessage();
         return new ResponseEntity<>(STRING_MESSAGE + exceptionMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

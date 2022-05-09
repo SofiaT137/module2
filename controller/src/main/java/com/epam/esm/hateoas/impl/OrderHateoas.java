@@ -18,7 +18,7 @@ public class OrderHateoas implements Hateoas<OrderDto> {
     @Override
     public void addLinks(OrderDto entity) {
         entity.add(linkTo(methodOn(ORDER_CONTROLLER).getOrderByID(entity.getId())).withSelfRel());
-        entity.getGiftCertificateId().forEach(
+        entity.getGiftCertificateDto().forEach(
                 giftCertificateDto -> giftCertificateDto.add(linkTo(methodOn(GIFT_CERTIFICATE_CONTROLLER)
                         .getCertificateByID(giftCertificateDto.getId())).withSelfRel()));
     }

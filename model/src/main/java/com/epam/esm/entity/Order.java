@@ -35,6 +35,13 @@ public class Order extends AbstractEntity<Long> implements Serializable {
     public Order() {
     }
 
+    public Order(long id,double price, LocalDateTime purchaseTime, User user) {
+        super(id);
+        this.price = price;
+        this.purchaseTime = purchaseTime;
+        this.user = user;
+    }
+
     public Order(double price, LocalDateTime purchaseTime, User user) {
         this.price = price;
         this.purchaseTime = purchaseTime;
@@ -84,22 +91,21 @@ public class Order extends AbstractEntity<Long> implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
-        if (!super.equals(o)) return false;
         Order order = (Order) o;
-        return Double.compare(order.getPrice(), getPrice()) == 0
+        return  Double.compare(order.getPrice(), getPrice()) == 0
                 && Objects.equals(getPurchaseTime(), order.getPurchaseTime())
                 && Objects.equals(getUser(), order.getUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPrice(), getPurchaseTime(), getUser());
+        return Objects.hash(getPrice(), getPurchaseTime(), getUser());
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "price=" + price +
+                ", price=" + price +
                 ", purchaseTime=" + purchaseTime +
                 ", user=" + user +
                 '}';

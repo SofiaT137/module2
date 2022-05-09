@@ -1,7 +1,6 @@
 package com.epam.esm.controllers;
 
 import com.epam.esm.dto.TagDto;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
-    private TagService<TagDto> tagLogicService;
+    private TagService<TagDto> tagBusinessService;
     private final Hateoas<TagDto> tagDtoHateoas;
 
     @Autowired
@@ -30,7 +29,7 @@ public class TagController {
     @Autowired
     @Qualifier("tagBusinessService")
     public void setUserService(TagService<TagDto> tagService) {
-        this.tagLogicService = tagService;
+        this.tagBusinessService = tagService;
     }
 
     private static final String CREATED_MESSAGE = "Created!";
@@ -43,7 +42,7 @@ public class TagController {
      */
     @PostMapping
     public ResponseEntity<Object> insertTag(@RequestBody TagDto entity) {
-        tagLogicService.insert(entity);
+        tagBusinessService.insert(entity);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -54,7 +53,7 @@ public class TagController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTagById(@PathVariable Long id) {
-        TagDto tagDto = tagLogicService.getById(id);
+        TagDto tagDto = tagBusinessService.getById(id);
         tagDtoHateoas.addLinks(tagDto);
         return new ResponseEntity<>(tagDto,HttpStatus.OK);
     }
@@ -66,21 +65,21 @@ public class TagController {
      */
     @GetMapping("/filter/{userId}")
     public ResponseEntity<Object> findTheMostWidelyUsedUserTagWithHighersOrderCost(@PathVariable Long userId) {
-       TagDto tagDto = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
+       TagDto tagDto = tagBusinessService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
         tagDtoHateoas.addLinks(tagDto);
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<Object> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        List<TagDto> tagDtoList = tagLogicService.getAll(pageSize,pageNumber);
+        List<TagDto> tagDtoList = tagBusinessService.getAll(pageSize,pageNumber);
         tagDtoList.forEach(tagDtoHateoas::addLinks);
         return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/filter/{tagName}")
     public ResponseEntity<Object> findTagByName(@PathVariable String tagName) {
-        TagDto tagDto = tagLogicService.findTagByTagName(tagName);
+        TagDto tagDto = tagBusinessService.findTagByTagName(tagName);
         tagDtoHateoas.addLinks(tagDto);
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
@@ -93,7 +92,7 @@ public class TagController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Object> deleteTagByID(@PathVariable long id) {
-        tagLogicService.deleteByID(id);
+        tagBusinessService.deleteByID(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

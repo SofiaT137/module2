@@ -9,25 +9,42 @@ import com.epam.esm.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OderConverter implements Converter<Order, OrderDto> {
+public class OrderConverter implements Converter<Order, OrderDto> {
+
+    private final Converter<GiftCertificate, GiftCertificateDto> giftCertificateConverter;
 
     @Autowired
-    private Converter<GiftCertificate, GiftCertificateDto> giftCertificateConverter;
+    public OrderConverter(Converter<GiftCertificate, GiftCertificateDto> giftCertificateConverter) {
+        this.giftCertificateConverter = giftCertificateConverter;
+    }
 
     @Override
     public Order convert(OrderDto value) {
+        Order order = new Order();
+        LocalDateTime localDateTime = null;
         double price = 0.0;
-        List<GiftCertificate> giftCertificates = value.getGiftCertificateId()
+        if (value.getPrice() != null){
+            price = value.getPrice();
+        }
+        if (value.getPurchaseTime() != null){
+            localDateTime = LocalDateTime.parse(value.getPurchaseTime());
+        }
+        List<GiftCertificate> giftCertificates = value.getGiftCertificateDto()
                 .stream()
-                .map(gs->giftCertificateConverter.convert(gs))
+                .map(giftCertificateConverter::convert)
                 .collect(Collectors.toList());
         User user = getNewUser(value.getUserId());
-        return new Order(price, null,user);
+        order.setPrice(price);
+        order.setPurchaseTime(localDateTime);
+        order.setGiftCertificateList(giftCertificates);
+        order.setUser(user);
+        return order;
     }
 
     private User getNewUser(Long userId){
@@ -44,7 +61,7 @@ public class OderConverter implements Converter<Order, OrderDto> {
         String purchaseDate = value.getPurchaseTime().format(formatter);
         List<GiftCertificateDto> giftCertificates = value.getGiftCertificateList()
                 .stream()
-                .map(gs->giftCertificateConverter.convert(gs))
+                .map(giftCertificateConverter::convert)
                 .collect(Collectors.toList());
         long userId = value.getUser().getId();
         return new OrderDto(id,price,purchaseDate,giftCertificates,userId);

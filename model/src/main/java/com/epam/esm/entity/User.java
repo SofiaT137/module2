@@ -26,8 +26,17 @@ public class User extends AbstractEntity<Long> implements Serializable {
     public User() {
     }
 
+    public User(Long id){
+        super(id);
+    }
+
     public User(Long id,String firstName, String lastName) {
         super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -64,16 +73,14 @@ public class User extends AbstractEntity<Long> implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
-        if (!super.equals(o)) return false;
         User user = (User) o;
         return Objects.equals(getFirstName(), user.getFirstName())
-                && Objects.equals(getLastName(), user.getLastName())
-                && Objects.equals(getOrderList(), user.getOrderList());
+                && Objects.equals(getLastName(), user.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFirstName(), getLastName(), getOrderList());
+        return Objects.hash(super.hashCode(), getFirstName(), getLastName());
     }
 
     @Override

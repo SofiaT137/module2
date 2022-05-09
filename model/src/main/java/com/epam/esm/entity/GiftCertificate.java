@@ -64,6 +64,17 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
     }
 
     public GiftCertificate(String name, String description, Double price, Integer duration,
+                           LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+        this.giftCertificateName = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
+
+    public GiftCertificate(String name, String description, Double price, Integer duration,
                            LocalDateTime createDate, LocalDateTime lastUpdateDate) {
         this.giftCertificateName = name;
         this.description = description;
@@ -72,7 +83,6 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
     }
-
     public void addTagToGiftCertificate(Tag tag){
         if (tags == null){
             tags = new ArrayList<>();

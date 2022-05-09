@@ -49,13 +49,13 @@ public class UserDto extends RepresentationModel<UserDto> {
         if (!(o instanceof UserDto)) return false;
         if (!super.equals(o)) return false;
         UserDto userDto = (UserDto) o;
-        return getId() == userDto.getId() && Objects.equals(getFirstName(), userDto.getFirstName())
+        return  Objects.equals(getFirstName(), userDto.getFirstName())
                 && Objects.equals(getLastName(), userDto.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getFirstName(), getLastName());
+        return Objects.hash(super.hashCode(), getFirstName(), getLastName());
     }
 
     @Override

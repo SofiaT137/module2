@@ -10,17 +10,17 @@ public class OrderDto extends RepresentationModel<OrderDto> {
     private Long id;
     private Double price;
     private String purchaseTime;
-    private List<GiftCertificateDto> giftCertificateId;
+    private List<GiftCertificateDto> giftCertificateDto;
     private Long userId;
 
    public OrderDto() {
     }
 
-    public OrderDto(long id,Double price, String purchaseTime, List<GiftCertificateDto> giftCertificateId, Long userId) {
+    public OrderDto(long id, Double price, String purchaseTime, List<GiftCertificateDto> giftCertificateDto, Long userId) {
         this.id = id;
         this.price = price;
         this.purchaseTime = purchaseTime;
-        this.giftCertificateId = giftCertificateId;
+        this.giftCertificateDto = giftCertificateDto;
         this.userId = userId;
     }
 
@@ -48,12 +48,12 @@ public class OrderDto extends RepresentationModel<OrderDto> {
         this.purchaseTime = purchaseTime;
     }
 
-    public List<GiftCertificateDto> getGiftCertificateId() {
-        return giftCertificateId;
+    public List<GiftCertificateDto> getGiftCertificateDto() {
+        return giftCertificateDto;
     }
 
-    public void setGiftCertificateId(List<GiftCertificateDto> giftCertificateId) {
-        this.giftCertificateId = giftCertificateId;
+    public void setGiftCertificateDto(List<GiftCertificateDto> giftCertificateDto) {
+        this.giftCertificateDto = giftCertificateDto;
     }
 
     public Long getUserId() {
@@ -69,15 +69,15 @@ public class OrderDto extends RepresentationModel<OrderDto> {
         if (this == o) return true;
         if (!(o instanceof OrderDto)) return false;
         OrderDto orderDto = (OrderDto) o;
-        return getId() == orderDto.getId() && Objects.equals(getPrice(), orderDto.getPrice())
+        return  Objects.equals(getPrice(), orderDto.getPrice())
                 && Objects.equals(getPurchaseTime(), orderDto.getPurchaseTime())
-                && Objects.equals(getGiftCertificateId(), orderDto.getGiftCertificateId())
+                && Objects.equals(getGiftCertificateDto(), orderDto.getGiftCertificateDto())
                 && Objects.equals(getUserId(), orderDto.getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getPrice(), getPurchaseTime(), getGiftCertificateId(), getUserId());
+        return Objects.hash(getPrice(), getPurchaseTime(),getGiftCertificateDto(),getUserId());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
                 "id=" + id +
                 ", price=" + price +
                 ", purchaseTime='" + purchaseTime + '\'' +
-                ", giftCertificateId=" + giftCertificateId +
+                ", giftCertificateDto=" + giftCertificateDto +
                 ", userId=" + userId +
                 '}';
     }

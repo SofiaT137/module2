@@ -17,8 +17,13 @@ import java.util.stream.Collectors;
 @Component
 public class GiftCertificateConverter implements Converter<GiftCertificate, GiftCertificateDto> {
 
+    private final Converter<Tag, TagDto> tagConverter;
+
     @Autowired
-    private Converter<Tag, TagDto> tagConverter;
+    public GiftCertificateConverter(Converter<Tag, TagDto> tagConverter) {
+        this.tagConverter = tagConverter;
+    }
+
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
