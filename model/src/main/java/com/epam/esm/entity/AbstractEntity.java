@@ -1,5 +1,7 @@
 package com.epam.esm.entity;
 
+import com.epam.esm.audit.EntityListener;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -8,6 +10,7 @@ import java.util.Objects;
  * @param <K>
  */
 @MappedSuperclass
+@EntityListeners(EntityListener.class)
 public abstract class AbstractEntity<K> {
 
     @Id

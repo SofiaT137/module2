@@ -10,7 +10,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-//@Audited
 public class User extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "user_name")

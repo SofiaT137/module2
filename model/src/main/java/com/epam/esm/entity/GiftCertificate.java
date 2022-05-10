@@ -18,7 +18,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "gift_certificates")
-//@Audited
 public class GiftCertificate extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "gift_certificate_name")

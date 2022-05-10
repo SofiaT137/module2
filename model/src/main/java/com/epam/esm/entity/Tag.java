@@ -13,7 +13,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "tags")
-//@Audited
 public class Tag extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "tag_name")
