@@ -14,6 +14,10 @@ public class TagDto extends RepresentationModel<TagDto> {
         this.name = name;
     }
 
+    public TagDto(String name) {
+        this.name = name;
+    }
+
     public TagDto() {
     }
 

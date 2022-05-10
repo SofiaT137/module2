@@ -2,6 +2,7 @@ package com.epam.esm.service.business_service;
 
 import com.epam.esm.converter.impl.TagConverter;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,9 @@ public class TagBusinessService implements TagService<TagDto> {
     }
 
     @Override
-    public void insert(TagDto entityDto) {
+    public TagDto insert(TagDto entityDto) {
         Tag entity = tagConverter.convert(entityDto);
-        tagLogicService.insert(entity);
+        return tagConverter.convert(tagLogicService.insert(entity));
     }
 
     @Override
@@ -61,5 +62,10 @@ public class TagBusinessService implements TagService<TagDto> {
     public TagDto findTagByTagName(String name) {
         Tag tag = tagLogicService.findTagByTagName(name);
         return tagConverter.convert(tag);
+    }
+
+    @Override
+    public List<Tag> getCertificateTagList(List<Tag> tagList) {
+        return tagLogicService.getCertificateTagList(tagList);
     }
 }

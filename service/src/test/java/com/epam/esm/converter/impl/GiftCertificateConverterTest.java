@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@SpringBootTest(classes = {GiftCertificateConverter.class, TagConverter.class})
+@SpringBootTest(classes = TagConverter.class)
 class GiftCertificateConverterTest {
 
     private static GiftCertificateConverter giftCertificateConverter;

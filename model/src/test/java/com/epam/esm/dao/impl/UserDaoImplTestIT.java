@@ -20,7 +20,7 @@ class UserDaoImplTestIT {
     private static final Long ID = 1L;
     private static final Integer PAGE_NUMBER = 1;
     private static final Integer PAGE_SIZE = 3;
-    private static final Integer USERS_LIST_SIZE = 2;
+    private static final Integer USERS_LIST_SIZE = 3;
 
     @Autowired
     UserDaoImplTestIT(UserDao userDao) {

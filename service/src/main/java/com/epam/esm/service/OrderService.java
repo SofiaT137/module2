@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService<T> extends RService<T>{
 
-    Order saveOrder(T entity);
+    Order insertOrder(T entity);
 
     void deleteOrder(long orderId);
 

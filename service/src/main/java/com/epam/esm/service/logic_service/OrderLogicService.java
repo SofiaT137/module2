@@ -1,16 +1,17 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.OrderDao;
-import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
+import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
+import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +25,24 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 public class OrderLogicService implements OrderService<Order> {
 
     private final OrderDao orderDao;
-    private final UserDao userDao;
-    private final GiftCertificateDao giftCertificateDao;
+    private UserService<User> userLogicService;
+    private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
 
     @Autowired
-    public OrderLogicService(OrderDao orderDao, UserDao userDao, GiftCertificateDao giftCertificateDao) {
+    public OrderLogicService(OrderDao orderDao) {
         this.orderDao = orderDao;
-        this.userDao = userDao;
-        this.giftCertificateDao = giftCertificateDao;
+    }
+
+    @Autowired
+    @Qualifier("userLogicService")
+    public void setUserLogicService(UserService<User> userLogicService) {
+        this.userLogicService = userLogicService;
+    }
+
+    @Autowired
+    @Qualifier("giftCertificateLogicService")
+    public void setGiftCertificateLogicService(GiftCertificateService<GiftCertificate> giftCertificateLogicService) {
+        this.giftCertificateLogicService = giftCertificateLogicService;
     }
 
     private static final String NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noOrderWithThatId";
@@ -42,14 +53,11 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     @Transactional
-    public Order saveOrder(Order entity) {
+    public Order insertOrder(Order entity) {
         if (entity.getUser().getId() != null) {
-            Optional<User> user = userDao.getById(entity.getUser().getId());
-            if (!user.isPresent()) {
-                throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE, NO_SUCH_ENTITY_CODE);
-            }
+            User user = userLogicService.getById(entity.getUser().getId());
             entity.setUser(null);
-            entity.setUser(user.get());
+            entity.setUser(user);
         }else{
             throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE, INCORRECT_ID);
         }
@@ -68,13 +76,9 @@ public class OrderLogicService implements OrderService<Order> {
         List<GiftCertificate> list = entity.getGiftCertificateList();
         entity.setGiftCertificateList(null);
         for (GiftCertificate giftCertificate : list) {
-            Optional<GiftCertificate> certificateById = giftCertificateDao.getById(giftCertificate.getId());
-            if (!certificateById.isPresent()){
-                throw new NoSuchEntityException(NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
-            }else{
-                entity.addGiftCertificateToOrder(certificateById.get());
-                price+=certificateById.get().getPrice();
-            }
+            GiftCertificate certificateById = giftCertificateLogicService.getById(giftCertificate.getId());
+                entity.addGiftCertificateToOrder(certificateById);
+                price+=certificateById.getPrice();
         }
         return price;
     }
@@ -105,7 +109,8 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     public List<Order> ordersByUserId(long userId,int pageSize, int pageNumber){
-        return orderDao.ordersByUserId(userId,pageSize,pageNumber);
+        User user = userLogicService.getById(userId);
+        return orderDao.ordersByUserId(user.getId(),pageSize,pageNumber);
     }
 
 }

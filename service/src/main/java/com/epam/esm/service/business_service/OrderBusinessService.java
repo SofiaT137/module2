@@ -29,9 +29,9 @@ public class OrderBusinessService implements OrderService<OrderDto> {
     }
 
     @Override
-    public Order saveOrder(OrderDto entity) {
+    public Order insertOrder(OrderDto entity) {
         Order convertOrder = orderConverter.convert(entity);
-        orderLogicService.saveOrder(convertOrder);
+        orderLogicService.insertOrder(convertOrder);
         return convertOrder;
     }
 

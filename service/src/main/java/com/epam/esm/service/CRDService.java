@@ -14,7 +14,7 @@ public interface CRDService<T> extends RService<T>{
      * The method provides service layer logic for inserting the entity object
      * @param entity The entity object
      */
-    void insert(T entity);
+    T insert(T entity);
 
 
     /**

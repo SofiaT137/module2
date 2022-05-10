@@ -1,20 +1,21 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.TagService;
 import com.epam.esm.validator.GiftCertificateValidator;
-import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +27,8 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.YOU_NOT_HAVE_PERMISSION
 public class GiftCertificateLogicService implements GiftCertificateService<GiftCertificate> {
 
     private final GiftCertificateDao giftCertificateDao;
-    private final TagDao tagDao;
     private final GiftCertificateValidator certificateValidator;
-    private final TagValidator tagValidator;
+    private TagService<Tag> tagLogicService;
 
     private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "cannotInsertThisCertificate";
     private static final String CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE = "noGiftCertificateWithThatId";
@@ -36,38 +36,30 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
 
     @Autowired
-    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao, TagDao tagDao, GiftCertificateValidator certificateValidator, TagValidator tagValidator) {
+    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao,
+                                       GiftCertificateValidator certificateValidator) {
         this.giftCertificateDao = giftCertificateDao;
-        this.tagDao = tagDao;
         this.certificateValidator = certificateValidator;
-        this.tagValidator = tagValidator;
+    }
+
+    @Autowired
+    @Qualifier("tagLogicService")
+    public void setTagLogicService(TagService<Tag> tagLogicService) {
+        this.tagLogicService = tagLogicService;
     }
 
     @Override
     @Transactional
-    public void insert(GiftCertificate entity) {
+    public GiftCertificate insert(GiftCertificate entity) {
         certificateValidator.validate(entity);
+        List<Tag> certificateTags = tagLogicService.getCertificateTagList(entity.getTags());
         entity.setTags(null);
-        addTagsToCertificate(entity);
+        certificateTags.forEach(entity::addTagToGiftCertificate);
         Optional<GiftCertificate> insertedCertificate = giftCertificateDao.insert(entity);
         if (!insertedCertificate.isPresent()){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
-    }
-
-    private void addTagsToCertificate(GiftCertificate entity){
-        List<Tag> entityHasTags = entity.getTags();
-        entityHasTags.forEach(tagValidator::validate);
-        for (Tag entityHasTag : entityHasTags) {
-            Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getName());
-            if (!currentTag.isPresent()){
-                currentTag = tagDao.insert(entityHasTag);
-                if (!currentTag.isPresent()){
-                    throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
-                }
-            }
-            entity.addTagToGiftCertificate(currentTag.get());
-        }
+       return insertedCertificate.get();
     }
 
     @Override
@@ -87,7 +79,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     @Transactional
-    public void update(Long id, GiftCertificate entity) {
+    public GiftCertificate update(Long id, GiftCertificate entity) {
         Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.getById(id);
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
@@ -95,6 +87,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
         certificateValidator.validate(entity);
         giftCertificateDao.update(entity.getDuration(),foundedCertificateById.get());
+        return entity;
     }
 
     private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){

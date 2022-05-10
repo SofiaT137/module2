@@ -35,7 +35,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Object> insertOrder(@RequestBody OrderDto order) {
-        orderLogicService.saveOrder(order);
+        orderLogicService.insertOrder(order);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

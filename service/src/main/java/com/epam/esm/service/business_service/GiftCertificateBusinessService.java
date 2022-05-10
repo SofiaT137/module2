@@ -34,9 +34,9 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public void insert(GiftCertificateDto entityDto){
+    public GiftCertificateDto insert(GiftCertificateDto entityDto){
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
-        giftCertificateLogicService.insert(entity);
+        return giftCertificateConverter.convert(giftCertificateLogicService.insert(entity));
     }
 
     @Override
@@ -57,9 +57,10 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public void update(Long id,GiftCertificateDto entity) {
+    public GiftCertificateDto update(Long id, GiftCertificateDto entity) {
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
-        giftCertificateLogicService.update(id,giftCertificateEntity);
+        GiftCertificate giftCertificate = giftCertificateLogicService.update(id,giftCertificateEntity);
+        return giftCertificateConverter.convert(giftCertificate);
     }
 
     @Override
