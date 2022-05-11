@@ -60,6 +60,7 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     public GiftCertificateDto update(Long id, GiftCertificateDto entity) {
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
         GiftCertificate giftCertificate = giftCertificateLogicService.update(id,giftCertificateEntity);
+        System.out.println(giftCertificate);
         return giftCertificateConverter.convert(giftCertificate);
     }
 

@@ -1,8 +1,11 @@
 package com.epam.esm.entity;
 
 import com.epam.esm.audit.EntityListener;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -18,6 +21,12 @@ public abstract class AbstractEntity<K> {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "operation")
+    private String operation;
+
+    @Column(name = "time_mark")
+    private LocalDateTime localDateTime;
+
     protected AbstractEntity(){}
 
     protected AbstractEntity(Long id) {
@@ -30,6 +39,22 @@ public abstract class AbstractEntity<K> {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return localDateTime;
+    }
+
+    public void setTimestamp(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class OrderDaoImpl implements OrderDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String FIND_ORDERS_BY_USER_ID_QUERY = "SELECT id,price,purchase_time,user_id FROM orders WHERE user_id = :userId";
+    private static final String FIND_ORDERS_BY_USER_ID_QUERY = "SELECT * FROM orders WHERE user_id = :userId";
     private static final String USER_ID = "userId";
 
     @Override

@@ -11,8 +11,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class GiftCertificateDaoImpl is implementation of interface GiftCertificateDao
@@ -82,7 +84,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String, String> mapWithFilters){
+    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String,
+            String> mapWithFilters){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
@@ -95,13 +98,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
         List<GiftCertificate> resultList = entityManager.createQuery(select).getResultList();
 
-        getSortForResultList(mapWithFilters,resultList);
+        resultList = getSortForResultList(mapWithFilters,resultList);
 
         return resultList;
     }
 
     private void getMainQuery(MultiValueMap<String, String> mapWithFilters,List<Predicate> predicates,
                               CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root){
+
         if(mapWithFilters.get(TAG_PARAMETER)!=null){
             addJoinByTagsPart(mapWithFilters,predicates,criteriaBuilder,root);
         }
@@ -113,13 +117,15 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
     }
 
-    private void getSortForResultList(MultiValueMap<String, String> mapWithFilters,List<GiftCertificate> resultList){
+    private List<GiftCertificate> getSortForResultList(MultiValueMap<String, String> mapWithFilters,
+                                                       List<GiftCertificate> resultList){
         if(mapWithFilters.get(SORT_BY_NAME) != null){
-            addSortingCollectionPart(mapWithFilters,SORT_BY_NAME,resultList);
+            resultList = addSortingCollectionPart(mapWithFilters,SORT_BY_NAME,resultList);
         }
         if(mapWithFilters.get(SORT_BY_DATE) != null) {
-            addSortingCollectionPart(mapWithFilters,SORT_BY_DATE,resultList);
+            resultList = addSortingCollectionPart(mapWithFilters,SORT_BY_DATE,resultList);
         }
+        return resultList;
     }
 
     private void addJoinByTagsPart(MultiValueMap<String, String> mapWithFilters,List<Predicate> predicates,
@@ -140,15 +146,18 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     private List<GiftCertificate> addSortingCollectionPart(MultiValueMap<String, String> mapWithFilters,
-                                                           String sortBy, List<GiftCertificate> resultList){
+                                                           String sortBy,List<GiftCertificate> resultList){
+
+         List<GiftCertificate> result = resultList.stream()
+                .sorted(Comparator.comparing(!sortBy.equals(SORT_BY_NAME) ? gs -> gs.getCreateDate()
+                        .format(DateTimeFormatter.ISO_DATE_TIME) : GiftCertificate::getGiftCertificateName
+                )).collect(Collectors.toList());
+
         if(mapWithFilters.get(sortBy).get(0).equalsIgnoreCase(ASC)){
-            return resultList.stream()
-                    .sorted(Comparator.comparing(GiftCertificate::getGiftCertificateName))
-                    .collect(Collectors.toList());
+            return result;
         }else{
-            return resultList.stream()
-                    .sorted(Comparator.comparing(GiftCertificate::getGiftCertificateName)
-                            .reversed()).collect(Collectors.toList());
+            Collections.reverse(result);
+            return result;
         }
     }
 }

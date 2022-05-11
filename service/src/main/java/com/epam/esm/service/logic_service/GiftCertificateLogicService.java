@@ -52,9 +52,11 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Transactional
     public GiftCertificate insert(GiftCertificate entity) {
         certificateValidator.validate(entity);
-        List<Tag> certificateTags = tagLogicService.getCertificateTagList(entity.getTags());
-        entity.setTags(null);
+        List<Tag> certificateTags = tagLogicService.getCertificateTagList(entity.getTagList());
+        entity.setTagList(null);
         certificateTags.forEach(entity::addTagToGiftCertificate);
+        entity.setCreateDate(LocalDateTime.now());
+        entity.setLastUpdateDate(LocalDateTime.now());
         Optional<GiftCertificate> insertedCertificate = giftCertificateDao.insert(entity);
         if (!insertedCertificate.isPresent()){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
@@ -84,17 +86,22 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
+        entity.setTagList(null);
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
         certificateValidator.validate(entity);
-        giftCertificateDao.update(entity.getDuration(),foundedCertificateById.get());
-        return entity;
+        Optional<GiftCertificate> updatedEntity = giftCertificateDao.update(entity.getDuration(),
+                foundedCertificateById.get());
+        if (!updatedEntity.isPresent()){
+            throw new NoSuchEntityException("no updation",NO_SUCH_ENTITY_CODE);
+        }
+        return updatedEntity.get();
     }
 
     private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
         if (entity.getPrice() != null || entity.getDescription()!= null
             || entity.getGiftCertificateName()!= null || entity.getCreateDate()!=null
-            || entity.getLastUpdateDate()!=null || entity.getTags()!=null){
-            throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE
+            || entity.getLastUpdateDate()!=null || entity.getTagList()!=null){
+           throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE
                     ,YOU_NOT_HAVE_PERMISSION_ENTITY_CODE);
         }
     }

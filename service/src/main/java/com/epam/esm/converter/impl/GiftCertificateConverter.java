@@ -45,13 +45,9 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         if (dateTime != null){
             date = LocalDateTime.parse(dateTime);
         } else {
-            date = getCurrentDateTime();
+            date = null;
         }
         return date;
-    }
-
-    private LocalDateTime getCurrentDateTime(){
-        return LocalDateTime.now();
     }
 
     @Override
@@ -59,7 +55,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         String createDate = value.getCreateDate().format(formatter);
         String lastUpdateDate = value.getLastUpdateDate().format(formatter);
-        List<Tag> valueTagList = value.getTags();
+        List<Tag> valueTagList = value.getTagList();
         List<TagDto> valueTagDtoList = valueTagList.stream().map(tagConverter::convert).collect(Collectors.toList());
         return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
                 value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);

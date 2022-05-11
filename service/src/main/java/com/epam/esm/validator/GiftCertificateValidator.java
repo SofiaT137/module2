@@ -26,7 +26,7 @@ public final class GiftCertificateValidator extends Validator<GiftCertificate> {
     private static final Double MAX_GIFT_CERTIFICATE_PRICE = 9999.99;
     private static final Integer MAX_DURATION = 90;
     private static final Integer MIN_DURATION = 1;
-    private final List<String> allowedKeys = Arrays.asList("tag_name", "partName", "partDescription", "sortByNameASC", "sortByCreationDateASC", "sortByNameDESC", "sortByCreationDateDESC");
+    private final List<String> allowedKeys = Arrays.asList("tag_name", "partName", "partDescription", "sortByName", "sortByCreationDate");
 
     private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
     private static final String INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION = "thisGiftCertificateLengthIsForbidden!";

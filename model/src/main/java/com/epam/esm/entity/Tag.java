@@ -2,10 +2,10 @@ package com.epam.esm.entity;
 
 import org.hibernate.envers.Audited;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,6 +17,14 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "tag_name")
     private String name;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
+            CascadeType.DETACH,CascadeType.REFRESH})
+    @JoinTable(
+            name = "gift_certificate_tag",
+            joinColumns = @JoinColumn(name = "tag_id"),
+            inverseJoinColumns = @JoinColumn(name = "gift_certificate_id"))
+    private List<GiftCertificate> giftCertificates;
 
     public Tag(){}
 
@@ -30,6 +38,14 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<GiftCertificate> getGiftCertificates() {
+        return giftCertificates;
+    }
+
+    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
+        this.giftCertificates = giftCertificates;
     }
 
     @Override

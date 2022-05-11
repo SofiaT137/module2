@@ -19,7 +19,8 @@ public class Order extends AbstractEntity<Long> implements Serializable {
     @Column(name = "purchase_time")
     private LocalDateTime purchaseTime;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
+            CascadeType.DETACH,CascadeType.REFRESH})
     @JoinTable(
             name = "order_certificate",
             joinColumns = @JoinColumn(name = "order_id"),

@@ -10,6 +10,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -53,7 +54,7 @@ class GiftCertificateDaoImplTestIT {
                 GIFT_CERTIFICATE_PRICE,
                 GIFT_CERTIFICATE_DURATION,
                 DATA,
-                DATA);
+                DATA,new ArrayList<>());
         giftCertificateDao.insert(giftCertificate);
         Optional<GiftCertificate> insertedCertificate = giftCertificateDao.getById(NEW_CERTIFICATES_ID);
         if (!insertedCertificate.isPresent()){

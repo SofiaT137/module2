@@ -1,37 +1,25 @@
 package com.epam.esm.audit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.epam.esm.entity.AbstractEntity;
 
 import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 public class EntityListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityListener.class);
-
     @PrePersist
-    public void onPrePersist(Object object) {
-        audit("INSERT " + object);
+    public void onPrePersist(AbstractEntity<Long> abstractEntity) {
+        audit("INSERT",abstractEntity);
     }
-
     @PreUpdate
-    public void onPreUpdate(Object object) {
-        audit("UPDATE " + object);
+    public void onPreUpdate(AbstractEntity<Long> abstractEntity) {
+        audit("UPDATE", abstractEntity);
     }
 
-    @PreRemove
-    public void onPreRemove(Object object) {
-        audit("DELETE " + object);
+    private void audit(String operation, AbstractEntity<Long> abstractEntity) {
+        abstractEntity.setOperation(operation);
+        abstractEntity.setTimestamp(LocalDateTime.now());
     }
 
-    private void audit(String operation) {
-        LOGGER.info("Operation: " + operation + "; Data: " + getLocalDateTime());
-    }
-
-    private LocalDateTime getLocalDateTime(){
-        return LocalDateTime.now();
-    }
 }

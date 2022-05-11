@@ -96,7 +96,7 @@ class TagLogicServiceTest {
     void getCertificateTagList() {
         Mockito.when(tagDao.findTagByTagName("shark")).thenReturn(Optional.of(tag));
         Mockito.when(tagDao.findTagByTagName("joy")).thenReturn(Optional.of(tag2));
-        List<Tag> tagList = tagLogicService.getCertificateTagList(giftCertificate.getTags());
+        List<Tag> tagList = tagLogicService.getCertificateTagList(giftCertificate.getTagList());
         assertEquals(2,tagList.size());
     }
 }

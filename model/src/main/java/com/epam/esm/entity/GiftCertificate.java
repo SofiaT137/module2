@@ -38,20 +38,28 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
+            CascadeType.DETACH,CascadeType.REFRESH})
     @JoinTable(
             name = "gift_certificate_tag",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private List<Tag> tags;
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tagList;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
+            CascadeType.DETACH,CascadeType.REFRESH})
+    @JoinTable(
+            name = "order_certificate",
+            joinColumns = @JoinColumn(name = "gift_certificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orderList;
 
     public GiftCertificate() {}
 
     public GiftCertificate(Long id) {super(id);}
 
     public GiftCertificate(Long id, String giftCertificateName, String description, Double price,
-                           Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+                           Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate,List<Tag> tagList) {
         super(id);
         this.giftCertificateName = giftCertificateName;
         this.description = description;
@@ -59,34 +67,25 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
         this.duration = duration;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
+        this.tagList = tagList;
     }
 
     public GiftCertificate(String name, String description, Double price, Integer duration,
-                           LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+                           LocalDateTime createDate, LocalDateTime lastUpdateDate,List<Tag> tagList) {
         this.giftCertificateName = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
+        this.tagList = tagList;
     }
 
-    public GiftCertificate(String name, String description, Double price, Integer duration,
-                           LocalDateTime createDate, LocalDateTime lastUpdateDate) {
-        this.giftCertificateName = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-    }
     public void addTagToGiftCertificate(Tag tag){
-        if (tags == null){
-            tags = new ArrayList<>();
+        if (tagList == null){
+            tagList = new ArrayList<>();
         }
-        tags.add(tag);
+        tagList.add(tag);
     }
 
     public String getGiftCertificateName() {
@@ -137,12 +136,20 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public List<Tag> getTagList() {
+        return tagList;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
     @Override
@@ -151,12 +158,22 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
         if (!(o instanceof GiftCertificate)) return false;
         if (!super.equals(o)) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return Objects.equals(getGiftCertificateName(), that.getGiftCertificateName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getPrice(), that.getPrice()) && Objects.equals(getDuration(), that.getDuration()) && Objects.equals(getCreateDate(), that.getCreateDate()) && Objects.equals(tags, that.tags);
+        return Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
+                && Objects.equals(getDescription(), that.getDescription())
+                && Objects.equals(getPrice(), that.getPrice())
+                && Objects.equals(getDuration(), that.getDuration())
+                && Objects.equals(getCreateDate(), that.getCreateDate());
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getGiftCertificateName(), getDescription(), getPrice(), getDuration(), getCreateDate(), tags);
+        return Objects.hash(super.hashCode(),
+                getGiftCertificateName(),
+                getDescription(),
+                getPrice(),
+                getDuration(),
+                getCreateDate());
     }
 
     @Override

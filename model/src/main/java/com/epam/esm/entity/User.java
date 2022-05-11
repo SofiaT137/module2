@@ -50,6 +50,10 @@ public class User extends AbstractEntity<Long> implements Serializable {
         order.setUser(this);
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

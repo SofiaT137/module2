@@ -39,7 +39,7 @@ class GiftCertificateLogicServiceTest {
     GiftCertificate giftCertificate = new GiftCertificate(1L,"abc","abc"
             ,50.00,13, LocalDateTime.now(),LocalDateTime.now(),tagList);
     GiftCertificate giftCertificateForUpdate = new GiftCertificate(1L,null,null
-            ,null,13, null,null,null);
+            ,null,15, null,null,null);
     GiftCertificate updatedGiftCertificate = new GiftCertificate(1L,"abc","abc"
             ,50.00,30, LocalDateTime.now(),LocalDateTime.now(),tagList);
 
@@ -50,7 +50,7 @@ class GiftCertificateLogicServiceTest {
 
     @Test
     void insert() {
-        Mockito.when(tagLogicService.getCertificateTagList(giftCertificate.getTags())).thenReturn(tagList);
+        Mockito.when(tagLogicService.getCertificateTagList(giftCertificate.getTagList())).thenReturn(tagList);
         Mockito.when(giftCertificateDao.insert(giftCertificate)).thenReturn(Optional.of(giftCertificate));
         GiftCertificate giftCertificate1 = giftCertificateLogicService.insert(giftCertificate);
         assertEquals(giftCertificate,giftCertificate1);
@@ -78,6 +78,17 @@ class GiftCertificateLogicServiceTest {
         giftCertificateLogicService.deleteByID(giftCertificate.getId());
         Mockito.verify(giftCertificateDao, Mockito.times(1)).deleteByID(giftCertificate.getId());
     }
+
+    @Test
+    void update(){
+        Mockito.when(giftCertificateDao.getById(1L))
+                .thenReturn(Optional.of(giftCertificate));
+        Mockito.when(giftCertificateDao.update(15,giftCertificate))
+                .thenReturn(Optional.of(updatedGiftCertificate));
+        GiftCertificate resultCertificate = giftCertificateLogicService.update(1L,giftCertificateForUpdate);
+        assertEquals(updatedGiftCertificate,resultCertificate);
+    }
+
     @Test
     void getQueryWithConditions() {
         MultiValueMap<String,String> map = new LinkedMultiValueMap<>();

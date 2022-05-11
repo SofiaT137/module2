@@ -22,14 +22,14 @@ public class TagDaoImpl implements TagDao  {
     private EntityManager entityManager;
 
     private static final String ID_COLUMN = "id";
-    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "(SELECT t.id,t.tag_name, g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
+    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "(SELECT t.id,t.tag_name,t.operation,t.time_mark, g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
             "FROM tags AS t inner join gift_certificate_tag AS g_cer_tag on t.id=g_cer_tag.tag_id "+
             "INNER join gift_certificates AS g_cer On g_cer_tag.gift_certificate_id=g_cer.id "+
             "INNER join order_certificate AS ord_cer on g_cer.id = ord_cer.gift_certificate_id "+
             "INNER join orders AS ord ON ord.id=ord_cer.order_id where user_id = :userId "+
             "group by tag_name order by count desc, sum desc) limit 1 ";
 
-    private static final String FIND_TAG_BY_NAME_QUERY = "SELECT id, tag_name FROM tags WHERE tag_name = :tagName";
+    private static final String FIND_TAG_BY_NAME_QUERY = "SELECT * FROM tags AS t WHERE tag_name = :tagName";
     private static final String GET_ALL_TAGS_QUERY = "from Tag order by id";
     private static final String USER_ID = "userId";
     private static final String TAG_NAME = "tagName";

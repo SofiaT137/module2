@@ -77,8 +77,8 @@ public class TagController {
         return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/filter/{tagName}")
-    public ResponseEntity<Object> findTagByName(@PathVariable String tagName) {
+    @GetMapping("/filter")
+    public ResponseEntity<Object> findTagByName(@RequestParam String tagName) {
         TagDto tagDto = tagBusinessService.findTagByTagName(tagName);
         tagDtoHateoas.addLinks(tagDto);
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
