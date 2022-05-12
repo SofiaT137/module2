@@ -7,4 +7,5 @@ import java.util.List;
 public interface OrderDao extends CRDDao<Order> {
 
     List<Order> ordersByUserId(long userId, int pageSize, int pageNumber);
+
 }

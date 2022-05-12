@@ -71,7 +71,8 @@ public class TagController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllTags(@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public ResponseEntity<Object> getAllTags(@RequestParam(defaultValue = "5",required = false) int pageSize,
+                                             @RequestParam (defaultValue = "1", required = false) int pageNumber){
         List<TagDto> tagDtoList = tagBusinessService.getAll(pageSize,pageNumber);
         tagDtoList.forEach(tagDtoHateoas::addLinks);
         return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
@@ -87,10 +88,9 @@ public class TagController {
     /**
      * Method deleteTagByID deletes Tag entity by its id
      * @param id Long id
-     * @return Response entity with HttpStatus "FOUND"
+     * @return Response entity with HttpStatus "NO_CONTENT"
      */
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Object> deleteTagByID(@PathVariable long id) {
         tagBusinessService.deleteByID(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

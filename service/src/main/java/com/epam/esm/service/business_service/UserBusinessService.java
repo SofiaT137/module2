@@ -39,4 +39,10 @@ public class UserBusinessService implements UserService<UserDto> {
         List<User> userList = userLogicService.getAll(pageSize, pageNumber);
         return userList.stream().map(userConverter::convert).collect(Collectors.toList());
     }
+
+    @Override
+    public UserDto insert(UserDto entity) {
+        User user = userConverter.convert(entity);
+        return userConverter.convert(userLogicService.insert(user));
+    }
 }

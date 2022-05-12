@@ -30,7 +30,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String NAME_COLUMN = "name";
     private static final String TAG_PARAMETER = "tag_name";
     private static final String PERCENT = "%";
-    private static final String JOIN_TAGS = "tags";
+    private static final String JOIN_TAGS = "tagList";
     private static final String PART_OF_CERTIFICATE_NAME = "partName";
     private static final String PART_OF_CERTIFICATE_DESCRIPTION = "partDescription";
     private static final String GIFT_CERTIFICATE_NAME = "giftCertificateName";

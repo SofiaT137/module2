@@ -14,6 +14,10 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.name = name;
     }
 
+    public UserDto(String name) {
+        this.name = name;
+    }
+
     public UserDto() {
     }
 

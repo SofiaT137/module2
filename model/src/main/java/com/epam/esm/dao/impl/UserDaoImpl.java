@@ -30,4 +30,14 @@ public class UserDaoImpl implements UserDao {
         query.setMaxResults(pageSize);
         return query.getResultList();
     }
+
+    @Override
+    public Optional<User> insert(User entity) {
+        try {
+            entityManager.persist(entity);
+        }catch (Exception exception){
+            entity.setId(null);
+        }
+        return Optional.of(entity);
+    }
 }

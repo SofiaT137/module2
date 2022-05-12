@@ -57,7 +57,8 @@ public class GiftCertificateController {
      * @return List of GiftCertificateDTO entity
      */
     @GetMapping
-    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "5",required = false) int pageSize,
+                                                         @RequestParam (defaultValue = "1", required = false) int pageNumber){
         List<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageSize,pageNumber);
         giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
         return new ResponseEntity<>(giftCertificates,HttpStatus.OK);

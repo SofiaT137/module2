@@ -47,7 +47,9 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "5",required = false) int pageSize,
+                                                         @RequestParam (defaultValue = "1", required = false)
+                                                                 int pageNumber){
         List<OrderDto> orderDtoList = orderLogicService.getAll(pageSize,pageNumber);
         orderDtoList.forEach(orderDtoHateoas::addLinks);
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
@@ -60,7 +62,9 @@ public class OrderController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<Object> ordersByUserId(@PathVariable long userId,@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public ResponseEntity<Object> ordersByUserId(@PathVariable long userId,
+                                                 @RequestParam(defaultValue = "5",required = false) int pageSize,
+                                                 @RequestParam (defaultValue = "1", required = false) int pageNumber){
         List<OrderDto> orderDtoList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
         orderDtoList.forEach(orderDtoHateoas::addLinks);
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
