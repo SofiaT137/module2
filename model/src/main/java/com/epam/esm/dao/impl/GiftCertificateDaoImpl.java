@@ -12,13 +12,16 @@ import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Class GiftCertificateDaoImpl is implementation of interface GiftCertificateDao
- * This class is intended for work with 'gift certificate' and 'gift_certificate_tag' tables
+ * This class is intended for work with GiftCertificate entity
  */
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {

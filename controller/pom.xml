@@ -21,7 +21,6 @@
     <dependencies>
 
         <!-- Internal dependencies -->
-
         <dependency>
             <groupId>com.epam.esm</groupId>
             <artifactId>service</artifactId>

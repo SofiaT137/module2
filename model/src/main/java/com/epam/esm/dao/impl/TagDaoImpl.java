@@ -10,10 +10,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  * Class TagDaoImpl is implementation of interface TagDao
- * This class is intended for work with 'tag' and 'gift_certificate_tag' tables
+ * This class is intended for work with Tag entity
  */
 @Repository
 public class TagDaoImpl implements TagDao  {

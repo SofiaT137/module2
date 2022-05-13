@@ -1,10 +1,9 @@
 package com.epam.esm.dao;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
- * CRDDao interface features CRD DAO functionality
+ * CRDDao interface features CRD DAO functionality and implements RDao functionality
  * @param <T> The entity object from table
  */
 public interface CRDDao<T> extends RDao<T>{

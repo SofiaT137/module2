@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Order class extends AbstractEntity and presents creation of the Order entity
+ */
 @Entity
 @Table(name = "orders")
 public class Order extends AbstractEntity<Long> implements Serializable {

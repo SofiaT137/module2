@@ -2,12 +2,18 @@ package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * User class extends AbstractEntity and presents creation of the User entity
+ */
 @Entity
 @Table(name = "users")
 public class User extends AbstractEntity<Long> implements Serializable {

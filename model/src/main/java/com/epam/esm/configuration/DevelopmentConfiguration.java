@@ -18,6 +18,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 
+/**
+ * Class DevelopmentConfiguration is a configuration class which enables to connect to EmbeddedDatabaseType.H2.
+ */
 @Profile("dev")
 @Configuration
 @ComponentScan("com.epam.esm")
@@ -25,32 +28,49 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class DevelopmentConfiguration {
 
+    /**
+     * Method getDataSource is a factory for connections to the physical databases
+     * @return DataSource entity (The connection factory to EmbeddedDatabaseType.H2)
+     */
     @Bean
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
     }
 
+    /**
+     * Method getEntityManagerFactory helps to get the EntityManagerFactory entity
+     * @return EntityManagerFactory entity
+     */
     @Bean
-    public EntityManagerFactory entityManagerFactory(){
+    public EntityManagerFactory getEntityManagerFactory(){
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.epam.esm");
-        factory.setDataSource(dataSource());
+        factory.setDataSource(getDataSource());
         factory.afterPropertiesSet();
         return factory.getObject();
     }
 
+    /**
+     * Method getEntityManager helps to get the EntityManager entity
+     * @param entityManagerFactory EntityManagerFactory entity
+     * @return EntityManager entity
+     */
     @Bean
-    public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
+    public EntityManager getEntityManager(EntityManagerFactory entityManagerFactory) {
         return entityManagerFactory.createEntityManager();
     }
 
+    /**
+     * Method getTransactionManager helps to get the TransactionManager entity
+     * @return PlatformTransactionManager entity
+     */
     @Bean
-    public PlatformTransactionManager transactionManager(){
+    public PlatformTransactionManager getTransactionManager(){
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory());
+        txManager.setEntityManagerFactory(getEntityManagerFactory());
         return txManager;
     }
 }

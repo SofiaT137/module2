@@ -1,8 +1,6 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.entity.Tag;
-import com.epam.esm.entity.User;
-
 import java.util.Optional;
 
 /**
@@ -10,7 +8,18 @@ import java.util.Optional;
  */
 public interface TagDao extends CRDDao<Tag> {
 
+    /**
+     * Method findTheMostWidelyUsedUserTagWithHighersOrderCost searches the widely used user tag with higher
+     * order cost
+     * @param userId User id (Long value)
+     * @return Optional of Tag
+     */
     Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId);
 
+    /**
+     * Method findTagByTagName searches tag by its name
+     * @param name String tag name
+     * @return Optional of Tag
+     */
     Optional<Tag> findTagByTagName(String name);
 }

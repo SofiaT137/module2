@@ -42,13 +42,4 @@ public class UserLogicService implements UserService<User> {
         return userDao.getAll(pageSize,pageNumber);
     }
 
-    @Override
-    @Transactional
-    public User insert(User entity) {
-        Optional<User> insertedUser = userDao.insert(entity);
-        if (!insertedUser.isPresent()){
-            throw new CannotInsertEntityException("CANNOT_INSERT_THIS_TAG_MESSAGE",CANNOT_INSERT_ENTITY_CODE);
-        }
-        return insertedUser.get();
-    }
 }

@@ -1,6 +1,5 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.RDao;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Repository;
@@ -11,8 +10,14 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class UserDaoImpl is implementation of interface UserDao
+ * This class is intended for work with User entity
+ */
 @Repository
 public class UserDaoImpl implements UserDao {
+
+    private static final String GET_ALL_PART_QUERY = "from User order by id";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -25,19 +30,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAll(int pageSize,int pageNumber) {
-        Query query = entityManager.createQuery("from User order by id");
+        Query query = entityManager.createQuery(GET_ALL_PART_QUERY);
         query.setFirstResult((pageNumber-1) * pageSize);
         query.setMaxResults(pageSize);
         return query.getResultList();
-    }
-
-    @Override
-    public Optional<User> insert(User entity) {
-        try {
-            entityManager.persist(entity);
-        }catch (Exception exception){
-            entity.setId(null);
-        }
-        return Optional.of(entity);
     }
 }

@@ -10,6 +10,10 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class OrderDaoImpl is implementation of interface OrderDao
+ * This class is intended for work with Order entity
+ */
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
@@ -18,6 +22,7 @@ public class OrderDaoImpl implements OrderDao {
 
     private static final String FIND_ORDERS_BY_USER_ID_QUERY = "SELECT * FROM orders WHERE user_id = :userId";
     private static final String USER_ID = "userId";
+    private static final String GET_ALL_PART_QUERY = "from Order order by id";
 
     @Override
     public Optional<Order> insert(Order entity) {
@@ -39,12 +44,11 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getAll(int pageSize,int pageNumber) {
-        Query query = entityManager.createQuery("from Order order by id");
+        Query query = entityManager.createQuery(GET_ALL_PART_QUERY);
         query.setFirstResult((pageNumber-1) * pageSize);
         query.setMaxResults(pageSize);
         return query.getResultList();
     }
-
 
     @Override
     public List<Order> ordersByUserId(long userId, int pageSize, int pageNumber) {

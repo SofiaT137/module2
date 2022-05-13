@@ -26,13 +26,7 @@
             <version>8.0.26</version>
         </dependency>
 
-        <!--The library that helps us to easily achieve audit functionality-->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-envers</artifactId>
-            <version>5.6.5.Final</version>
-        </dependency>
-
+        <!--H2 is an open-source lightweight Java database-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
