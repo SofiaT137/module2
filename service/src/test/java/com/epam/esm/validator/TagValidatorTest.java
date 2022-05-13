@@ -18,7 +18,9 @@ class TagValidatorTest {
     private static final Long CORRECT_ID = 9L;
     private static final Long INCORRECT_ID = -9L;
     private static final String CORRECT_NAME = "happiness";
-    private static final String INCORRECT_NAME = "$52-vmt[****";
+    private static final String INCORRECT_NAME = "5";
+
+
     @Test
     void validateIncorrectId() {
         assertThrows(ValidatorException.class,()-> tagValidator.checkID(INCORRECT_ID));
@@ -30,12 +32,12 @@ class TagValidatorTest {
     }
 
     @Test
-    void validateIncorrectName() {
+    void validateIncorrectNameLength() {
         assertThrows(ValidatorException.class,()->tagValidator.validate(new Tag(INCORRECT_NAME)));
     }
 
     @Test
-    void validateCorrectName() {
+    void validateCorrectNameLength() {
         assertDoesNotThrow(()->tagValidator.validate(new Tag(CORRECT_NAME)));
     }
 }

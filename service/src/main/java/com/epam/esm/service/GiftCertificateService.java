@@ -5,7 +5,9 @@ import org.springframework.util.MultiValueMap;
 import java.util.List;
 
 /**
- * GiftCertificateService interface features CRUD Service functionality and extends CRUDService
+ * GiftCertificateService interface features GiftCertificate service functionality
+ * and extends CRUDService functionality
+ * @param <T> The entity object
  */
 public interface GiftCertificateService<T> extends CRUDService<T> {
     /**
@@ -14,4 +16,5 @@ public interface GiftCertificateService<T> extends CRUDService<T> {
      * @return The GiftCertificateDto object
      */
     List<T> getQueryWithConditions(MultiValueMap<String,String> mapWithFilters);
+
 }

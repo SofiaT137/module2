@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class UserBusinessService is implementation of the UserService interface
+ * The class presents service business logic for User entity
+ */
 @Service("userBusinessService")
 public class UserBusinessService implements UserService<UserDto> {
 

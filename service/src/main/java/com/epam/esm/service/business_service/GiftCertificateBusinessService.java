@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class GiftCertificateServiceImpl is implementation of interface GiftCertificateService
- * The class presents service layer logic for GiftCertificateService entity
+ * Class GiftCertificateBusinessService is implementation of the GiftCertificateService interface
+ * The class presents service business logic for GiftCertificate entity
  */
 @Service("giftCertificateBusinessService")
 public class GiftCertificateBusinessService implements GiftCertificateService<GiftCertificateDto> {
@@ -60,7 +60,6 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     public GiftCertificateDto update(Long id, GiftCertificateDto entity) {
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
         GiftCertificate giftCertificate = giftCertificateLogicService.update(id,giftCertificateEntity);
-        System.out.println(giftCertificate);
         return giftCertificateConverter.convert(giftCertificate);
     }
 

@@ -14,6 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * Class OrderConverter presents converter for Order and OrderDto entities
+ */
 @Component
 public class OrderConverter implements Converter<Order, OrderDto> {
 
@@ -27,18 +31,9 @@ public class OrderConverter implements Converter<Order, OrderDto> {
     @Override
     public Order convert(OrderDto value) {
         Order order = new Order();
-        LocalDateTime localDateTime = null;
-        double price = 0.0;
-        if (value.getPrice() != null){
-            price = value.getPrice();
-        }
-        if (value.getPurchaseTime() != null){
-            localDateTime = LocalDateTime.parse(value.getPurchaseTime());
-        }
-        List<GiftCertificate> giftCertificates = value.getGiftCertificateDto()
-                .stream()
-                .map(giftCertificateConverter::convert)
-                .collect(Collectors.toList());
+        LocalDateTime localDateTime = value.getPurchaseTime() != null ? parseLocalDateTime(value): null;
+        double price = value.getPrice() != null ? value.getPrice() : 0.0;
+        List<GiftCertificate> giftCertificates = convertGiftCertificateDtoList(value.getGiftCertificateDto());
         User user = getNewUser(value.getUserId());
         order.setPrice(price);
         order.setPurchaseTime(localDateTime);
@@ -47,24 +42,42 @@ public class OrderConverter implements Converter<Order, OrderDto> {
         return order;
     }
 
+    private LocalDateTime parseLocalDateTime(OrderDto value){
+        return LocalDateTime.parse(value.getPurchaseTime());
+    }
+
     private User getNewUser(Long userId){
         User user = new User();
         user.setId(userId);
         return user;
     }
 
+    private List<GiftCertificate> convertGiftCertificateDtoList(List<GiftCertificateDto> list){
+        return list.stream()
+                .map(giftCertificateConverter::convert)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public OrderDto convert(Order value) {
         Long id = value.getId();
         double price = value.getPrice();
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        String purchaseDate = value.getPurchaseTime().format(formatter);
-        List<GiftCertificateDto> giftCertificates = value.getGiftCertificateList()
-                .stream()
-                .map(giftCertificateConverter::convert)
-                .collect(Collectors.toList());
+        LocalDateTime localDateTime = value.getPurchaseTime();
+        String purchaseDate =  localDateTime != null ? getDateInStringFormat(value.getPurchaseTime()): null;
+        List<GiftCertificateDto> giftCertificates = convertGiftCertificateList(value.getGiftCertificateList());
         long userId = value.getUser().getId();
         return new OrderDto(id,price,purchaseDate,giftCertificates,userId);
+    }
+
+    private String getDateInStringFormat(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return localDateTime.format(formatter);
+    }
+
+    private List<GiftCertificateDto> convertGiftCertificateList(List<GiftCertificate> list){
+        return list.stream()
+                .map(giftCertificateConverter::convert)
+                .collect(Collectors.toList());
     }
 }
 

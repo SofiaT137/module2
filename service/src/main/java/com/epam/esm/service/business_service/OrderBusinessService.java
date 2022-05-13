@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class OrderBusinessService is implementation of the OrderService interface
+ * The class presents service business logic for Order entity
+ */
 @Service("orderBusinessService")
 public class OrderBusinessService implements OrderService<OrderDto> {
 
@@ -29,15 +33,15 @@ public class OrderBusinessService implements OrderService<OrderDto> {
     }
 
     @Override
-    public Order insertOrder(OrderDto entity) {
+    public OrderDto insert(OrderDto entity) {
         Order convertOrder = orderConverter.convert(entity);
-        orderLogicService.insertOrder(convertOrder);
-        return convertOrder;
+        orderLogicService.insert(convertOrder);
+        return orderConverter.convert(convertOrder);
     }
 
     @Override
-    public void deleteOrder(long orderId) {
-        orderLogicService.deleteOrder(orderId);
+    public void deleteByID(long id) {
+        orderLogicService.deleteByID(id);
     }
 
     @Override
@@ -58,4 +62,5 @@ public class OrderBusinessService implements OrderService<OrderDto> {
         List<Order> orderList = orderLogicService.getAll(pageSize, pageNumber);
         return orderList.stream().map(orderConverter::convert).collect(Collectors.toList());
     }
+
 }

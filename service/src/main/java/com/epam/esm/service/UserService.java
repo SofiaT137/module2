@@ -1,7 +1,9 @@
 package com.epam.esm.service;
 
-import com.epam.esm.entity.AbstractEntity;
-import com.epam.esm.entity.User;
 
+/**
+ * UserService interface features User Service functionality and implements RService functionality
+ * @param <T> The entity object
+ */
 public interface UserService<T> extends RService<T>{
 }

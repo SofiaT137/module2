@@ -1,13 +1,12 @@
 package com.epam.esm.dto;
 
-import com.epam.esm.entity.Tag;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Class GiftCertificateDto extends AbstractDto and helps to create GiftCertificateDto entity
+ * Class GiftCertificateDto extends RepresentationModel and helps to create GiftCertificateDto entity
  */
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 

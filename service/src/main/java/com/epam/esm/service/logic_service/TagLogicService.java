@@ -20,8 +20,8 @@ import java.util.Optional;
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
 /**
- * Class TagServiceImpl is implementation of interface TagService
- * The class presents service layer logic for Tag entity
+ * Class TagLogicService is implementation of interface TagService
+ * The class presents service logic layer for Tag entity
  */
 @Service("tagLogicService")
 public class TagLogicService implements TagService<Tag> {

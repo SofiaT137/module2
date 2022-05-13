@@ -23,6 +23,10 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CO
 import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
 import static com.epam.esm.exceptions.ExceptionErrorCode.YOU_NOT_HAVE_PERMISSION_ENTITY_CODE;
 
+/**
+ * Class GiftCertificateLogicService is implementation of interface GiftCertificateService
+ * The class presents service logic layer for GiftCertificate entity
+ */
 @Service("giftCertificateLogicService")
 public class GiftCertificateLogicService implements GiftCertificateService<GiftCertificate> {
 

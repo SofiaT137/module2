@@ -1,21 +1,21 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.dao.UserDao;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
-import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
 import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
 
+/**
+ * Class UserLogicService is implementation of interface UserService
+ * The class presents service logic layer for User entity
+ */
 @Service("userLogicService")
 public class UserLogicService implements UserService<User> {
 

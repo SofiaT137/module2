@@ -16,14 +16,11 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_TAG_NAME;
 @Component
 public final class TagValidator extends Validator<Tag>{
 
-    private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
-
     private static final String INCORRECT_TAG_LENGTH_EXCEPTION = "thisTagLengthIsForbidden!";
-    private static final String INCORRECT_TAG_NAME_EXCEPTION = "thisTagNameIsForbidden!";
     private static final String TAG_NAME = " Tag name: ";
 
     private static final Integer MIN_TAG_NAME_LENGTH = 2;
-    private static final Integer MAX_TAG_NAME_LENGTH = 30;
+    private static final Integer MAX_TAG_NAME_LENGTH = 35;
 
     @Override
     public void validate(Tag tag) throws ValidatorException {
@@ -33,11 +30,6 @@ public final class TagValidator extends Validator<Tag>{
     private static void validateName(final String name) throws ValidatorException {
         if (name.length() < MIN_TAG_NAME_LENGTH || name.length() > MAX_TAG_NAME_LENGTH){
             throw new ValidatorException(INCORRECT_TAG_LENGTH_EXCEPTION,INCORRECT_TAG_LENGTH);
-        }
-        Pattern namePattern = Pattern.compile(TAG_NAME_REGEX);
-        Matcher matcher = namePattern.matcher(name);
-        if(!matcher.find()){
-            throw new ValidatorException(INCORRECT_TAG_NAME_EXCEPTION + TAG_NAME + name,INCORRECT_TAG_NAME);
         }
     }
 }

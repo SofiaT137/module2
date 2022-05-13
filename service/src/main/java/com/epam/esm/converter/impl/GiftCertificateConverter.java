@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * Class GiftCertificateConverter presents converter for GiftCertificate and GiftCertificateDto entities
+ */
 @Component
 public class GiftCertificateConverter implements Converter<GiftCertificate, GiftCertificateDto> {
 
@@ -27,17 +31,20 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
-        String createDateDto = value.getCreateDate();
-        String lastUpdateDateDto = value.getLastUpdateDate();
-        LocalDateTime createDate = validateDate(createDateDto);
-        LocalDateTime lastUpdateDate = validateDate(lastUpdateDateDto);
+        LocalDateTime createDate = validateDate(value.getCreateDate());
+        LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         List<TagDto> valueTagDtoList = value.getTags();
         List<Tag> valueTagList = new ArrayList<>();
         if(valueTagDtoList!=null){
-            valueTagList = valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
+            valueTagList = convertTagDtoList(valueTagDtoList);
         }
         return new GiftCertificate(value.getId(),value.getGiftCertificateName(),
-                value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,valueTagList);
+                value.getDescription(),value.getPrice(),value.getDuration(),
+                createDate,lastUpdateDate,valueTagList);
+    }
+
+    private List<Tag> convertTagDtoList(List<TagDto> valueTagDtoList){
+        return valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
     }
 
     private LocalDateTime validateDate(String dateTime){
@@ -52,12 +59,19 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificateDto convert(GiftCertificate value) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        String createDate = value.getCreateDate().format(formatter);
-        String lastUpdateDate = value.getLastUpdateDate().format(formatter);
-        List<Tag> valueTagList = value.getTagList();
-        List<TagDto> valueTagDtoList = valueTagList.stream().map(tagConverter::convert).collect(Collectors.toList());
+        String createDate = getFormatDate(value.getCreateDate());
+        String lastUpdateDate = getFormatDate(value.getLastUpdateDate());
+        List<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
         return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
                 value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
+    }
+
+    private String getFormatDate(LocalDateTime dateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return formatter.format(dateTime);
+    }
+
+    private List<TagDto> convertTagList(List<Tag> valueTagList){
+        return valueTagList.stream().map(tagConverter::convert).collect(Collectors.toList());
     }
 }

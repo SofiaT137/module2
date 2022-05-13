@@ -50,7 +50,7 @@ public class OrderController {
      */
     @PostMapping
     public ResponseEntity<Object> insertOrder(@RequestBody OrderDto order) {
-        orderLogicService.insertOrder(order);
+        orderLogicService.insert(order);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -88,7 +88,7 @@ public class OrderController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteOrderByID(@PathVariable long id){
-        orderLogicService.deleteOrder(id);
+        orderLogicService.deleteByID(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

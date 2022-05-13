@@ -4,6 +4,9 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Objects;
 
+/**
+ * Class UserDto extends RepresentationModel and helps to create UserDto entity
+ */
 public class UserDto extends RepresentationModel<UserDto> {
 
     private Long id;

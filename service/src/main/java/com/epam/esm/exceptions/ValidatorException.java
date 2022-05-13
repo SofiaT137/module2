@@ -1,7 +1,7 @@
 package com.epam.esm.exceptions;
 
 /**
- * ValidatorException class presents creating of the ValidatorException entity
+ * ValidatorException class extends RuntimeException presents creating of the ValidatorException exception
  */
 public class ValidatorException extends RuntimeException {
 

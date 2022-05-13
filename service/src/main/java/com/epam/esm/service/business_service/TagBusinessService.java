@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class TagBusinessService is implementation of the TagService interface
+ * The class presents service business logic for Tag entity
+ */
 @Service("tagBusinessService")
 public class TagBusinessService implements TagService<TagDto> {
 

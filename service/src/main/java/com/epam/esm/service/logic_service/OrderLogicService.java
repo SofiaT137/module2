@@ -21,6 +21,10 @@ import java.util.Optional;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
+/**
+ * Class OrderLogicService is implementation of interface OrderService
+ * The class presents service logic layer for Order entity
+ */
 @Service("orderLogicService")
 public class OrderLogicService implements OrderService<Order> {
 
@@ -53,7 +57,7 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     @Transactional
-    public Order insertOrder(Order entity) {
+    public Order insert(Order entity) {
         if (entity.getUser().getId() != null) {
             User user = userLogicService.getById(entity.getUser().getId());
             entity.setUser(null);
@@ -85,12 +89,12 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     @Transactional
-    public void deleteOrder(long orderId) {
-        Optional<Order> receivedOrderById = orderDao.getById(orderId);
+    public void deleteByID(long id) {
+        Optional<Order> receivedOrderById = orderDao.getById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
-        orderDao.deleteByID(orderId);
+        orderDao.deleteByID(id);
     }
 
     @Override
@@ -112,5 +116,4 @@ public class OrderLogicService implements OrderService<Order> {
         User user = userLogicService.getById(userId);
         return orderDao.ordersByUserId(user.getId(),pageSize,pageNumber);
     }
-
 }

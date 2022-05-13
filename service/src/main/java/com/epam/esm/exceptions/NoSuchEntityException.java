@@ -1,7 +1,8 @@
 package com.epam.esm.exceptions;
 
-import java.util.Optional;
-
+/**
+ * NoSuchEntityException class extends RuntimeException presents creating of the NoSuchEntityException exception
+ */
 public class NoSuchEntityException extends RuntimeException{
 
     private String errorCode;

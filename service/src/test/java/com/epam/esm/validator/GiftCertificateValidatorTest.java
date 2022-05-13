@@ -28,8 +28,7 @@ class GiftCertificateValidatorTest {
     private static final String PRICE_IS_FORBIDDEN = "thisGiftCertificatePriceIsForbidden";
     private static final String DURATION_IS_FORBIDDEN = "thisGiftCertificateDurationIsForbidden";
     private static final String CHECK_THE_VALUES = "checkTheValuesThatYouTransferred";
-    private static final String CORRECT_NAME = "Swimming with seals";
-    private static final String INCORRECT_NAME = "$52-vmt[****";
+    private static final String GIFT_CERTIFICATE_NAME = "Swimming with seals";
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";
     private static final String INCORRECT_DESCRIPTION = new String(new char[451]).replace('\0', ' ');
     private static final Double CORRECT_PRICE = 56.13;
@@ -45,27 +44,11 @@ class GiftCertificateValidatorTest {
         stringStringMap.set("name_tag","joy");
     }
 
-
-    @Test
-    void validateCorrectGiftCertificate(){
-        assertDoesNotThrow(()->giftCertificateValidator
-                .validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-    }
-
-    @Test
-    void validateInCorrectGiftCertificateName(){
-        ValidatorException thrown = assertThrows(
-                ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(INCORRECT_NAME,
-                        CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
-        assertTrue(thrown.getMessage().contains(NAME_IS_FORBIDDEN));
-    }
-
     @Test
     void validateInCorrectGiftCertificateDescription(){
         ValidatorException thrown = assertThrows(
                 ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,INCORRECT_DESCRIPTION,
+                () -> giftCertificateValidator.validate(new GiftCertificate(GIFT_CERTIFICATE_NAME,INCORRECT_DESCRIPTION,
                         CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(DESCRIPTION_IS_TOO_LONG));
     }
@@ -74,7 +57,7 @@ class GiftCertificateValidatorTest {
     void validateInCorrectGiftCertificatePrice(){
         ValidatorException thrown = assertThrows(
                 ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,
+                () -> giftCertificateValidator.validate(new GiftCertificate(GIFT_CERTIFICATE_NAME,CORRECT_DESCRIPTION,
                         INCORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(PRICE_IS_FORBIDDEN));
     }
@@ -83,7 +66,7 @@ class GiftCertificateValidatorTest {
     void validateInCorrectGiftCertificateDuration(){
         ValidatorException thrown = assertThrows(
                 ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,
+                () -> giftCertificateValidator.validate(new GiftCertificate(GIFT_CERTIFICATE_NAME,CORRECT_DESCRIPTION,
                         CORRECT_PRICE,INCORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(DURATION_IS_FORBIDDEN));
     }

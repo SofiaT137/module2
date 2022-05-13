@@ -4,6 +4,9 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Objects;
 
+/**
+ * Class TagDto extends RepresentationModel and helps to create TagDto entity
+ */
 public class TagDto extends RepresentationModel<TagDto> {
 
     private Long id;

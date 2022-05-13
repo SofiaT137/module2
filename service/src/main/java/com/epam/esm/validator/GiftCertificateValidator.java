@@ -28,9 +28,7 @@ public final class GiftCertificateValidator extends Validator<GiftCertificate> {
     private static final Integer MIN_DURATION = 1;
     private final List<String> allowedKeys = Arrays.asList("tag_name", "partName", "partDescription", "sortByName", "sortByCreationDate");
 
-    private static final String TAG_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
     private static final String INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION = "thisGiftCertificateLengthIsForbidden!";
-    private static final String INCORRECT_GIFT_CERTIFICATE_NAME_EXCEPTION = "thisGiftCertificateNameIsForbidden!";
     private static final String INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_EXCEPTION = "thisGiftCertificateDescriptionIsTooLong!";
     private static final String INCORRECT_GIFT_CERTIFICATE_PRICE_EXCEPTION = "thisGiftCertificatePriceIsForbidden!";
     private static final String INCORRECT_GIFT_CERTIFICATE_DURATION_EXCEPTION = "thisGiftCertificateDurationIsForbidden!";
@@ -55,11 +53,6 @@ public final class GiftCertificateValidator extends Validator<GiftCertificate> {
     private void validateName(final String name) throws ValidatorException {
         if (name.length() < MIN_GIFT_CERTIFICATE_NAME_LENGTH || name.length() > MAX_GIFT_CERTIFICATE_NAME_LENGTH) {
             throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH);
-        }
-        Pattern namePattern = Pattern.compile(TAG_NAME_REGEX);
-        Matcher matcher = namePattern.matcher(name);
-        if (!matcher.find()) {
-            throw new ValidatorException(INCORRECT_GIFT_CERTIFICATE_NAME_EXCEPTION, INCORRECT_GIFT_CERTIFICATE_NAME);
         }
     }
 

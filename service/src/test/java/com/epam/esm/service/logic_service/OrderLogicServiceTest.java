@@ -49,14 +49,14 @@ class OrderLogicServiceTest {
         order.setGiftCertificateList(list);
         Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
         Mockito.when(orderDao.insert(order)).thenReturn(Optional.of(order));
-        Order order1 = orderLogicService.insertOrder(order);
+        Order order1 = orderLogicService.insert(order);
         assertEquals(order,order1);
     }
 
     @Test
     void deleteOrder() {
         Mockito.when(orderDao.getById(1L)).thenReturn(Optional.of(order));
-        orderLogicService.deleteOrder(order.getId());
+        orderLogicService.deleteByID(order.getId());
         Mockito.verify(orderDao, Mockito.times(1)).deleteByID(order.getId());
     }
 

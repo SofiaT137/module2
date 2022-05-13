@@ -5,6 +5,9 @@ import org.springframework.hateoas.RepresentationModel;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class OrderDto extends RepresentationModel and helps to create OrderDto entity
+ */
 public class OrderDto extends RepresentationModel<OrderDto> {
 
     private Long id;

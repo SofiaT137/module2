@@ -18,8 +18,8 @@ class UserValidatorTest {
     private UserValidator userValidator;
 
     private static final String CORRECT_USER_NAME = "Dima";
-    private static final String INCORRECT_USER_NAME = "Dima7^";
-    private static final String INCORRECT_USER_NAME_EXCEPTION = "thisUserNameIsForbidden!";
+    private static final String INCORRECT_USER_NAME = "D7^";
+    private static final String INCORRECT_USER_NAME_EXCEPTION = "thisUserNameLengthIsForbidden!";
 
     private static User correctUser;
     private static User incorrectUser;
@@ -31,13 +31,13 @@ class UserValidatorTest {
     }
 
     @Test
-    void validateCorrectUser() {
+    void validateCorrectUserNameLength() {
         assertDoesNotThrow(()->userValidator
                 .validate(correctUser));
     }
 
     @Test
-    void validateIncorrectUserName() {
+    void validateIncorrectUserNameLength() {
         ValidatorException thrown = assertThrows(ValidatorException.class,
                 () -> userValidator.validate(incorrectUser));
         assertTrue(thrown.getMessage().contains(INCORRECT_USER_NAME_EXCEPTION));

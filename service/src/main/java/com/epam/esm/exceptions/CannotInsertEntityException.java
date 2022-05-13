@@ -1,6 +1,9 @@
 package com.epam.esm.exceptions;
 
-
+/**
+ * CannotInsertEntityException class extends RuntimeException and presents creating
+ * of the CannotInsertEntityException exception
+ */
 public class CannotInsertEntityException extends RuntimeException{
 
     private String errorCode;
