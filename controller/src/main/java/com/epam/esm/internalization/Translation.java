@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
+/**
+ * Class Translation helps to translate messages into the proper language
+ */
 @Component
 public class Translation {
 
@@ -17,6 +20,11 @@ public class Translation {
         this.messageSource = messageSource;
     }
 
+    /**
+     * Method translate helps to translate transferred message depends on current locale
+     * @param message String message
+     * @return The translated message
+     */
     public String translate(String message){
         Locale locale = LocaleContextHolder.getLocale();
         return messageSource.getMessage(message, null, locale);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * TagController class presents REST controller for tag entity
+ * TagController class presents REST controller for the Tag entity
  */
 @RestController
 @RequestMapping("/tags")
@@ -36,8 +36,8 @@ public class TagController {
     private static final String DELETED_MESSAGE = "Deleted!";
 
     /**
-     * Method insertTag insert the Tag entity
-     * @param entity Tag entity
+     * Method insertTag inserts the TagDto entity
+     * @param entity TagDto entity
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
@@ -47,9 +47,9 @@ public class TagController {
     }
 
     /**
-     * Method getTagById returns Tag entity by its id
-     * @param id Long id
-     * @return Tag entity
+     * Method getTagById returns TagDto entity by its id
+     * @param id Tag id(Long value)
+     * @return Response entity with TagDto entity and HttpStatus "OK"
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTagById(@PathVariable Long id) {
@@ -59,9 +59,10 @@ public class TagController {
     }
 
     /**
-     * Method getAllTags returns all the Tag entity
-     *
-     * @return List of Tag entity
+     * Method findTheMostWidelyUsedUserTagWithHighersOrderCost returns the most widely used TagDto entity
+     * with higher order costs
+     * @param userId User id(Long value)
+     * @return Response entity with TagDto entity and HttpStatus "OK"
      */
     @GetMapping("/filter/{userId}")
     public ResponseEntity<Object> findTheMostWidelyUsedUserTagWithHighersOrderCost(@PathVariable Long userId) {
@@ -70,6 +71,12 @@ public class TagController {
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
+    /**
+     * Method getAllTags returns all the TagDto entity
+     * @param pageSize Number of TagDto entities per page(default value is 5)
+     * @param pageNumber Number of the page with TagDto entities(default value is 1)
+     * @return List of TagDto entity and HttpStatus "OK"
+     */
     @GetMapping
     public ResponseEntity<Object> getAllTags(@RequestParam(defaultValue = "5",required = false) int pageSize,
                                              @RequestParam (defaultValue = "1", required = false) int pageNumber){
@@ -78,6 +85,11 @@ public class TagController {
         return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
     }
 
+    /**
+     * Method findTagByName returns TagDto entity by its name
+     * @param tagName String tag name
+     * @return Response entity with TagDto entity and HttpStatus "OK"
+     */
     @GetMapping("/filter")
     public ResponseEntity<Object> findTagByName(@RequestParam String tagName) {
         TagDto tagDto = tagBusinessService.findTagByTagName(tagName);
@@ -86,8 +98,8 @@ public class TagController {
     }
 
     /**
-     * Method deleteTagByID deletes Tag entity by its id
-     * @param id Long id
+     * Method deleteTagByID deletes TagDto entity by its id
+     * @param id Tag id(Long value)
      * @return Response entity with HttpStatus "NO_CONTENT"
      */
     @DeleteMapping("/{id}")
