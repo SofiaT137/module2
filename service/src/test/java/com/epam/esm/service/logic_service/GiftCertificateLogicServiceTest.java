@@ -16,7 +16,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,7 +42,7 @@ class GiftCertificateLogicServiceTest {
     GiftCertificate giftCertificate = new GiftCertificate(1L,"abc","abc"
             ,50.00,13, LocalDateTime.now(),LocalDateTime.now(),tagList);
     GiftCertificate giftCertificateForUpdate = new GiftCertificate(1L,null,null
-            ,null,15, null,null,null);
+            ,null,15, null,null,new ArrayList<>());
     GiftCertificate updatedGiftCertificate = new GiftCertificate(1L,"abc","abc"
             ,50.00,30, LocalDateTime.now(),LocalDateTime.now(),tagList);
 

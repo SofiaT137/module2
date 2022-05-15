@@ -3,6 +3,7 @@ package com.epam.esm.service.logic_service;
 import com.epam.esm.dao.impl.OrderDaoImpl;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.UserService;
@@ -15,9 +16,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class OrderLogicServiceTest {
@@ -41,13 +44,17 @@ class OrderLogicServiceTest {
     }
 
     private final User user = new User(1L,"AlexRendal");
-    private final List<GiftCertificate> list = new ArrayList<>();
+    List<Tag> tagList = Collections.singletonList(new Tag("hello"));
+    GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
+            , "abc", 50.00, 13, LocalDateTime.now(), LocalDateTime.now(), tagList);
+    private final List<GiftCertificate> list = Collections.singletonList(giftCertificate);
     private final Order order = new Order(1L,400.12, LocalDateTime.now(),user);
 
     @Test
     void insertOrder() {
-        order.setGiftCertificateList(list);
         Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
+        Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
+        order.setGiftCertificateList(list);
         Mockito.when(orderDao.insert(order)).thenReturn(Optional.of(order));
         Order order1 = orderLogicService.insert(order);
         assertEquals(order,order1);
