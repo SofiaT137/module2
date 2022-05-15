@@ -2,7 +2,7 @@ CREATE SCHEMA certificate_base;
 
 CREATE TABLE tags (
   id bigint unsigned NOT NULL AUTO_INCREMENT,
-  tag_name varchar(25) NOT NULL UNIQUE,
+  tag_name varchar(35) NOT NULL UNIQUE,
   PRIMARY KEY (id)
 );
 

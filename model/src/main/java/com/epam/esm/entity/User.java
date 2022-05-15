@@ -48,14 +48,6 @@ public class User extends AbstractEntity<Long> implements Serializable {
         this.name = name;
     }
 
-    public void addOrderToUser(Order order){
-        if (orderList == null){
-            orderList = new ArrayList<>();
-        }
-        orderList.add(order);
-        order.setUser(this);
-    }
-
     public List<Order> getOrderList() {
         return orderList;
     }

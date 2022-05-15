@@ -44,7 +44,7 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
             name = "gift_certificate_tag",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tagList;
+    private List<Tag> tagList = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
             CascadeType.DETACH,CascadeType.REFRESH})
@@ -82,9 +82,6 @@ public class GiftCertificate extends AbstractEntity<Long> implements Serializabl
     }
 
     public void addTagToGiftCertificate(Tag tag){
-        if (tagList == null){
-            tagList = new ArrayList<>();
-        }
         tagList.add(tag);
     }
 

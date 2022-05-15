@@ -31,6 +31,11 @@ public class Tag extends AbstractEntity<Long> implements Serializable {
 
     public Tag(){}
 
+    public Tag(Long id,String name) {
+        super(id);
+        this.name = name;
+    }
+
     public Tag(String name) {
         this.name = name;
     }

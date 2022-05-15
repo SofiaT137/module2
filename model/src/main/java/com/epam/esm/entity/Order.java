@@ -29,7 +29,7 @@ public class Order extends AbstractEntity<Long> implements Serializable {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "gift_certificate_id")
     )
-    private List<GiftCertificate> giftCertificateList;
+    private List<GiftCertificate> giftCertificateList = new ArrayList<>();
 
     @ManyToOne
     @JsonBackReference
@@ -53,9 +53,6 @@ public class Order extends AbstractEntity<Long> implements Serializable {
     }
 
     public void addGiftCertificateToOrder(GiftCertificate giftCertificate){
-        if (giftCertificateList == null){
-            giftCertificateList = new ArrayList<>();
-        }
         giftCertificateList.add(giftCertificate);
     }
 

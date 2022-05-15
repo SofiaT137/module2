@@ -21,7 +21,8 @@ public class TagDaoImpl implements TagDao  {
     private EntityManager entityManager;
 
     private static final String ID_COLUMN = "id";
-    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "(SELECT t.id,t.tag_name,t.operation,t.time_mark, g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
+    private static final String GET_MOST_POPULAR_USER_TAG_QUERY = "(SELECT t.id,t.tag_name,t.operation,t.time_mark," +
+            " g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
             "FROM tags AS t inner join gift_certificate_tag AS g_cer_tag on t.id=g_cer_tag.tag_id "+
             "INNER join gift_certificates AS g_cer On g_cer_tag.gift_certificate_id=g_cer.id "+
             "INNER join order_certificate AS ord_cer on g_cer.id = ord_cer.gift_certificate_id "+
@@ -61,12 +62,11 @@ public class TagDaoImpl implements TagDao  {
     }
 
     @Override
-    public Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId) {
+    public List<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId) {
         User foundUser = entityManager.find(User.class,userId);
         Query query = entityManager.createNativeQuery(GET_MOST_POPULAR_USER_TAG_QUERY,Tag.class);
         query.setParameter(USER_ID,foundUser.getId());
-        Tag foundTag = (Tag) query.getSingleResult();
-        return foundTag != null? Optional.of(foundTag) : Optional.empty();
+        return query.getResultList();
     }
 
     @Override
