@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -33,7 +34,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
     public GiftCertificate convert(GiftCertificateDto value) {
         LocalDateTime createDate = validateDate(value.getCreateDate());
         LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
-        List<TagDto> valueTagDtoList = value.getTags();
+        Set<TagDto> valueTagDtoList = value.getTags();
         List<Tag> valueTagList = new ArrayList<>();
         if(valueTagDtoList!=null){
             valueTagList = convertTagDtoList(valueTagDtoList);
@@ -43,7 +44,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
                 createDate,lastUpdateDate,valueTagList);
     }
 
-    private List<Tag> convertTagDtoList(List<TagDto> valueTagDtoList){
+    private List<Tag> convertTagDtoList(Set<TagDto> valueTagDtoList){
         return valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
     }
 
@@ -61,7 +62,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
     public GiftCertificateDto convert(GiftCertificate value) {
         String createDate = getFormatDate(value.getCreateDate());
         String lastUpdateDate = getFormatDate(value.getLastUpdateDate());
-        List<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
+        Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
         return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
                 value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
     }
@@ -71,7 +72,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         return formatter.format(dateTime);
     }
 
-    private List<TagDto> convertTagList(List<Tag> valueTagList){
-        return valueTagList.stream().map(tagConverter::convert).collect(Collectors.toList());
+    private Set<TagDto> convertTagList(List<Tag> valueTagList){
+        return valueTagList.stream().map(tagConverter::convert).collect(Collectors.toSet());
     }
 }

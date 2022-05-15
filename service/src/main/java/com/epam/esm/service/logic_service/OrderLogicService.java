@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,13 +55,13 @@ public class OrderLogicService implements OrderService<Order> {
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noUserWithId";
     private static final String NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE = "noGiftCertificateWithThatId";
     private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "userIdCannotBeNull";
+    private static final String LIST_OF_GS_BE_NULL_EXCEPTION_MESSAGE = "giftCertificateListCannotBeNull";
 
     @Override
     @Transactional
     public Order insert(Order entity) {
         if (entity.getUser().getId() != null) {
             User user = userLogicService.getById(entity.getUser().getId());
-            entity.setUser(null);
             entity.setUser(user);
         }else{
             throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE, INCORRECT_ID);
@@ -78,7 +79,11 @@ public class OrderLogicService implements OrderService<Order> {
     private double saveGiftCertificatesToOrder(Order entity){
         double price = 0.0;
         List<GiftCertificate> list = entity.getGiftCertificateList();
-        entity.setGiftCertificateList(null);
+        if (list.isEmpty()){
+            throw new CannotInsertEntityException(LIST_OF_GS_BE_NULL_EXCEPTION_MESSAGE
+                    ,CANNOT_INSERT_ENTITY_CODE);
+        }
+        entity.setGiftCertificateList(new ArrayList<>());
         for (GiftCertificate giftCertificate : list) {
             GiftCertificate certificateById = giftCertificateLogicService.getById(giftCertificate.getId());
                 entity.addGiftCertificateToOrder(certificateById);

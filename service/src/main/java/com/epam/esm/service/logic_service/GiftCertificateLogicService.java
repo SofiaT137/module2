@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "cannotInsertThisCertificate";
     private static final String CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE = "noGiftCertificateWithThatId";
     private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
+    private static final String CANNOT_UPDATE_THIS_TAG_MESSAGE = "cannotUpdateThisTag";
     private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
 
     @Autowired
@@ -56,9 +58,11 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Transactional
     public GiftCertificate insert(GiftCertificate entity) {
         certificateValidator.validate(entity);
-        List<Tag> certificateTags = tagLogicService.getCertificateTagList(entity.getTagList());
-        entity.setTagList(null);
-        certificateTags.forEach(entity::addTagToGiftCertificate);
+        if (!entity.getTagList().isEmpty()){
+            List<Tag> certificateTags = tagLogicService.getCertificateTagList(entity.getTagList());
+            entity.setTagList(new ArrayList<>());
+            certificateTags.forEach(entity::addTagToGiftCertificate);
+        }
         entity.setCreateDate(LocalDateTime.now());
         entity.setLastUpdateDate(LocalDateTime.now());
         Optional<GiftCertificate> insertedCertificate = giftCertificateDao.insert(entity);
@@ -90,9 +94,8 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
-        entity.setTagList(null);
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
-        certificateValidator.validate(entity);
+        certificateValidator.validateDuration(entity.getDuration());
         Optional<GiftCertificate> updatedEntity = giftCertificateDao.update(entity.getDuration(),
                 foundedCertificateById.get());
         if (!updatedEntity.isPresent()){
@@ -104,7 +107,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
         if (entity.getPrice() != null || entity.getDescription()!= null
             || entity.getGiftCertificateName()!= null || entity.getCreateDate()!=null
-            || entity.getLastUpdateDate()!=null || entity.getTagList()!=null){
+            || entity.getLastUpdateDate()!=null || !entity.getTagList().isEmpty()){
            throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE
                     ,YOU_NOT_HAVE_PERMISSION_ENTITY_CODE);
         }

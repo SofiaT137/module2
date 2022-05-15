@@ -31,6 +31,7 @@ public class TagLogicService implements TagService<Tag> {
     private final TagValidator tagValidator;
 
     private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
+    private static final String NOT_UNIQUE_TAG_NAME_MESSAGE = "notUniqueTagName";
     private static final String CANNOT_FIND_THIS_TAG_MESSAGE = "noTagWithThatId";
     private static final String CANNOT_FIND_THIS_USER_MESSAGE = "noUserWithId";
     private static final String CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG = "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
@@ -51,6 +52,9 @@ public class TagLogicService implements TagService<Tag> {
     @Transactional
     public Tag insert(Tag entity) throws ValidatorException {
         tagValidator.validate(entity);
+        if (checkIfTagNameExists(entity.getName())){
+            throw new CannotInsertEntityException(NOT_UNIQUE_TAG_NAME_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
+        }
         Optional<Tag> insertedTag = tagDao.insert(entity);
         if (!insertedTag.isPresent()){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
@@ -87,12 +91,12 @@ public class TagLogicService implements TagService<Tag> {
     public Tag findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
         tagValidator.checkID(userId);
         User receivedUserById = userLogicService.getById(userId);
-        Optional<Tag> receivedTagByConditions = tagDao.
+        List<Tag> resultTagList = tagDao.
                 findTheMostWidelyUsedUserTagWithHighersOrderCost(receivedUserById.getId());
-        if (!receivedTagByConditions.isPresent()){
+        if (resultTagList.isEmpty()){
             throw new NoSuchEntityException(CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG,NO_SUCH_ENTITY_CODE);
         }
-        return receivedTagByConditions.get();
+        return resultTagList.get(0);
     }
 
     @Override
@@ -116,8 +120,17 @@ public class TagLogicService implements TagService<Tag> {
                     throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
                 }
             }
-           tags.add(currentTag.get());
+            tags.add(currentTag.get());
         }
         return tags;
+    }
+
+    private boolean checkIfTagNameExists(String name){
+        try{
+            findTagByTagName(name);
+        }catch (NoSuchEntityException exception){
+            return false;
+        }
+        return true;
     }
 }

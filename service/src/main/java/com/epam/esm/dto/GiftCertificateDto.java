@@ -4,6 +4,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class GiftCertificateDto extends RepresentationModel and helps to create GiftCertificateDto entity
@@ -17,11 +18,11 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     private Integer duration;
     private String createDate;
     private String lastUpdateDate;
-    private List<TagDto> tags;
+    private Set<TagDto> tags;
 
     public GiftCertificateDto(Long id, String giftCertificateName,
                               String description, Double price, Integer duration,
-                              String createDate, String lastUpdateDate, List<TagDto> tags) {
+                              String createDate, String lastUpdateDate, Set<TagDto> tags) {
         this.id = id;
         this.giftCertificateName = giftCertificateName;
         this.description = description;
@@ -34,7 +35,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 
     public GiftCertificateDto(String giftCertificateName, String description,
                               Double price, Integer duration,
-                              String createDate, String lastUpdateDate, List<TagDto> tags) {
+                              String createDate, String lastUpdateDate, Set<TagDto> tags) {
         this.giftCertificateName = giftCertificateName;
         this.description = description;
         this.price = price;
@@ -103,11 +104,11 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<TagDto> getTags() {
+    public Set<TagDto> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagDto> tags) {
+    public void setTags(Set<TagDto> tags) {
         this.tags = tags;
     }
 
