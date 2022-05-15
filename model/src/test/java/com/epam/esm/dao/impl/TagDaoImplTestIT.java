@@ -80,8 +80,8 @@ class TagDaoImplTestIT {
 
     @Test
     void getTheMostWidelyUsedUserTagWithHighersOrderCost(){
-        Optional<Tag> listOfTags= tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(ID);
-        if (!listOfTags.isPresent()){
+        List<Tag> listOfTags= tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(ID);
+        if (listOfTags.isEmpty()){
             throw new NoSuchElementException(CANNOT_FIND_TAG_EXCEPTION_MESSAGE);
         }
         assertNotNull(listOfTags);

@@ -7,17 +7,15 @@ import com.epam.esm.entity.Tag;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,8 +35,10 @@ class GiftCertificateConverterTest {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
     private static final LocalDateTime localDate = LocalDateTime.now();
     private static final String date = localDate.format(formatter);
-    private static final List<TagDto> tag_list = Arrays.asList(new TagDto(1L,"joy")
-            ,new TagDto(2L,"happiness"),new TagDto(3L,"seal"));
+    private static final Set<TagDto> tag_set = new HashSet<>();
+    private static final TagDto tagDto1 = new TagDto(1L,"joy");
+    private static final TagDto tagDto2 = new TagDto(2L,"happiness");
+    private static final TagDto tagDto3 = new TagDto(3L,"seal");
     private static List<Tag> tag_list_convert;
     private static GiftCertificateDto giftCertificateDto;
     private static GiftCertificate giftCertificate;
@@ -46,10 +46,13 @@ class GiftCertificateConverterTest {
 
     @BeforeAll
     static void setUp(){
+        tag_set.add(tagDto1);
+        tag_set.add(tagDto2);
+        tag_set.add(tagDto3);
         giftCertificateConverter = new GiftCertificateConverter(tagConverter);
-        tag_list_convert = tag_list.stream().map(tagConverter::convert).collect(Collectors.toList());
+        tag_list_convert = tag_set.stream().map(tagConverter::convert).collect(Collectors.toList());
         giftCertificateDto = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION
-                ,CORRECT_PRICE,CORRECT_DURATION,date,date,tag_list);
+                ,CORRECT_PRICE,CORRECT_DURATION,date,date, tag_set);
         giftCertificate = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE
                 ,CORRECT_DURATION,localDate,localDate,tag_list_convert);
     }

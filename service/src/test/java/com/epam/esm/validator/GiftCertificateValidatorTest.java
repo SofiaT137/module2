@@ -23,10 +23,10 @@ class GiftCertificateValidatorTest {
     @InjectMocks
     private GiftCertificateValidator giftCertificateValidator;
 
-    private static final String NAME_IS_FORBIDDEN = "thisGiftCertificateNameIsForbidden";
-    private static final String DESCRIPTION_IS_TOO_LONG = "hisGiftCertificateDescriptionIsTooLong";
-    private static final String PRICE_IS_FORBIDDEN = "thisGiftCertificatePriceIsForbidden";
-    private static final String DURATION_IS_FORBIDDEN = "thisGiftCertificateDurationIsForbidden";
+    private static final String NAME_IS_FORBIDDEN = "giftCertificateNameIsForbidden";
+    private static final String DESCRIPTION_IS_TOO_LONG = "giftCertificateDescriptionIsTooLong";
+    private static final String PRICE_IS_FORBIDDEN = "giftCertificatePriceIsForbidden";
+    private static final String DURATION_IS_FORBIDDEN = "giftCertificateDurationIsForbidden";
     private static final String CHECK_THE_VALUES = "checkTheValuesThatYouTransferred";
     private static final String GIFT_CERTIFICATE_NAME = "Swimming with seals";
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";

@@ -80,7 +80,7 @@ class TagLogicServiceTest {
     void findTheMostWidelyUsedUserTagWithHigherOrderCost() {
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
         Mockito.when(tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(user.getId()))
-                .thenReturn(Optional.ofNullable(tag));
+                .thenReturn(Collections.singletonList(tag));
         Tag tagFound = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(user.getId());
         assertEquals(tag,tagFound);
     }
