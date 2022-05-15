@@ -64,3 +64,197 @@
 17:35:11.627 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 17:35:11.631 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 17:35:11.670 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+17:42:01.049 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 6148 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2\controller)
+17:42:01.052 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+17:42:01.650 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+17:42:01.677 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+17:42:02.610 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+17:42:02.623 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+17:42:02.624 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+17:42:02.624 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+17:42:02.744 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+17:42:02.744 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1628 ms
+17:42:02.975 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+17:42:03.038 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+17:42:03.223 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+17:42:03.326 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+17:42:03.456 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+17:42:03.472 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+17:42:04.167 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+17:42:04.177 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+17:42:04.460 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+17:42:05.381 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+17:42:05.403 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+17:42:05.414 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 4.667 seconds (JVM running for 5.431)
+17:42:13.199 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+17:42:13.199 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+17:42:13.200 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+17:42:13.324 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:42:13.335 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:42:13.341 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:42:17.642 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:17.643 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:17.644 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:42:24.045 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:24.046 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:24.046 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:42:30.281 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:30.281 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:30.281 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:42:40.921 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:42:40.940 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:42:40.953 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:42:43.676 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:43.677 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:43.677 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:42:45.995 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:45.996 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:42:45.996 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:42:51.380 [http-nio-8080-exec-8] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: findTagByTagName starts
+17:42:51.380 [http-nio-8080-exec-8] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: findTagByTagName starts
+17:42:51.380 [http-nio-8080-exec-8] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+17:42:57.856 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: findTheMostWidelyUsedUserTagWithHigherOrderCost starts
+17:42:57.856 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: findTheMostWidelyUsedUserTagWithHigherOrderCost starts
+17:42:57.856 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:42:57.856 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:42:57.858 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTheMostWidelyUsedUserTagWithHighersOrderCost starts
+17:43:45.879 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:43:45.887 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:43:45.892 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:43:48.442 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:43:48.442 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:43:48.442 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:43:56.441 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:43:56.441 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:43:56.441 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:44:13.031 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:44:13.032 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:44:13.032 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:44:57.774 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:44:57.774 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:44:57.774 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:44:57.774 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:44:57.776 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:45:03.200 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:45:03.200 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:45:03.200 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:45:03.200 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:45:03.203 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:45:24.491 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:45:24.499 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:45:24.503 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:45:36.121 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:45:36.121 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:45:36.121 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:45:41.949 [http-nio-8080-exec-8] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:45:41.950 [http-nio-8080-exec-8] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:45:41.951 [http-nio-8080-exec-8] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+17:45:55.756 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:45:55.756 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:45:55.756 [http-nio-8080-exec-10] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+17:46:26.883 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:46:26.884 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:46:26.884 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+17:47:05.800 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+17:47:05.912 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+17:47:05.913 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+17:47:05.921 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+17:48:52.800 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 10964 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2\controller)
+17:48:52.803 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+17:48:53.408 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+17:48:53.428 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 11 ms. Found 0 JPA repository interfaces.
+17:48:54.369 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+17:48:54.380 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+17:48:54.381 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+17:48:54.381 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+17:48:54.492 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+17:48:54.493 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1626 ms
+17:48:54.733 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+17:48:54.794 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+17:48:54.981 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+17:48:55.114 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+17:48:55.258 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+17:48:55.274 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+17:48:55.890 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+17:48:55.900 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+17:48:56.193 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+17:48:57.092 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+17:48:57.115 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+17:48:57.126 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 4.618 seconds (JVM running for 5.376)
+17:49:16.965 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+17:49:16.965 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+17:49:16.966 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+17:49:17.075 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:17.081 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:17.085 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:49:17.091 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:49:17.199 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:49:24.904 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:24.905 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:24.905 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:49:24.905 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:49:24.911 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:49:26.194 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:26.195 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:26.195 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:49:26.195 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:49:26.197 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:49:27.566 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:27.566 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:27.566 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:49:27.566 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:49:27.568 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:49:28.812 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:28.812 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:28.812 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:49:28.813 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:49:28.814 [http-nio-8080-exec-6] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:49:30.111 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:30.111 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:49:30.111 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:49:30.111 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:49:30.113 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:51:43.033 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+17:51:43.152 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+17:51:43.154 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+17:51:43.163 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+17:54:47.602 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 15928 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2\controller)
+17:54:47.604 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+17:54:48.213 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+17:54:48.235 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JPA repository interfaces.
+17:54:49.125 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+17:54:49.136 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+17:54:49.137 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+17:54:49.137 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+17:54:49.249 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+17:54:49.249 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1581 ms
+17:54:49.550 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+17:54:49.626 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+17:54:49.844 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+17:54:49.960 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+17:54:50.131 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+17:54:50.150 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+17:54:50.958 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+17:54:50.970 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+17:54:51.298 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+17:54:52.475 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+17:54:52.508 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+17:54:52.521 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 5.208 seconds (JVM running for 5.945)
+17:55:08.000 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+17:55:08.000 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+17:55:08.004 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+17:55:08.119 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:55:08.128 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+17:55:08.137 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+17:55:08.143 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+17:55:08.258 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: ordersByUserId starts
+17:55:44.372 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:55:44.379 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getAll starts
+17:55:44.384 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getAll starts
+17:55:59.402 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:55:59.403 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+17:55:59.403 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+17:56:08.246 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+17:56:08.369 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+17:56:08.371 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+17:56:08.379 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
