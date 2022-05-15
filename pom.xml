@@ -8,14 +8,14 @@
 		<!--The parent POM providing dependency and plugin management for Spring Boot-based applications-->
 		<!-- It contains the default versions of Java to use, the default versions of dependencies that Spring Boot uses, and the default configuration of the Maven plugins.-->
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.3</version> <!-- spring boot version number -->
+		<version>2.6.7</version> <!-- spring boot version number -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<modules>
 		<module>model</module>
-		<module>controller</module>
 		<module>service</module>
+		<module>controller</module>
 		<module>logging</module>
 	</modules>
 
@@ -58,28 +58,5 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
-
-		<!-- Provides out of the box remote debugging capabilities via HTTP-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<!--The plugin provides Spring Boot support in Apache Maven. It allows you to package executable jar or war archives, run Spring Boot applications, generate build information
-				and start your Spring Boot application prior to running integration tests-->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<addResources>true</addResources>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>
