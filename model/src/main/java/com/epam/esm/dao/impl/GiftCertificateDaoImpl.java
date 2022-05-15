@@ -93,40 +93,34 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
         List<Predicate> predicates = new ArrayList<>();
-
         getMainQuery(mapWithFilters,predicates,criteriaBuilder,root);
-
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
         CriteriaQuery<GiftCertificate> select = criteriaQuery.select(root);
-
         List<GiftCertificate> resultList = entityManager.createQuery(select).getResultList();
-
         resultList = getSortForResultList(mapWithFilters,resultList);
-
         return resultList;
     }
 
     private void getMainQuery(MultiValueMap<String, String> mapWithFilters,List<Predicate> predicates,
                               CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root){
-
         if(mapWithFilters.get(TAG_PARAMETER)!=null){
             addJoinByTagsPart(mapWithFilters,predicates,criteriaBuilder,root);
         }
         if( mapWithFilters.get(PART_OF_CERTIFICATE_NAME)!=null){
-            addSearchByPart(mapWithFilters,predicates,criteriaBuilder,root,PART_OF_CERTIFICATE_NAME);
+            addSearchByCertificateName(mapWithFilters,predicates,criteriaBuilder,root);
         }
         if( mapWithFilters.get(PART_OF_CERTIFICATE_DESCRIPTION)!=null){
-            addSearchByPart(mapWithFilters,predicates,criteriaBuilder,root,PART_OF_CERTIFICATE_DESCRIPTION);
+            addSearchByCertificateDescription(mapWithFilters,predicates,criteriaBuilder,root);
         }
     }
 
     private List<GiftCertificate> getSortForResultList(MultiValueMap<String, String> mapWithFilters,
                                                        List<GiftCertificate> resultList){
         if(mapWithFilters.get(SORT_BY_NAME) != null){
-            resultList = addSortingCollectionPart(mapWithFilters,SORT_BY_NAME,resultList);
+            resultList = addSortingByName(mapWithFilters,resultList);
         }
         if(mapWithFilters.get(SORT_BY_DATE) != null) {
-            resultList = addSortingCollectionPart(mapWithFilters,SORT_BY_DATE,resultList);
+            resultList = addSortingByDate(mapWithFilters,resultList);
         }
         return resultList;
     }
@@ -140,28 +134,47 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
                     criteriaBuilder.equal(joinTags.get(NAME_COLUMN),tag));
         }
     }
-    private void addSearchByPart(MultiValueMap<String, String> mapWithFilters, List<Predicate> predicates,
-                                 CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root, String searchPart){
-        String name = mapWithFilters.get(searchPart).get(0);
-        String equalsSearchPart = searchPart.equals(PART_OF_CERTIFICATE_DESCRIPTION)? DESCRIPTION:GIFT_CERTIFICATE_NAME;
+    private void addSearchByCertificateName(MultiValueMap<String, String> mapWithFilters, List<Predicate> predicates,
+                                 CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root){
+
+        String name = mapWithFilters.get(PART_OF_CERTIFICATE_NAME).get(0);
         predicates.add(
-                criteriaBuilder.like(root.get(equalsSearchPart),PERCENT+ name +PERCENT));
+                criteriaBuilder.like(root.get(GIFT_CERTIFICATE_NAME),PERCENT + name + PERCENT));
     }
 
-    private List<GiftCertificate> addSortingCollectionPart(MultiValueMap<String, String> mapWithFilters,
-                                                           String sortBy,List<GiftCertificate> resultList){
+    private void addSearchByCertificateDescription(MultiValueMap<String, String> mapWithFilters,
+                                                   List<Predicate> predicates,
+                                                   CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root){
 
+        String description = mapWithFilters.get(PART_OF_CERTIFICATE_DESCRIPTION).get(0);
+        predicates.add(
+                criteriaBuilder.like(root.get(DESCRIPTION),PERCENT + description + PERCENT));
+    }
+
+    private List<GiftCertificate> addSortingByName(MultiValueMap<String, String> mapWithFilters,
+                                                           List<GiftCertificate> resultList){
          List<GiftCertificate> result = resultList.stream()
-                .sorted(Comparator.comparing(!sortBy.equals(SORT_BY_NAME) ? gs -> gs.getCreateDate()
-                        .format(DateTimeFormatter.ISO_DATE_TIME) : GiftCertificate::getGiftCertificateName
-                )).collect(Collectors.toList());
-
-        if(mapWithFilters.get(sortBy).get(0).equalsIgnoreCase(ASC)){
-            return result;
-        }else{
+                .sorted(Comparator
+                        .comparing(GiftCertificate::getGiftCertificateName))
+                 .collect(Collectors.toList());
+        if (!mapWithFilters.get(SORT_BY_NAME).get(0).equalsIgnoreCase(ASC)) {
             Collections.reverse(result);
-            return result;
         }
+        return result;
+    }
+
+    private List<GiftCertificate> addSortingByDate(MultiValueMap<String, String> mapWithFilters,
+                                                   List<GiftCertificate> resultList){
+        List<GiftCertificate> result = resultList
+                .stream()
+                .sorted(Comparator.comparing(giftCertificate -> giftCertificate
+                        .getCreateDate()
+                        .format(DateTimeFormatter.ISO_DATE_TIME)))
+                .collect(Collectors.toList());
+        if (!mapWithFilters.get(SORT_BY_DATE).get(0).equalsIgnoreCase(ASC)) {
+            Collections.reverse(result);
+        }
+        return result;
     }
 }
 
