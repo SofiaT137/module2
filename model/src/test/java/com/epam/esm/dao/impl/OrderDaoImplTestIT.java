@@ -3,6 +3,7 @@ package com.epam.esm.dao.impl;
 import annotations.IT;
 import com.epam.esm.dao.OrderDao;
 import com.epam.esm.dao.UserDao;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import org.junit.jupiter.api.Test;
@@ -56,9 +57,13 @@ class OrderDaoImplTestIT {
     @Test
     @Transactional
     void deleteByID() {
-        orderDao.deleteByID(ID);
-        Optional<Order> deletedOrder = orderDao.getById(ID);
-        assertEquals(Optional.empty(),deletedOrder);
+        Optional<Order> order = orderDao.getById(ID);
+        if (!order.isPresent()) {
+            throw new NoSuchElementException(CANNOT_FIND_ORDER_EXCEPTION_MESSAGE);
+        }
+        orderDao.delete(order.get());
+        Optional<Order> orderAfterDelete = orderDao.getById(ID);
+        assertEquals(Optional.empty(),orderAfterDelete);
     }
 
     @Test

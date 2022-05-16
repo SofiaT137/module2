@@ -31,9 +31,8 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void deleteByID(long id) {
-        Order order = entityManager.find(Order.class, id);
-        entityManager.remove(order);
+    public void delete(Order entity) {
+        entityManager.remove(entity);
     }
 
     @Override

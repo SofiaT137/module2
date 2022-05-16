@@ -79,7 +79,7 @@ class GiftCertificateLogicServiceTest {
         Mockito.when(giftCertificateDao.getById(1L))
                 .thenReturn(Optional.of(giftCertificate));
         giftCertificateLogicService.deleteByID(giftCertificate.getId());
-        Mockito.verify(giftCertificateDao, Mockito.times(1)).deleteByID(giftCertificate.getId());
+        Mockito.verify(giftCertificateDao, Mockito.times(1)).delete(giftCertificate);
     }
 
     @Test

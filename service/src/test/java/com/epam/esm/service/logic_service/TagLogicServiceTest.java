@@ -73,7 +73,7 @@ class TagLogicServiceTest {
     void deleteByID() {
         Mockito.when(tagDao.getById(1L)).thenReturn(Optional.of(tag));
         tagLogicService.deleteByID(1L);
-        Mockito.verify(tagDao,Mockito.times(1)).deleteByID(1L);
+        Mockito.verify(tagDao,Mockito.times(1)).delete(tag);
     }
 
     @Test

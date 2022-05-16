@@ -64,7 +64,7 @@ class OrderLogicServiceTest {
     void deleteOrder() {
         Mockito.when(orderDao.getById(1L)).thenReturn(Optional.of(order));
         orderLogicService.deleteByID(order.getId());
-        Mockito.verify(orderDao, Mockito.times(1)).deleteByID(order.getId());
+        Mockito.verify(orderDao, Mockito.times(1)).delete(order);
     }
 
     @Test

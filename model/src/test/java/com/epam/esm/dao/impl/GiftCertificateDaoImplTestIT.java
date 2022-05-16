@@ -66,10 +66,14 @@ class GiftCertificateDaoImplTestIT {
 
     @Test
     @Transactional
-    void deleteByID() {
-        giftCertificateDao.deleteByID(ID);
+    void delete() {
         Optional<GiftCertificate> giftCertificate = giftCertificateDao.getById(ID);
-        assertEquals(Optional.empty(),giftCertificate);
+        if (!giftCertificate.isPresent()) {
+            throw new NoSuchElementException(CANNOT_FIND_GIFT_CERTIFICATE_EXCEPTION_MESSAGE);
+        }
+        giftCertificateDao.delete(giftCertificate.get());
+        Optional<GiftCertificate> giftCertificateAfterDelete = giftCertificateDao.getById(ID);
+        assertEquals(Optional.empty(),giftCertificateAfterDelete);
     }
 
     @Test

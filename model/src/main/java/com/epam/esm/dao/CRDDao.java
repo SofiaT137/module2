@@ -15,7 +15,7 @@ public interface CRDDao<T> extends RDao<T>{
 
     /**
      * The method removes the entity object in a destination table by its identifier
-     * @param id Long id
+     * @param entity The entity object from table
      */
-    void deleteByID(long id);
+    void delete(T entity);
 }

@@ -64,9 +64,13 @@ class TagDaoImplTestIT {
     @Test
     @Transactional
     void deleteByID()  {
-        tagDao.deleteByID(ID);
-        Optional<Tag> deletedTag = tagDao.getById(ID);
-        assertEquals(Optional.empty(),deletedTag);
+        Optional<Tag> tag = tagDao.getById(ID);
+        if (!tag.isPresent()) {
+            throw new NoSuchElementException(CANNOT_FIND_TAG_EXCEPTION_MESSAGE);
+        }
+        tagDao.delete(tag.get());
+        Optional<Tag> tagAfterDelete = tagDao.getById(ID);
+        assertEquals(Optional.empty(),tagAfterDelete);
     }
 
     @Test

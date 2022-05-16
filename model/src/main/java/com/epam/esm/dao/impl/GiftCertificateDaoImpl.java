@@ -59,9 +59,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public void deleteByID(long id) {
-        GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, id);
-        entityManager.remove(giftCertificate);
+    public void delete(GiftCertificate entity) {
+        entityManager.remove(entity);
     }
 
     @Override

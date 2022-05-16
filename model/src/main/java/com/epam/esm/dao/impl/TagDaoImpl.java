@@ -29,6 +29,9 @@ public class TagDaoImpl implements TagDao  {
             "INNER join orders AS ord ON ord.id=ord_cer.order_id where user_id = :userId "+
             "group by tag_name order by count desc, sum desc) limit 1 ";
 
+    private static final String REMOVE_GIFT_CERTIFICATE_TAG_QUERY = "DELETE FROM gift_certificate_tag "
+            + "WHERE tag_id = :found_tag_id";
+
     private static final String FIND_TAG_BY_NAME_QUERY = "SELECT * FROM tags AS t WHERE tag_name = :tagName";
     private static final String GET_ALL_TAGS_QUERY = "from Tag order by id";
     private static final String USER_ID = "userId";
@@ -41,9 +44,11 @@ public class TagDaoImpl implements TagDao  {
     }
 
     @Override
-    public void deleteByID(long id) {
-        Tag tag = entityManager.find(Tag.class, id);
-        entityManager.remove(tag);
+    public void delete(Tag entity) {
+        entityManager.createNativeQuery(REMOVE_GIFT_CERTIFICATE_TAG_QUERY)
+                .setParameter("found_tag_id", entity.getId())
+                .executeUpdate();
+        entityManager.remove(entity);
     }
 
     @Override

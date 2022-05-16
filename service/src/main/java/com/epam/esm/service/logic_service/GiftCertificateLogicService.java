@@ -120,7 +120,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!receivedGiftCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
-        giftCertificateDao.deleteByID(id);
+        giftCertificateDao.delete(receivedGiftCertificateById.get());
     }
 
     @Override

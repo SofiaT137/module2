@@ -84,7 +84,7 @@ public class TagLogicService implements TagService<Tag> {
         if (!receivedTagById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
-        tagDao.deleteByID(id);
+        tagDao.delete(receivedTagById.get());
     }
 
     @Override

@@ -99,7 +99,7 @@ public class OrderLogicService implements OrderService<Order> {
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
-        orderDao.deleteByID(id);
+        orderDao.delete(receivedOrderById.get());
     }
 
     @Override
