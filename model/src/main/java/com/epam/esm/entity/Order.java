@@ -2,8 +2,14 @@ package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +20,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "orders")
-public class Order extends AbstractEntity<Long> implements Serializable {
+public class Order extends AbstractEntity<Long> {
 
     @Column(name = "price")
     private double price;

@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +14,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity<Long> implements Serializable {
+public class User extends AbstractEntity<Long> {
 
     @Column(name = "user_name")
     private String name;

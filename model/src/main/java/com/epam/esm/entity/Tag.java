@@ -7,7 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +15,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "tags")
-public class Tag extends AbstractEntity<Long> implements Serializable {
+public class Tag extends AbstractEntity<Long> {
 
     @Column(name = "tag_name")
     private String name;
