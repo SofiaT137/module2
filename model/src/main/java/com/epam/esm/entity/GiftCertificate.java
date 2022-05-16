@@ -1,13 +1,11 @@
 package com.epam.esm.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +36,15 @@ public class GiftCertificate extends AbstractEntity<Long>{
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-            CascadeType.DETACH,CascadeType.REFRESH})
+    @ManyToMany
     @JoinTable(
             name = "gift_certificate_tag",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tagList = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-            CascadeType.DETACH,CascadeType.REFRESH})
-    @JoinTable(
-            name = "order_certificate",
-            joinColumns = @JoinColumn(name = "gift_certificate_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private List<Order> orderList;
+    @ManyToMany(mappedBy = "giftCertificateList")
+    private List<Order> orderList = new ArrayList<>();
 
     public GiftCertificate() {}
 
@@ -83,6 +75,7 @@ public class GiftCertificate extends AbstractEntity<Long>{
 
     public void addTagToGiftCertificate(Tag tag){
         tagList.add(tag);
+        tag.getGiftCertificates().add(this);
     }
 
     public String getGiftCertificateName() {

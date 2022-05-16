@@ -1,0 +1,212 @@
+21:39:06.323 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 11348 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+21:39:06.328 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+21:39:07.352 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:39:07.381 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+21:39:09.165 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+21:39:09.187 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+21:39:09.188 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+21:39:09.188 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+21:39:09.495 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+21:39:09.496 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3090 ms
+21:39:09.907 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+21:39:10.033 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+21:39:10.479 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+21:39:10.719 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+21:39:11.060 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+21:39:11.098 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+21:39:12.537 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+21:39:12.553 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+21:39:12.964 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+21:39:16.159 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+21:39:16.208 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+21:39:16.233 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 10.538 seconds (JVM running for 11.74)
+21:39:22.071 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+21:39:22.071 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+21:39:22.072 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+21:39:22.405 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+21:39:22.434 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+21:39:48.042 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getCertificateTagList starts
+21:39:48.128 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:39:48.545 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+21:39:48.765 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:39:48.860 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:40:02.567 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+21:40:13.928 [http-nio-8080-exec-2] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1062, SQLState: 23000
+21:40:13.928 [http-nio-8080-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '10036-1103' for key 'gift_certificate_tag.PRIMARY'
+21:40:13.930 [http-nio-8080-exec-2] INFO  o.h.e.j.b.internal.AbstractBatchImpl - HHH000010: On release of batch it still contained JDBC statements
+21:40:13.953 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [gift_certificate_tag.PRIMARY]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+21:44:01.741 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+21:44:01.743 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+21:44:01.755 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+21:44:07.483 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 14024 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+21:44:07.487 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+21:44:09.214 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:44:09.261 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 28 ms. Found 0 JPA repository interfaces.
+21:44:10.981 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+21:44:10.998 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+21:44:10.999 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+21:44:10.999 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+21:44:11.197 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+21:44:11.198 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3614 ms
+21:44:11.531 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+21:44:11.627 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+21:44:11.949 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+21:44:12.080 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+21:44:12.254 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+21:44:12.278 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+21:44:13.223 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+21:44:13.235 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+21:44:13.542 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+21:44:14.577 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+21:44:14.617 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+21:44:14.633 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 7.774 seconds (JVM running for 9.076)
+21:44:21.003 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+21:44:21.004 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+21:44:21.005 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+21:44:21.322 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+21:44:21.350 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+21:44:25.544 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getCertificateTagList starts
+21:44:25.628 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:44:26.009 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+21:44:26.218 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:44:26.309 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:45:29.750 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m7s583ms378µs501ns).
+21:46:52.450 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m32s497ms896µs999ns).
+21:47:45.441 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=52s990ms814µs701ns).
+21:47:45.442 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+21:48:14.517 [http-nio-8080-exec-1] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1062, SQLState: 23000
+21:48:14.517 [http-nio-8080-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '10037-1104' for key 'gift_certificate_tag.PRIMARY'
+21:48:14.518 [http-nio-8080-exec-1] INFO  o.h.e.j.b.internal.AbstractBatchImpl - HHH000010: On release of batch it still contained JDBC statements
+21:48:14.539 [http-nio-8080-exec-1] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [gift_certificate_tag.PRIMARY]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+21:52:15.930 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+21:52:15.932 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+21:52:15.948 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+21:53:29.900 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 19792 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+21:53:29.904 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+21:53:31.948 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:53:31.995 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 26 ms. Found 0 JPA repository interfaces.
+21:53:34.382 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+21:53:34.401 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+21:53:34.401 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+21:53:34.401 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+21:53:34.802 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+21:53:34.802 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4791 ms
+21:53:35.523 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+21:53:35.641 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+21:53:36.093 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+21:53:36.356 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+21:53:36.614 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+21:53:36.644 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+21:53:37.946 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+21:53:37.974 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+21:53:38.457 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+21:53:40.353 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+21:53:40.404 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+21:53:40.433 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 11.526 seconds (JVM running for 12.845)
+21:53:44.934 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+21:53:44.935 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+21:53:44.938 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+21:53:45.231 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+21:53:48.912 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+21:53:51.725 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getCertificateTagList starts
+21:53:51.796 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:53:52.207 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+21:53:52.427 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:53:52.521 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+21:54:22.766 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+21:55:15.298 [http-nio-8080-exec-2] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1062, SQLState: 23000
+21:55:15.298 [http-nio-8080-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '10038-1105' for key 'gift_certificate_tag.PRIMARY'
+21:55:15.298 [http-nio-8080-exec-2] INFO  o.h.e.j.b.internal.AbstractBatchImpl - HHH000010: On release of batch it still contained JDBC statements
+21:55:15.345 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [gift_certificate_tag.PRIMARY]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+22:04:44.232 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+22:04:44.235 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+22:04:44.250 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+22:04:50.018 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 9764 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+22:04:50.022 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+22:04:50.885 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22:04:50.917 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 19 ms. Found 0 JPA repository interfaces.
+22:04:52.208 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+22:04:52.227 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+22:04:52.228 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+22:04:52.228 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+22:04:52.422 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+22:04:52.423 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2322 ms
+22:04:52.892 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+22:04:53.109 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+22:04:53.790 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22:04:54.046 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+22:04:54.314 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+22:04:54.341 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+22:04:55.561 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22:04:55.572 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+22:04:55.895 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+22:04:56.828 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+22:04:56.856 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+22:04:56.870 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 7.549 seconds (JVM running for 8.695)
+22:05:05.591 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+22:05:05.591 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+22:05:05.593 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+22:05:05.877 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+22:05:09.689 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+22:05:10.594 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getCertificateTagList starts
+22:05:10.608 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+22:05:10.739 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+22:05:10.788 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+22:05:10.811 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+22:05:10.873 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+22:05:10.972 [http-nio-8080-exec-2] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1062, SQLState: 23000
+22:05:10.972 [http-nio-8080-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Duplicate entry '10035-1106' for key 'gift_certificate_tag.PRIMARY'
+22:05:10.973 [http-nio-8080-exec-2] INFO  o.h.e.j.b.internal.AbstractBatchImpl - HHH000010: On release of batch it still contained JDBC statements
+22:05:10.988 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [gift_certificate_tag.PRIMARY]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+22:11:07.294 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+22:11:07.299 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+22:11:07.322 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+22:11:15.016 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 20256 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+22:11:15.020 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+22:11:16.405 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22:11:16.436 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 19 ms. Found 0 JPA repository interfaces.
+22:11:17.848 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+22:11:17.863 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+22:11:17.864 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+22:11:17.864 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+22:11:18.067 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+22:11:18.067 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2911 ms
+22:11:18.484 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+22:11:18.574 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+22:11:18.888 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22:11:19.084 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+22:11:19.372 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+22:11:19.413 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+22:11:20.650 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22:11:20.679 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+22:11:22.063 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+22:11:23.875 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+22:11:23.919 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+22:11:23.938 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 9.682 seconds (JVM running for 10.699)
+22:11:30.993 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+22:11:30.993 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+22:11:30.994 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+22:11:31.385 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+22:11:31.411 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+22:11:31.416 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+22:11:31.424 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+22:11:31.535 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+22:11:31.544 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+22:11:31.560 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+22:11:31.561 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+22:11:31.566 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+22:11:35.745 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+22:11:35.757 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+22:11:35.757 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getCertificateTagList starts
+22:11:35.764 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+22:11:35.826 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+22:11:35.828 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+22:11:35.830 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findTagByTagName starts
+22:11:35.832 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+22:13:00.192 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+22:13:00.200 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+22:13:00.200 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+22:13:00.202 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: deleteByID starts
+22:13:34.006 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+22:13:34.008 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+22:13:34.019 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

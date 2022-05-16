@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,13 +21,8 @@ public class Tag extends AbstractEntity<Long> {
     @Column(name = "tag_name")
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-            CascadeType.DETACH,CascadeType.REFRESH})
-    @JoinTable(
-            name = "gift_certificate_tag",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "gift_certificate_id"))
-    private List<GiftCertificate> giftCertificates;
+    @ManyToMany(mappedBy = "tagList")
+    private List<GiftCertificate> giftCertificates = new ArrayList<>();
 
     public Tag(){}
 

@@ -2,7 +2,6 @@ package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,8 +27,7 @@ public class Order extends AbstractEntity<Long> {
     @Column(name = "purchase_time")
     private LocalDateTime purchaseTime;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-            CascadeType.DETACH,CascadeType.REFRESH})
+    @ManyToMany
     @JoinTable(
             name = "order_certificate",
             joinColumns = @JoinColumn(name = "order_id"),
@@ -60,6 +58,7 @@ public class Order extends AbstractEntity<Long> {
 
     public void addGiftCertificateToOrder(GiftCertificate giftCertificate){
         giftCertificateList.add(giftCertificate);
+        giftCertificate.getOrderList().add(this);
     }
 
     public double getPrice() {

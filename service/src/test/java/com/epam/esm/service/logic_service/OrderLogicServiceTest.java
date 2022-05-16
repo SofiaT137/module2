@@ -53,8 +53,8 @@ class OrderLogicServiceTest {
     @Test
     void insertOrder() {
         Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
-        Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
         order.setGiftCertificateList(list);
+        Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
         Mockito.when(orderDao.insert(order)).thenReturn(Optional.of(order));
         Order order1 = orderLogicService.insert(order);
         assertEquals(order,order1);
