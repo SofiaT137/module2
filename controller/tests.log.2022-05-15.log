@@ -258,3 +258,55 @@
 17:56:08.369 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 17:56:08.371 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 17:56:08.379 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+18:43:18.018 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 16720 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2\controller)
+18:43:18.020 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+18:43:18.623 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+18:43:18.645 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 JPA repository interfaces.
+18:43:19.643 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+18:43:19.667 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+18:43:19.669 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+18:43:19.669 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+18:43:19.808 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+18:43:19.809 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1725 ms
+18:43:20.079 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+18:43:20.151 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+18:43:20.369 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+18:43:20.470 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+18:43:20.615 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+18:43:20.631 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+18:43:21.328 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+18:43:21.338 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+18:43:21.704 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+18:43:23.095 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+18:43:23.124 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+18:43:23.137 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 5.414 seconds (JVM running for 6.209)
+18:43:52.357 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+18:43:52.358 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+18:43:52.360 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+18:43:52.462 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:43:52.468 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:43:52.478 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+18:44:17.569 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:44:17.569 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:44:17.570 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+18:44:24.880 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:44:24.880 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:44:24.880 [http-nio-8080-exec-4] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+18:46:13.749 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:13.750 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:13.750 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: checkTheValuesThatYouTransferred
+18:46:13.750 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: checkTheValuesThatYouTransferred
+18:46:19.257 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:19.257 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:19.257 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+18:46:29.803 [http-nio-8080-exec-10] WARN  o.s.web.servlet.PageNotFound - No mapping for GET /gift_certifica7tes/filter/
+18:46:35.079 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:35.079 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:35.079 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+18:46:42.298 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:42.298 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+18:46:42.299 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+18:48:03.639 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+18:48:03.785 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+18:48:03.787 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+18:48:03.797 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
