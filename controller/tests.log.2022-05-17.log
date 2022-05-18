@@ -49,3 +49,44 @@
 09:57:30.373 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 09:57:30.376 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 09:57:30.389 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+10:48:23.648 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 16104 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2\controller)
+10:48:23.651 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+10:48:24.274 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+10:48:24.294 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 JPA repository interfaces.
+10:48:25.224 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+10:48:25.238 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+10:48:25.239 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+10:48:25.239 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+10:48:25.360 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+10:48:25.360 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1644 ms
+10:48:25.627 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+10:48:25.691 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+10:48:25.880 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+10:48:25.977 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+10:48:26.141 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+10:48:26.155 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+10:48:26.824 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+10:48:26.833 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+10:48:27.158 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+10:48:28.165 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+10:48:28.189 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+10:48:28.202 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 4.854 seconds (JVM running for 5.652)
+10:48:54.470 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:48:54.470 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+10:48:54.471 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+10:48:54.572 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+10:48:54.581 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+10:48:54.587 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+10:49:28.413 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+10:49:28.433 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+10:49:28.443 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+10:49:28.448 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+10:49:28.463 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+10:49:28.470 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+10:49:28.495 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+10:49:28.495 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+10:49:28.507 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: insert starts
+10:49:39.578 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+10:49:39.739 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+10:49:39.741 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+10:49:39.754 [RMI TCP Connection(4)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

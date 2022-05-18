@@ -32,7 +32,8 @@ public class TagLogicService implements TagService<Tag> {
 
     private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
     private static final String NOT_UNIQUE_TAG_NAME_MESSAGE = "notUniqueTagName";
-    private static final String CANNOT_FIND_THIS_TAG_MESSAGE = "noTagWithThatId";
+    private static final String CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE = "noTagWithThatId";
+    private static final String CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE = "noTagWithThatName";
     private static final String CANNOT_FIND_THIS_USER_MESSAGE = "noUserWithId";
     private static final String CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG = "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
 
@@ -66,7 +67,7 @@ public class TagLogicService implements TagService<Tag> {
     public Tag getById(long id) {
         Optional<Tag> receivedTagById = tagDao.getById(id);
         if (!receivedTagById.isPresent()){
-            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         return receivedTagById.get();
     }
@@ -82,7 +83,7 @@ public class TagLogicService implements TagService<Tag> {
         tagValidator.checkID(id);
         Optional<Tag> receivedTagById = tagDao.getById(id);
         if (!receivedTagById.isPresent()){
-            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         tagDao.delete(receivedTagById.get());
     }
@@ -103,7 +104,7 @@ public class TagLogicService implements TagService<Tag> {
     public Tag findTagByTagName(String name) {
         Optional<Tag> tag = tagDao.findTagByTagName(name);
         if (!tag.isPresent()){
-            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         return tag.get();
     }
