@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.epam.esm.exceptions.ExceptionErrorCode.*;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_GIFT_CERTIFICATE_DESCRIPTION_LENGTH;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_GIFT_CERTIFICATE_DURATION;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_GIFT_CERTIFICATE_NAME;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_GIFT_CERTIFICATE_PRICE;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_TRANSFERRED_PARAMETERS;
 
 /**
  * The GiftCertificateValidator class extents Validator class and provides validation for GiftCertificateDto entity

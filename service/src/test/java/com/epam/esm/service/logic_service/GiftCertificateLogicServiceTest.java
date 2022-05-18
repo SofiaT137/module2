@@ -16,10 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,7 +35,7 @@ class GiftCertificateLogicServiceTest {
     @InjectMocks
     private GiftCertificateLogicService giftCertificateLogicService;
 
-    List<Tag> tagList = Collections.singletonList(new Tag("hello"));
+    List<Tag> tagList = Arrays.asList(new Tag("hello"), new Tag("season"));
     GiftCertificate giftCertificate = new GiftCertificate(1L,"abc","abc"
             ,50.00,13, LocalDateTime.now(),LocalDateTime.now(),tagList);
     GiftCertificate giftCertificateForUpdate = new GiftCertificate(1L,null,null
@@ -95,9 +92,12 @@ class GiftCertificateLogicServiceTest {
     @Test
     void getQueryWithConditions() {
         MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-        map.set("hello","season");
-        Mockito.when(giftCertificateDao.findGiftCertificatesByTransferredConditions(map)).thenReturn(new ArrayList<>());
+        map.set("tag_name","season");
+        map.set("tag_name","hello");
+        Mockito.when(giftCertificateDao
+                .findGiftCertificatesByTransferredConditions(map))
+                .thenReturn(Collections.singletonList(giftCertificate));
         List<GiftCertificate> giftCertificates = giftCertificateLogicService.getQueryWithConditions(map);
-        assertEquals(0,giftCertificates.size());
+        assertEquals(1,giftCertificates.size());
     }
 }

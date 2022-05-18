@@ -20,5 +20,7 @@ public final class ExceptionErrorCode {
     public static final String INCORRECT_GIFT_CERTIFICATE_DURATION = "403008";
     public static final String INCORRECT_TRANSFERRED_PARAMETERS = "403009";
     public static final String USER_HAVE_NOT_ANY_ORDERS = "403010";
+    public static final String ORDERS_GIFT_CERTIFICATE_LIST_CANNOT_BE_NULL = "403011";
+    public static final String ORDERS_USER_CANNOT_BE_NULL = "403012";
 
 }

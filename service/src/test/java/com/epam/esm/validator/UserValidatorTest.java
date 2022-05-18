@@ -1,6 +1,5 @@
 package com.epam.esm.validator;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.ValidatorException;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith({MockitoExtension.class})
+@ExtendWith(MockitoExtension.class)
 class UserValidatorTest {
 
     @InjectMocks

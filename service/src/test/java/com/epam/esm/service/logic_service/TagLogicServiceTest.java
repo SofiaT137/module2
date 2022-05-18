@@ -40,13 +40,13 @@ class TagLogicServiceTest {
         tagLogicService.setUserLogicService(userLogicService);
     }
 
-    Tag tag2 = new Tag("joy");
-    Tag tag = new Tag("shark");
-    User user = new User(1L,"AlexRendal");
-    GiftCertificate giftCertificate = new GiftCertificate(1L,"fff"
+    private static final Tag tag2 = new Tag("joy");
+    private static final Tag tag = new Tag("shark");
+    private static final User user = new User(1L,"AlexRendal");
+    private static final GiftCertificate giftCertificate = new GiftCertificate(1L,"fff"
             ,"ffff",40.12,30,
             LocalDateTime.now(),LocalDateTime.now(),Arrays.asList(tag,tag2));
-    Order order = new Order(40.12,LocalDateTime.now(),user);
+    private static final Order order = new Order(40.12,LocalDateTime.now(),user);
 
     @Test
     void insert() {

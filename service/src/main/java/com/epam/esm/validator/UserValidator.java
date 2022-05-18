@@ -2,10 +2,12 @@ package com.epam.esm.validator;
 
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.ValidatorException;
+import org.springframework.stereotype.Component;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_TAG_LENGTH;
 
-public class UserValidator extends Validator<User> {
+@Component
+public final class UserValidator extends Validator<User> {
 
     private static final String INCORRECT_USER_LENGTH_EXCEPTION = "thisUserNameLengthIsForbidden!";
     private static final String USER_NAME = " User name: ";

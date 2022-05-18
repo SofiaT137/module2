@@ -7,10 +7,10 @@ import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
-import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
+import com.epam.esm.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -31,12 +31,14 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 public class OrderLogicService implements OrderService<Order> {
 
     private final OrderDao orderDao;
+    private final OrderValidator orderValidator;
     private UserService<User> userLogicService;
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
 
     @Autowired
-    public OrderLogicService(OrderDao orderDao) {
+    public OrderLogicService(OrderDao orderDao, OrderValidator orderValidator) {
         this.orderDao = orderDao;
+        this.orderValidator = orderValidator;
     }
 
     @Autowired
@@ -57,15 +59,15 @@ public class OrderLogicService implements OrderService<Order> {
     private static final String NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE = "noGiftCertificateWithThatId";
     private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "userIdCannotBeNull";
     private static final String USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE = "userDoesNotHaveAnyOrders";
-    private static final String LIST_OF_GS_BE_NULL_EXCEPTION_MESSAGE = "giftCertificateListCannotBeNull";
+
 
     @Override
     @Transactional
     public Order insert(Order entity) {
+        orderValidator.validate(entity);
         User user = getUser(entity);
         entity.addUserToOrder(user);
-        double totalCertificatePrice = saveGiftCertificatesToOrder(entity);
-        entity.setPrice(totalCertificatePrice);
+        entity.setPrice(saveGiftCertificatesToOrder(entity));
         entity.setPurchaseTime(LocalDateTime.now());
         Optional<Order> insertedOrder = orderDao.insert(entity);
         if (!insertedOrder.isPresent()){
@@ -87,10 +89,6 @@ public class OrderLogicService implements OrderService<Order> {
     private double saveGiftCertificatesToOrder(Order entity){
         double price = 0.0;
         List<GiftCertificate> list = entity.getGiftCertificateList();
-        if (list.isEmpty()){
-            throw new CannotInsertEntityException(LIST_OF_GS_BE_NULL_EXCEPTION_MESSAGE
-                    ,CANNOT_INSERT_ENTITY_CODE);
-        }
         entity.setGiftCertificateList(new ArrayList<>());
         for (GiftCertificate giftCertificate : list) {
             GiftCertificate certificateById = giftCertificateLogicService.getById(giftCertificate.getId());
@@ -103,6 +101,7 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     @Transactional
     public void deleteByID(long id) {
+        orderValidator.checkID(id);
         Optional<Order> receivedOrderById = orderDao.getById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
@@ -112,6 +111,7 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     public Order getById(long id) {
+        orderValidator.checkID(id);
         Optional<Order> receivedOrderById = orderDao.getById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
@@ -126,6 +126,7 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     public List<Order> ordersByUserId(long userId,int pageSize, int pageNumber){
+        orderValidator.checkID(userId);
         User user = userLogicService.getById(userId);
         if (user.getOrderList().isEmpty()){
             throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);

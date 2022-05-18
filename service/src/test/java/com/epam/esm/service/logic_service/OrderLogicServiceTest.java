@@ -7,6 +7,8 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.UserService;
+import com.epam.esm.validator.OrderValidator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +31,9 @@ class OrderLogicServiceTest {
     private OrderDaoImpl orderDao;
 
     @Mock
+    private OrderValidator orderValidator;
+
+    @Mock
     private UserService<User> userLogicService;
 
     @Mock
@@ -37,23 +42,31 @@ class OrderLogicServiceTest {
     @InjectMocks
     private OrderLogicService orderLogicService;
 
+    private static final User user = new User(1L,"AlexRendal");
+    private static final List<Tag> tagList = Collections.singletonList(new Tag("hello"));
+    private static final GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
+            , "abc", 50.00, 13, LocalDateTime.now(), LocalDateTime.now(), tagList);
+    private static Order order;
+
     @BeforeEach
     void init(){
         orderLogicService.setUserLogicService(userLogicService);
         orderLogicService.setGiftCertificateLogicService(giftCertificateLogicService);
     }
 
-    private final User user = new User(1L,"AlexRendal");
-    List<Tag> tagList = Collections.singletonList(new Tag("hello"));
-    GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
-            , "abc", 50.00, 13, LocalDateTime.now(), LocalDateTime.now(), tagList);
-    private final List<GiftCertificate> list = Collections.singletonList(giftCertificate);
-    private final Order order = new Order(1L,400.12, LocalDateTime.now(),user);
+    @BeforeAll
+    static void fillTheOrderFields(){
+       order = new Order();
+       order.addUserToOrder(user);
+       order.addGiftCertificateToOrder(giftCertificate);
+       order.setPrice(giftCertificate.getPrice());
+       order.setPurchaseTime(LocalDateTime.now());
+       order.setId(1L);
+    }
 
     @Test
     void insertOrder() {
         Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
-        order.setGiftCertificateList(list);
         Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
         Mockito.when(orderDao.insert(order)).thenReturn(Optional.of(order));
         Order order1 = orderLogicService.insert(order);

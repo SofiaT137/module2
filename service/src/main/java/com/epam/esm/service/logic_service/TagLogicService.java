@@ -65,6 +65,7 @@ public class TagLogicService implements TagService<Tag> {
 
     @Override
     public Tag getById(long id) {
+        tagValidator.checkID(id);
         Optional<Tag> receivedTagById = tagDao.getById(id);
         if (!receivedTagById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);

@@ -2394,3 +2394,184 @@
 16:11:42.010 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 16:11:42.012 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 16:11:42.026 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+16:42:32.684 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 8224 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+16:42:32.687 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+16:42:33.575 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+16:42:33.607 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+16:42:34.804 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+16:42:34.819 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+16:42:34.819 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+16:42:34.819 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+16:42:34.956 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+16:42:34.956 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2194 ms
+16:42:35.315 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+16:42:35.416 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+16:42:35.746 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+16:42:35.953 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+16:42:36.137 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+16:42:36.163 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+16:42:37.213 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+16:42:37.226 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+16:42:37.429 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'giftCertificateController': Unsatisfied dependency expressed through method 'setGiftCertificateService' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'giftCertificateBusinessService': Unsatisfied dependency expressed through method 'setGiftCertificateLogicService' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'giftCertificateLogicService': Unsatisfied dependency expressed through method 'setTagLogicService' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'tagLogicService': Unsatisfied dependency expressed through method 'setUserLogicService' parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userLogicService' defined in file [D:\module-2\service\target\classes\com\epam\esm\service\logic_service\UserLogicService.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.epam.esm.validator.UserValidator' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+16:42:37.430 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+16:42:37.435 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+16:42:37.449 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+16:42:37.451 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+16:42:37.462 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+16:42:37.496 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.epam.esm.service.logic_service.UserLogicService required a bean of type 'com.epam.esm.validator.UserValidator' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.epam.esm.validator.UserValidator' in your configuration.
+
+16:43:06.782 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 16980 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+16:43:06.787 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+16:43:07.679 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+16:43:07.711 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20 ms. Found 0 JPA repository interfaces.
+16:43:09.645 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+16:43:09.670 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+16:43:09.672 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+16:43:09.672 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+16:43:09.884 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+16:43:09.884 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3029 ms
+16:43:10.342 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+16:43:10.438 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+16:43:10.779 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+16:43:11.001 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+16:43:11.231 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+16:43:11.258 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+16:43:12.298 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+16:43:12.310 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+16:43:12.656 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+16:43:13.869 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+16:43:13.898 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+16:43:13.909 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 7.672 seconds (JVM running for 8.431)
+16:43:23.040 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+16:43:23.041 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+16:43:23.042 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+16:43:23.313 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+16:43:23.325 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getQueryWithConditions starts
+16:43:23.332 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: findGiftCertificatesByTransferredConditions starts
+16:43:23.776 [http-nio-8080-exec-1] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.NoSuchEntityException: noGiftCertificateWithConditions
+16:43:23.776 [http-nio-8080-exec-1] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.NoSuchEntityException: noGiftCertificateWithConditions
+16:43:31.724 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:43:31.734 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:43:31.753 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:43:31.755 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:43:46.135 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:43:46.139 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:43:46.148 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:43:46.148 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:43:59.034 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:43:59.034 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:43:59.034 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:43:59.034 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:12.940 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+16:44:12.941 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: ordersByUserId starts
+16:44:12.941 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:12.941 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:25.556 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:44:25.561 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:44:25.564 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:25.564 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:39.004 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:44:39.004 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:44:39.004 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:39.005 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:58.698 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+16:44:58.710 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+16:44:58.710 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:44:58.718 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:11.161 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+16:45:11.162 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+16:45:11.162 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:11.162 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:16.385 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+16:45:16.387 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: deleteByID starts
+16:45:16.387 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:16.388 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:31.507 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: update starts
+16:45:31.509 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: update starts
+16:45:31.509 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:31.510 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:45:53.064 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:45:53.065 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: java.lang.NullPointerException
+16:46:07.993 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:07.994 [http-nio-8080-exec-7] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:07.994 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: giftCertificateListCannotBeNull
+16:46:07.995 [http-nio-8080-exec-7] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: giftCertificateListCannotBeNull
+16:46:22.613 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:22.614 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:22.614 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.NoPermissionException: userIdCannotBeNull
+16:46:22.614 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.NoPermissionException: userIdCannotBeNull
+16:46:35.558 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:35.559 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:35.559 [http-nio-8080-exec-2] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:46:35.559 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:35.559 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:35.560 [http-nio-8080-exec-2] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:41.695 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:41.697 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:41.697 [http-nio-8080-exec-3] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:46:41.697 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:41.697 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:41.698 [http-nio-8080-exec-3] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:50.462 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:50.463 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: insert starts
+16:46:50.463 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:46:50.463 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Model layer, Method name: getById starts
+16:46:50.505 [http-nio-8080-exec-5] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:46:50.506 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:50.506 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:46:50.508 [http-nio-8080-exec-5] INFO  o.h.c.i.AbstractPersistentCollection - HHH000496: Detaching an uninitialized collection with queued operations from a session: [com.epam.esm.entity.User.orderList#454]
+16:46:50.510 [http-nio-8080-exec-5] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: Check this id!
+16:47:02.883 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+16:47:02.884 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+16:47:02.896 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+16:50:05.384 [main] INFO  c.e.esm.SpringBootApplicationRunner - Starting SpringBootApplicationRunner using Java 1.8.0_302 on DESKTOP-46N34OV with PID 20276 (D:\module-2\controller\target\classes started by XIAOMi in D:\module-2)
+16:50:05.389 [main] INFO  c.e.esm.SpringBootApplicationRunner - The following 1 profile is active: "production"
+16:50:06.377 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+16:50:06.408 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 19 ms. Found 0 JPA repository interfaces.
+16:50:07.909 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+16:50:07.922 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+16:50:07.922 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+16:50:07.922 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.62]
+16:50:08.083 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+16:50:08.083 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2602 ms
+16:50:08.512 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+16:50:08.604 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.8.Final
+16:50:08.901 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+16:50:09.087 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+16:50:09.272 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+16:50:09.296 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+16:50:10.188 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+16:50:10.200 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+16:50:10.565 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+16:50:11.994 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+16:50:12.041 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+16:50:12.059 [main] INFO  c.e.esm.SpringBootApplicationRunner - Started SpringBootApplicationRunner in 7.308 seconds (JVM running for 8.216)
+16:50:23.612 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+16:50:23.612 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+16:50:23.613 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+16:50:24.155 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: update starts
+16:50:24.187 [http-nio-8080-exec-1] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: update starts
+16:50:24.196 [http-nio-8080-exec-1] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: checkTheId
+16:50:24.206 [http-nio-8080-exec-1] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: checkTheId
+16:50:33.327 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:50:33.335 [http-nio-8080-exec-9] INFO  com.epam.esm.logging.AspectLogging - Service layer, Method name: getById starts
+16:50:33.345 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: checkTheId
+16:50:33.345 [http-nio-8080-exec-9] ERROR com.epam.esm.logging.AspectLogging - Method from Service layer throws an exception: com.epam.esm.exceptions.ValidatorException: checkTheId
+16:51:03.050 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+16:51:03.053 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+16:51:03.068 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

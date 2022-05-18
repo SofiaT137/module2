@@ -90,6 +90,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Override
     @Transactional
     public GiftCertificate update(Long id, GiftCertificate entity) {
+        certificateValidator.checkID(id);
         Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.getById(id);
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
@@ -116,6 +117,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Override
     @Transactional
     public void deleteByID(long id) {
+        certificateValidator.checkID(id);
         Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.getById(id);
         if (!receivedGiftCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);

@@ -23,12 +23,14 @@ class GiftCertificateValidatorTest {
     @InjectMocks
     private GiftCertificateValidator giftCertificateValidator;
 
+    private static final String INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION = "giftCertificateLengthIsForbidden";
     private static final String NAME_IS_FORBIDDEN = "giftCertificateNameIsForbidden";
     private static final String DESCRIPTION_IS_TOO_LONG = "giftCertificateDescriptionIsTooLong";
     private static final String PRICE_IS_FORBIDDEN = "giftCertificatePriceIsForbidden";
     private static final String DURATION_IS_FORBIDDEN = "giftCertificateDurationIsForbidden";
     private static final String CHECK_THE_VALUES = "checkTheValuesThatYouTransferred";
-    private static final String GIFT_CERTIFICATE_NAME = "Swimming with seals";
+    private static final String CORRECT_NAME = "Swimming with seals";
+    private static final String INCORRECT_NAME = "ru";
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";
     private static final String INCORRECT_DESCRIPTION = new String(new char[451]).replace('\0', ' ');
     private static final Double CORRECT_PRICE = 56.13;
@@ -44,29 +46,38 @@ class GiftCertificateValidatorTest {
         stringStringMap.set("name_tag","joy");
     }
 
+
     @Test
-    void validateInCorrectGiftCertificateDescription(){
+    void validateIncorrectGiftCertificateName(){
         ValidatorException thrown = assertThrows(
                 ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(GIFT_CERTIFICATE_NAME,INCORRECT_DESCRIPTION,
+                () -> giftCertificateValidator.validate(new GiftCertificate(INCORRECT_NAME,CORRECT_DESCRIPTION,
+                        CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
+        assertTrue(thrown.getMessage().contains(INCORRECT_GIFT_CERTIFICATE_NAME_LENGTH_EXCEPTION));
+    }
+    @Test
+    void validateIncorrectGiftCertificateDescription(){
+        ValidatorException thrown = assertThrows(
+                ValidatorException.class,
+                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,INCORRECT_DESCRIPTION,
                         CORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(DESCRIPTION_IS_TOO_LONG));
     }
 
     @Test
-    void validateInCorrectGiftCertificatePrice(){
+    void validateIncorrectGiftCertificatePrice(){
         ValidatorException thrown = assertThrows(
                 ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(GIFT_CERTIFICATE_NAME,CORRECT_DESCRIPTION,
+                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,
                         INCORRECT_PRICE,CORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(PRICE_IS_FORBIDDEN));
     }
 
     @Test
-    void validateInCorrectGiftCertificateDuration(){
+    void validateIncorrectGiftCertificateDuration(){
         ValidatorException thrown = assertThrows(
                 ValidatorException.class,
-                () -> giftCertificateValidator.validate(new GiftCertificate(GIFT_CERTIFICATE_NAME,CORRECT_DESCRIPTION,
+                () -> giftCertificateValidator.validate(new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,
                         CORRECT_PRICE,INCORRECT_DURATION,date,date,list)));
         assertTrue(thrown.getMessage().contains(DURATION_IS_FORBIDDEN));
     }
