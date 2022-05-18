@@ -128,7 +128,7 @@ public class OrderLogicService implements OrderService<Order> {
     public List<Order> ordersByUserId(long userId,int pageSize, int pageNumber){
         User user = userLogicService.getById(userId);
         if (user.getOrderList().isEmpty()){
-            throw new ValidatorException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);
+            throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);
         }
         return orderDao.ordersByUserId(user.getId(),pageSize,pageNumber);
     }

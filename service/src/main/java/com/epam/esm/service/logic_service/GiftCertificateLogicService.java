@@ -37,8 +37,8 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "cannotInsertThisCertificate";
     private static final String CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE = "noGiftCertificateWithThatId";
-    private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
-    private static final String CANNOT_UPDATE_THIS_TAG_MESSAGE = "cannotUpdateThisTag";
+    private static final String CANNOT_FIND_ANY_CERTIFICATE_BY_CONDITIONS_MESSAGE = "noGiftCertificateWithConditions";
+    private static final String CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE = "cannotUpdateThisCertificate";
     private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
 
     @Autowired
@@ -99,7 +99,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         Optional<GiftCertificate> updatedEntity = giftCertificateDao.update(entity.getDuration(),
                 foundedCertificateById.get());
         if (!updatedEntity.isPresent()){
-            throw new NoSuchEntityException("no updation",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         return updatedEntity.get();
     }
@@ -126,6 +126,11 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Override
     public List<GiftCertificate> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters) {
         certificateValidator.validateMapKeys(mapWithFilters);
-        return giftCertificateDao.findGiftCertificatesByTransferredConditions(mapWithFilters);
+        List< GiftCertificate> giftCertificateList = giftCertificateDao
+                .findGiftCertificatesByTransferredConditions(mapWithFilters);
+        if (giftCertificateList.isEmpty()){
+            throw new NoSuchEntityException(CANNOT_FIND_ANY_CERTIFICATE_BY_CONDITIONS_MESSAGE,NO_SUCH_ENTITY_CODE);
+        }
+        return giftCertificateList;
     }
 }
