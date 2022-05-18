@@ -19,5 +19,6 @@ public final class ExceptionErrorCode {
     public static final String INCORRECT_GIFT_CERTIFICATE_PRICE = "403007";
     public static final String INCORRECT_GIFT_CERTIFICATE_DURATION = "403008";
     public static final String INCORRECT_TRANSFERRED_PARAMETERS = "403009";
+    public static final String USER_HAVE_NOT_ANY_ORDERS = "403010";
 
 }

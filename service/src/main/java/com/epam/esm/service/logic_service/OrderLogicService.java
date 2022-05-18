@@ -7,6 +7,7 @@ import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
+import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
@@ -55,6 +56,7 @@ public class OrderLogicService implements OrderService<Order> {
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noUserWithId";
     private static final String NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE = "noGiftCertificateWithThatId";
     private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "userIdCannotBeNull";
+    private static final String USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE = "userDoesNotHaveAnyOrders";
     private static final String LIST_OF_GS_BE_NULL_EXCEPTION_MESSAGE = "giftCertificateListCannotBeNull";
 
     @Override
@@ -125,6 +127,9 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     public List<Order> ordersByUserId(long userId,int pageSize, int pageNumber){
         User user = userLogicService.getById(userId);
+        if (user.getOrderList().isEmpty()){
+            throw new ValidatorException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);
+        }
         return orderDao.ordersByUserId(user.getId(),pageSize,pageNumber);
     }
 }
