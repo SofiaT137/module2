@@ -1,25 +1,38 @@
 package com.epam.esm.entity;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Tag class extends AbstractEntity and presents creation of the Tag entity
  */
+@Entity
+@Table(name = "tags")
 public class Tag extends AbstractEntity<Long> {
 
+    @Column(name = "tag_name")
     private String name;
 
-    public Tag(String name) {
-        this.name = name;
-    }
+    @ManyToMany(mappedBy = "tagList")
+    private List<GiftCertificate> giftCertificates = new ArrayList<>();
 
-    public Tag(Long id, String name) {
+    public Tag(){}
+
+    public Tag(Long id,String name) {
         super(id);
         this.name = name;
     }
 
-    public Tag(){
-
+    public Tag(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -28,6 +41,14 @@ public class Tag extends AbstractEntity<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<GiftCertificate> getGiftCertificates() {
+        return giftCertificates;
+    }
+
+    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
+        this.giftCertificates = giftCertificates;
     }
 
     @Override

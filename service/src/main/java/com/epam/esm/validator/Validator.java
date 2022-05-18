@@ -1,6 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.exceptions.ValidatorException;
+
 import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_ID;
 
 /**
@@ -9,7 +10,7 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_ID;
 public abstract class Validator<T> {
 
     private static final Long MIN_ID = 1L;
-    private static final String WRONG_ID_MESSAGE = "Check this id!";
+    private static final String WRONG_ID_MESSAGE = "checkTheId";
 
     /**
      * The method checkID checks transferred long id value

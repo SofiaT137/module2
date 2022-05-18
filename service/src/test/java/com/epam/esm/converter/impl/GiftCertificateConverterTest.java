@@ -1,25 +1,32 @@
 package com.epam.esm.converter.impl;
 
-import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith({MockitoExtension.class})
+@SpringBootTest(classes = TagConverter.class)
 class GiftCertificateConverterTest {
 
-    @InjectMocks
-    private GiftCertificateConverter giftCertificateConverter;
+    private static GiftCertificateConverter giftCertificateConverter;
+
+    @Spy
+    private static TagConverter tagConverter = Mockito.spy(TagConverter.class);
 
     private static final String CORRECT_NAME = "Swimming with seals";
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";
@@ -28,20 +35,43 @@ class GiftCertificateConverterTest {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
     private static final LocalDateTime localDate = LocalDateTime.now();
     private static final String date = localDate.format(formatter);
-    private static final List<String> list = Arrays.asList("joy","happiness","seal");
-    private static final List<Tag> tag_list = Arrays.asList(new Tag("joy"),new Tag("happiness"),new Tag ("seal"));
-    private static final GiftCertificateDto DTOEntity = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,date,date,list);
-    private static final GiftCertificate entity = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE,CORRECT_DURATION,localDate,localDate,tag_list);
+    private static final Set<TagDto> tag_set = new HashSet<>();
+    private static final TagDto tagDto1 = new TagDto(1L,"joy");
+    private static final TagDto tagDto2 = new TagDto(2L,"happiness");
+    private static final TagDto tagDto3 = new TagDto(3L,"seal");
+    private static List<Tag> tag_list_convert;
+    private static GiftCertificateDto giftCertificateDto;
+    private static GiftCertificate giftCertificate;
+
+
+    @BeforeAll
+    static void setUp(){
+        tag_set.add(tagDto1);
+        tag_set.add(tagDto2);
+        tag_set.add(tagDto3);
+        giftCertificateConverter = new GiftCertificateConverter(tagConverter);
+        tag_list_convert = tag_set.stream().map(tagConverter::convert).collect(Collectors.toList());
+        giftCertificateDto = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION
+                ,CORRECT_PRICE,CORRECT_DURATION,date,date, tag_set);
+        giftCertificate = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE
+                ,CORRECT_DURATION,localDate,localDate,tag_list_convert);
+    }
 
     @Test
     void convertDTOEntityToEntity() {
-        GiftCertificate giftCertificate = giftCertificateConverter.convert(DTOEntity);
-        assertEquals(giftCertificate,entity);
+        GiftCertificate convertGiftCertificate = giftCertificateConverter.convert(giftCertificateDto);
+        assertEquals(giftCertificate,convertGiftCertificate);
     }
 
     @Test
     void convertEntityToDTOEntity() {
-        GiftCertificateDto giftCertificateDto = giftCertificateConverter.convert(entity);
-        assertEquals(DTOEntity,giftCertificateDto);
+        GiftCertificateDto convertGiftCertificateDto = giftCertificateConverter.convert(giftCertificate);
+        assertEquals(giftCertificateDto,convertGiftCertificateDto);
+    }
+
+    @AfterAll
+    static void destroy(){
+        tagConverter = null;
+        giftCertificateConverter = null;
     }
 }

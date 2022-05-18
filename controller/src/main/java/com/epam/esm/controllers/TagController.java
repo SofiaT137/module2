@@ -1,10 +1,10 @@
 package com.epam.esm.controllers;
 
-import com.epam.esm.entity.Tag;
-import com.epam.esm.exceptions.DaoException;
-import com.epam.esm.exceptions.ValidatorException;
+import com.epam.esm.dto.TagDto;
+import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,69 +12,99 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * TagController class presents REST controller for tag entity
+ * TagController class presents REST controller for the Tag entity
  */
 @RestController
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagService<Tag> tagService;
+    private TagService<TagDto> tagBusinessService;
+    private final Hateoas<TagDto> tagDtoHateoas;
+
+    @Autowired
+    public TagController(Hateoas<TagDto> tagDtoHateoas) {
+        this.tagDtoHateoas = tagDtoHateoas;
+    }
+
+    @Autowired
+    @Qualifier("tagBusinessService")
+    public void setUserService(TagService<TagDto> tagService) {
+        this.tagBusinessService = tagService;
+    }
+
     private static final String CREATED_MESSAGE = "Created!";
     private static final String DELETED_MESSAGE = "Deleted!";
 
-    @Autowired
-    public TagController(TagService<Tag> tagService) {
-        this.tagService = tagService;
-    }
-
     /**
-     * Method insertTag insert the Tag entity
-     * @param tag Tag entity
+     * Method insertTag inserts the TagDto entity
+     * @param entity TagDto entity
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
-    public ResponseEntity<Object> insertTag(@RequestBody Tag tag) throws DaoException, ValidatorException {
-        tagService.insert(tag);
-        return ResponseEntity.status(HttpStatus.OK).body(CREATED_MESSAGE);
+    public ResponseEntity<Object> insertTag(@RequestBody TagDto entity) {
+        tagBusinessService.insert(entity);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
-     * Method getTagById returns Tag entity by its id
-     * @param id Long id
-     * @return Tag entity
+     * Method getTagById returns TagDto entity by its id
+     * @param id Tag id(Long value)
+     * @return Response entity with TagDto entity and HttpStatus "OK"
      */
     @GetMapping("/{id}")
-    public Tag getTagById(@PathVariable Long id) throws DaoException, ValidatorException {
-        return tagService.getById(id);
+    public ResponseEntity<Object> getTagById(@PathVariable Long id) {
+        TagDto tagDto = tagBusinessService.getById(id);
+        tagDtoHateoas.addLinks(tagDto);
+        return new ResponseEntity<>(tagDto,HttpStatus.OK);
     }
 
     /**
-     * Method getAllTags returns all the Tag entity
-     * @return List of Tag entity
+     * Method findTheMostWidelyUsedUserTagWithHighersOrderCost returns the most widely used TagDto entity
+     * with higher order costs
+     * @param userId User id(Long value)
+     * @return Response entity with TagDto entity and HttpStatus "OK"
+     */
+    @GetMapping("/filter/{userId}")
+    public ResponseEntity<Object> findTheMostWidelyUsedUserTagWithHighersOrderCost(@PathVariable Long userId) {
+       TagDto tagDto = tagBusinessService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
+        tagDtoHateoas.addLinks(tagDto);
+        return new ResponseEntity<>(tagDto, HttpStatus.OK);
+    }
+
+    /**
+     * Method getAllTags returns all the TagDto entity
+     * @param pageSize Number of TagDto entities per page(default value is 5)
+     * @param pageNumber Number of the page with TagDto entities(default value is 1)
+     * @return List of TagDto entity and HttpStatus "OK"
      */
     @GetMapping
-    public List<Tag> getAllTags() throws DaoException {
-        return tagService.getAll();
+    public ResponseEntity<Object> getAllTags(@RequestParam(defaultValue = "5",required = false) int pageSize,
+                                             @RequestParam (defaultValue = "1", required = false) int pageNumber){
+        List<TagDto> tagDtoList = tagBusinessService.getAll(pageSize,pageNumber);
+        tagDtoList.forEach(tagDtoHateoas::addLinks);
+        return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
     }
 
     /**
-     * Method getTagByName returns Tag entity by its name
-     * @param name Tag name
-     * @return the Tag entity
+     * Method findTagByName returns TagDto entity by its name
+     * @param tagName String tag name
+     * @return Response entity with TagDto entity and HttpStatus "OK"
      */
     @GetMapping("/filter")
-    public Tag getTagByName(String name) throws DaoException {
-        return tagService.getTagByName(name);
+    public ResponseEntity<Object> findTagByName(@RequestParam String tagName) {
+        TagDto tagDto = tagBusinessService.findTagByTagName(tagName);
+        tagDtoHateoas.addLinks(tagDto);
+        return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     /**
-     * Method deleteTagByID deletes Tag entity by its id
-     * @param id Long id
-     * @return Response entity with HttpStatus "FOUND"
+     * Method deleteTagByID deletes TagDto entity by its id
+     * @param id Tag id(Long value)
+     * @return Response entity with HttpStatus "NO_CONTENT"
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteTagByID(@PathVariable long id) throws DaoException, ValidatorException {
-        tagService.deleteByID(id);
-        return ResponseEntity.status(HttpStatus.FOUND).body(DELETED_MESSAGE);
+    public ResponseEntity<Object> deleteTagByID(@PathVariable long id) {
+        tagBusinessService.deleteByID(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

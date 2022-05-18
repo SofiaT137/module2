@@ -1,12 +1,13 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dto.impl.GiftCertificateDto;
+import org.springframework.util.MultiValueMap;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * GiftCertificateService interface features CRUD Service functionality and extends CRUDService
+ * GiftCertificateService interface features GiftCertificate service functionality
+ * and extends CRUDService functionality
+ * @param <T> The entity object
  */
 public interface GiftCertificateService<T> extends CRUDService<T> {
     /**
@@ -14,5 +15,6 @@ public interface GiftCertificateService<T> extends CRUDService<T> {
      * @param mapWithFilters Map(key=filter, value=passed value)
      * @return The GiftCertificateDto object
      */
-    List<T> getQueryWithConditions(Map<String,String> mapWithFilters);
+    List<T> getQueryWithConditions(MultiValueMap<String,String> mapWithFilters);
+
 }

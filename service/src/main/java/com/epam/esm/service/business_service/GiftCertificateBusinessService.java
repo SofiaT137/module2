@@ -1,24 +1,20 @@
 package com.epam.esm.service.business_service;
 
 import com.epam.esm.converter.impl.GiftCertificateConverter;
-import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.logic_service.GiftCertificateLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Class GiftCertificateServiceImpl is implementation of interface GiftCertificateService
- * The class presents service layer logic for GiftCertificateService entity
+ * Class GiftCertificateBusinessService is implementation of the GiftCertificateService interface
+ * The class presents service business logic for GiftCertificate entity
  */
 @Service("giftCertificateBusinessService")
 public class GiftCertificateBusinessService implements GiftCertificateService<GiftCertificateDto> {
@@ -38,9 +34,9 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public void insert(GiftCertificateDto entityDto){
+    public GiftCertificateDto insert(GiftCertificateDto entityDto){
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
-        giftCertificateLogicService.insert(entity);
+        return giftCertificateConverter.convert(giftCertificateLogicService.insert(entity));
     }
 
     @Override
@@ -50,8 +46,8 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public List<GiftCertificateDto> getAll(){
-        List<GiftCertificate> giftCertificateList = giftCertificateLogicService.getAll();
+    public List<GiftCertificateDto> getAll(int pageSize,int pageNumber){
+        List<GiftCertificate> giftCertificateList = giftCertificateLogicService.getAll(pageSize, pageNumber);
         return giftCertificateList.stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }
 
@@ -61,28 +57,14 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public void update(Long id,List<Tag> tags,GiftCertificateDto entity) {
-        entity.setId(id);
-        entity.setLastUpdateDate(getCurrentDate());
-        List<String> tagNames = entity.getTags();
-        if (tagNames != null) {
-            tags = getNewTagList(tagNames);
-        }
+    public GiftCertificateDto update(Long id, GiftCertificateDto entity) {
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
-        giftCertificateLogicService.update(id,tags,giftCertificateEntity);
-    }
-
-    private String getCurrentDate(){
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return LocalDateTime.now().format(formatter);
-    }
-
-    private List<Tag> getNewTagList(List<String> listOfTagNames){
-        return listOfTagNames.stream().map(Tag::new).collect(Collectors.toList());
+        GiftCertificate giftCertificate = giftCertificateLogicService.update(id,giftCertificateEntity);
+        return giftCertificateConverter.convert(giftCertificate);
     }
 
     @Override
-    public List<GiftCertificateDto> getQueryWithConditions(Map<String, String> mapWithFilters){
+    public List<GiftCertificateDto> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters){
         List<GiftCertificate> giftCertificateList = giftCertificateLogicService.getQueryWithConditions(mapWithFilters);
         return giftCertificateList.stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
     }

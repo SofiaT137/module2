@@ -1,53 +1,78 @@
 package com.epam.esm.entity;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * GiftCertificate class extends AbstractEntity and presents creation of the GiftCertificate entity
  */
-public class GiftCertificate extends AbstractEntity<Long> {
+@Entity
+@Table(name = "gift_certificates")
+public class GiftCertificate extends AbstractEntity<Long>{
 
+    @Column(name = "gift_certificate_name")
     private String giftCertificateName;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
     private Double price;
+
+    @Column(name = "duration")
     private Integer duration;
+
+    @Column(name = "create_date")
     private LocalDateTime createDate;
+
+    @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
-    private List<Tag> tags;
+
+    @ManyToMany
+    @JoinTable(
+            name = "gift_certificate_tag",
+            joinColumns = @JoinColumn(name = "gift_certificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tagList = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "giftCertificateList")
+    private List<Order> orderList = new ArrayList<>();
 
     public GiftCertificate() {}
 
-    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
-        this.giftCertificateName = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
-    }
+    public GiftCertificate(Long id) {super(id);}
 
-    public GiftCertificate(Long id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags) {
+    public GiftCertificate(Long id, String giftCertificateName, String description, Double price,
+                           Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate,List<Tag> tagList) {
         super(id);
-        this.giftCertificateName = name;
+        this.giftCertificateName = giftCertificateName;
         this.description = description;
         this.price = price;
         this.duration = duration;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
-        this.tags = tags;
+        this.tagList = tagList;
     }
 
-    public GiftCertificate(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate) {
+    public GiftCertificate(String name, String description, Double price, Integer duration,
+                           LocalDateTime createDate, LocalDateTime lastUpdateDate,List<Tag> tagList) {
         this.giftCertificateName = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
+        this.tagList = tagList;
     }
+
+    public void addTagToGiftCertificate(Tag tag){
+        tagList.add(tag);
+        tag.getGiftCertificates().add(this);
+    }
+
     public String getGiftCertificateName() {
         return giftCertificateName;
     }
@@ -96,12 +121,20 @@ public class GiftCertificate extends AbstractEntity<Long> {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public List<Tag> getTagList() {
+        return tagList;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
     @Override
@@ -110,12 +143,22 @@ public class GiftCertificate extends AbstractEntity<Long> {
         if (!(o instanceof GiftCertificate)) return false;
         if (!super.equals(o)) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return Objects.equals(getGiftCertificateName(), that.getGiftCertificateName()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getPrice(), that.getPrice()) && Objects.equals(getDuration(), that.getDuration()) && Objects.equals(getCreateDate(), that.getCreateDate()) && Objects.equals(tags, that.tags);
+        return Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
+                && Objects.equals(getDescription(), that.getDescription())
+                && Objects.equals(getPrice(), that.getPrice())
+                && Objects.equals(getDuration(), that.getDuration())
+                && Objects.equals(getCreateDate(), that.getCreateDate());
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getGiftCertificateName(), getDescription(), getPrice(), getDuration(), getCreateDate(), tags);
+        return Objects.hash(super.hashCode(),
+                getGiftCertificateName(),
+                getDescription(),
+                getPrice(),
+                getDuration(),
+                getCreateDate());
     }
 
     @Override
@@ -127,7 +170,6 @@ public class GiftCertificate extends AbstractEntity<Long> {
                 ", price=" + price +
                 ", duration=" + duration +
                 ", createDate=" + createDate +
-                ", tags=" + tags +
                 '}';
     }
 }

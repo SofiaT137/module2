@@ -1,22 +1,21 @@
 package com.epam.esm.logging;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Component;
 
-/**
- * Aspect class for Logger
- */
 @Component
 @Aspect
 public class AspectLogging {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AspectLogging.class);
     private static final String EXECUTION_ALL_SERVICE_METHODS = "execution(* com.epam.esm.service.*.*(..))";
-    private static final String EXECUTION_ALL_MODEL_METHODS = "execution(* com.epam.esm.jbdc.*.*(..))";
+    private static final String EXECUTION_ALL_MODEL_METHODS = "execution(* com.epam.esm.dao.*.*(..))";
     private static final String SERVICE_POINTCUT_REFERENCE_NAME = "allServiceMethods()";
     private static final String MODEL_POINTCUT_REFERENCE_NAME = "allModelMethods()";
     private static final String SERVER_LAYER_METHOD_NAME = "Service layer, Method name: ";
@@ -70,3 +69,4 @@ public class AspectLogging {
         LOGGER.error(MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION + exception);
     }
 }
+

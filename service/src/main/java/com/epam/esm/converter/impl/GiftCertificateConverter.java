@@ -1,31 +1,51 @@
 package com.epam.esm.converter.impl;
 
 import com.epam.esm.converter.Converter;
-import com.epam.esm.dto.impl.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+
+/**
+ * Class GiftCertificateConverter presents converter for GiftCertificate and GiftCertificateDto entities
+ */
 @Component
-public class GiftCertificateConverter implements Converter<GiftCertificate, GiftCertificateDto,Long> {
+public class GiftCertificateConverter implements Converter<GiftCertificate, GiftCertificateDto> {
+
+    private final Converter<Tag, TagDto> tagConverter;
+
+    @Autowired
+    public GiftCertificateConverter(Converter<Tag, TagDto> tagConverter) {
+        this.tagConverter = tagConverter;
+    }
+
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
+        LocalDateTime createDate = validateDate(value.getCreateDate());
+        LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
+        Set<TagDto> valueTagDtoList = value.getTags();
+        List<Tag> valueTagList = new ArrayList<>();
+        if(valueTagDtoList!=null){
+            valueTagList = convertTagDtoList(valueTagDtoList);
+        }
+        return new GiftCertificate(value.getId(),value.getGiftCertificateName(),
+                value.getDescription(),value.getPrice(),value.getDuration(),
+                createDate,lastUpdateDate,valueTagList);
+    }
 
-        String createDateDto = value.getCreateDate();
-        String lastUpdateDateDto = value.getLastUpdateDate();
-        LocalDateTime createDate = validateDate(createDateDto);
-        LocalDateTime lastUpdateDate = validateDate(lastUpdateDateDto);
-        List<String> valueTagsList = value.getTags();
-        List<Tag> finalTagList = convertNamesToTagList(valueTagsList);
-
-        return new GiftCertificate(value.getId(),value.getGiftCertificateName(),value.getDescription(),value.getPrice(),value.getDuration(),createDate,lastUpdateDate,finalTagList);
+    private List<Tag> convertTagDtoList(Set<TagDto> valueTagDtoList){
+        return valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
     }
 
     private LocalDateTime validateDate(String dateTime){
@@ -33,39 +53,26 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         if (dateTime != null){
             date = LocalDateTime.parse(dateTime);
         } else {
-            date = getCurrentDateTime();
+            date = null;
         }
         return date;
     }
 
-    private LocalDateTime getCurrentDateTime(){
-        return LocalDateTime.now();
-    }
-
-    private List<Tag> convertNamesToTagList(List<String> valueTagsList){
-        List<Tag> convertNamesToTags;
-        if (valueTagsList == null){
-            convertNamesToTags = new ArrayList<>();
-        }else{
-            convertNamesToTags = getTagList(valueTagsList);
-        }
-        return convertNamesToTags;
-    }
-
-
-    private List<Tag> getTagList(List<String> listTagsName) {
-        return listTagsName.stream().map(Tag::new).collect(Collectors.toList());
-    }
-
-    private List<String> getNamesOfTagsList(List<Tag> listTags){
-        return listTags.stream().map(Tag::getName).collect(Collectors.toList());
-    }
-
     @Override
     public GiftCertificateDto convert(GiftCertificate value) {
+        String createDate = getFormatDate(value.getCreateDate());
+        String lastUpdateDate = getFormatDate(value.getLastUpdateDate());
+        Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
+        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
+                value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
+    }
+
+    private String getFormatDate(LocalDateTime dateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        String createDate = value.getCreateDate().format(formatter);
-        String lastUpdateDate = value.getLastUpdateDate().format(formatter);
-        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(), value.getPrice(), value.getDuration(), createDate,lastUpdateDate, getNamesOfTagsList(value.getTags()));
+        return formatter.format(dateTime);
+    }
+
+    private Set<TagDto> convertTagList(List<Tag> valueTagList){
+        return valueTagList.stream().map(tagConverter::convert).collect(Collectors.toSet());
     }
 }
