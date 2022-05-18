@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class User extends AbstractEntity<Long> {
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
-    private List<Order> orderList;
+    private List<Order> orderList = new ArrayList<>();
 
     public User() {}
 

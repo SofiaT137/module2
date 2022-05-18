@@ -61,6 +61,11 @@ public class Order extends AbstractEntity<Long> {
         giftCertificate.getOrderList().add(this);
     }
 
+    public void addUserToOrder(User user){
+        user.getOrderList().add(this);
+        this.setUser(user);
+    }
+
     public double getPrice() {
         return price;
     }

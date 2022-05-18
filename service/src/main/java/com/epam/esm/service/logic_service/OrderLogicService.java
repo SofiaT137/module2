@@ -60,12 +60,8 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     @Transactional
     public Order insert(Order entity) {
-        if (entity.getUser().getId() != null) {
-            User user = userLogicService.getById(entity.getUser().getId());
-            entity.setUser(user);
-        }else{
-            throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE, INCORRECT_ID);
-        }
+        User user = getUser(entity);
+        entity.addUserToOrder(user);
         double totalCertificatePrice = saveGiftCertificatesToOrder(entity);
         entity.setPrice(totalCertificatePrice);
         entity.setPurchaseTime(LocalDateTime.now());
@@ -74,6 +70,16 @@ public class OrderLogicService implements OrderService<Order> {
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
         return insertedOrder.get();
+    }
+
+    private User getUser(Order entity){
+        User user;
+        if (entity.getUser().getId() != null) {
+            user = userLogicService.getById(entity.getUser().getId());
+        }else{
+            throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE, INCORRECT_ID);
+        }
+        return user;
     }
 
     private double saveGiftCertificatesToOrder(Order entity){
