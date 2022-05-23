@@ -1,15 +1,22 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.dao.UserDao;
+import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;
 import com.epam.esm.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
 
@@ -18,7 +25,7 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
  * The class presents service logic layer for User entity
  */
 @Service("userLogicService")
-public class UserLogicService implements UserService<User> {
+public class UserLogicService implements UserService<User>, UserDetailsService {
 
     private final UserDao userDao;
 
@@ -47,4 +54,21 @@ public class UserLogicService implements UserService<User> {
         return userDao.getAll(pageSize,pageNumber);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userDao.findByUserLogin(username)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getLogin(),
+                        user.getPassword(),
+                        mapToGrantedAuthorities(user.getRoleList())
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
+    }
+
+    private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> userRoles) {
+        return userRoles.stream()
+                .map(role ->
+                        new SimpleGrantedAuthority(role.getRoleName())
+                ).collect(Collectors.toList());
+    }
 }

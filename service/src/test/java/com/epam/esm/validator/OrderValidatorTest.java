@@ -32,7 +32,7 @@ class OrderValidatorTest {
     private static GiftCertificate giftCertificate = new GiftCertificate("aaa",
             "aaa", 70.12, 5, LocalDateTime.now(), LocalDateTime.now(),
             Collections.singletonList(new Tag("joy")));
-    private static final User user = new User(1L,"AlexRendal");
+    private static final User user = new User(1L,"AlexRendal","cccc");
     private static final LocalDateTime data = LocalDateTime.now();
     private static final Double price = giftCertificate.getPrice();
     private static final Order invalidateOrderWithEmptyCertificateList = new Order();

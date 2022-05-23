@@ -14,7 +14,7 @@ public class UserConverter implements Converter<User,UserDto> {
     @Override
     public User convert(UserDto value) {
         String name = value.getName();
-        return new User(name);
+        return new User();
     }
 
     @Override

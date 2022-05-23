@@ -28,7 +28,7 @@ class UserLogicServiceTest {
     @InjectMocks
     private UserLogicService userLogicService;
 
-    private final User user = new User(1L,"AlexRendal");
+    private final User user = new User(1L,"AlexRendal","ffff");
 
     @Test
     void getById() {

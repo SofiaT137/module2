@@ -42,7 +42,7 @@ class OrderLogicServiceTest {
     @InjectMocks
     private OrderLogicService orderLogicService;
 
-    private static final User user = new User(1L,"AlexRendal");
+    private static final User user = new User(1L,"AlexRendal","sss");
     private static final List<Tag> tagList = Collections.singletonList(new Tag("hello"));
     private static final GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
             , "abc", 50.00, 13, LocalDateTime.now(), LocalDateTime.now(), tagList);

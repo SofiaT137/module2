@@ -42,7 +42,7 @@ class TagLogicServiceTest {
 
     private static final Tag tag2 = new Tag("joy");
     private static final Tag tag = new Tag("shark");
-    private static final User user = new User(1L,"AlexRendal");
+    private static final User user = new User(1L,"AlexRendal","dddd");
     private static final GiftCertificate giftCertificate = new GiftCertificate(1L,"fff"
             ,"ffff",40.12,30,
             LocalDateTime.now(),LocalDateTime.now(),Arrays.asList(tag,tag2));
