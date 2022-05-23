@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <property name="LOG_FILE" value="logs"/>
-    <property name="FILE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property login="LOG_FILE" value="logs"/>
+    <property login="FILE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender login="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>${FILE_LOG_PATTERN}</Pattern>
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender login="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <Pattern>${FILE_LOG_PATTERN}</Pattern>
         </encoder>

@@ -4,11 +4,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.ValidatorException;
 import org.springframework.stereotype.Component;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_TAG_LENGTH;
-import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_TAG_NAME;
 
 /**
  * The TagValidator class extents Validator class and provides validation for Tag entity
@@ -25,7 +21,7 @@ public final class TagValidator extends Validator<Tag>{
 
     @Override
     public void validate(Tag tag){
-        validateName(tag.getName());
+        validateName(tag.getTagName());
     }
 
     private static void validateName(final String name){

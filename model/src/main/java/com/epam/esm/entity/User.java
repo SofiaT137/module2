@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -18,11 +22,20 @@ import java.util.Objects;
 public class User extends AbstractEntity<Long> {
 
     @Column(name = "user_name")
-    private String name;
+    private String login;
+
+    @Column(name = "password")
+    private String password;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Order> orderList = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Role> roleList = new ArrayList<>();
 
     public User() {}
 
@@ -30,21 +43,28 @@ public class User extends AbstractEntity<Long> {
         super(id);
     }
 
-    public User(Long id, String name) {
+    public User(Long id, String name,String password) {
         super(id);
-        this.name = name;
+        this.login = name;
+        this.password = password;
     }
 
-    public User(String name) {
-        this.name = name;
+    public User(String name,String password) {
+        this.login = name;
+        this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public void addRoleToUser(Role role){
+        this.roleList.add(role);
+        role.getUserList().add(this);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public List<Order> getOrderList() {
@@ -55,24 +75,43 @@ public class User extends AbstractEntity<Long> {
         this.orderList = orderList;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(getName(), user.getName());
+        return Objects.equals(getLogin(), user.getLogin())
+                && Objects.equals(getOrderList(), user.getOrderList())
+                && Objects.equals(getRoleList(), user.getRoleList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name);
+        return Objects.hash(super.hashCode(), getLogin(), getOrderList(), getRoleList());
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "login='" + login + '\'' +
+                ", roleList=" + roleList +
                 '}';
     }
 }

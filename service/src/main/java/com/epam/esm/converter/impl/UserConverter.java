@@ -20,7 +20,7 @@ public class UserConverter implements Converter<User,UserDto> {
     @Override
     public UserDto convert(User value) {
         Long id = value.getId();
-        String name = value.getName();
+        String name = value.getLogin();
         return new UserDto(id,name);
     }
 }

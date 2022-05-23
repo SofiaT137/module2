@@ -17,7 +17,7 @@ public final class UserValidator extends Validator<User> {
 
     @Override
     public void validate(User user) throws ValidatorException {
-        validateName(user.getName());
+        validateName(user.getLogin());
     }
 
     private static void validateName(final String name) throws ValidatorException {

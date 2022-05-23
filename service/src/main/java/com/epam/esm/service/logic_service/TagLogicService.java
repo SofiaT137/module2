@@ -53,7 +53,7 @@ public class TagLogicService implements TagService<Tag> {
     @Transactional
     public Tag insert(Tag entity) throws ValidatorException {
         tagValidator.validate(entity);
-        if (checkIfTagNameExists(entity.getName())){
+        if (checkIfTagNameExists(entity.getTagName())){
             throw new CannotInsertEntityException(NOT_UNIQUE_TAG_NAME_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
         Optional<Tag> insertedTag = tagDao.insert(entity);
@@ -115,7 +115,7 @@ public class TagLogicService implements TagService<Tag> {
         List<Tag> tags = new ArrayList<>();
         tagList.forEach(tagValidator::validate);
         for (Tag entityHasTag : tagList) {
-            Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getName());
+            Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getTagName());
             if (!currentTag.isPresent()){
                 currentTag = tagDao.insert(entityHasTag);
                 if (!currentTag.isPresent()){

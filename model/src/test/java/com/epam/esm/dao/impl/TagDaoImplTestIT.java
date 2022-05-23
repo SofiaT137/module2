@@ -42,7 +42,7 @@ class TagDaoImplTestIT {
             throw new NoSuchElementException(CANNOT_INSERT_TAG_EXCEPTION_MESSAGE);
         }
         Tag foundedTag = tag.get();
-        assertEquals(NEW_TAG_NAME,foundedTag.getName());
+        assertEquals(NEW_TAG_NAME,foundedTag.getTagName());
     }
 
     @Test
@@ -52,7 +52,7 @@ class TagDaoImplTestIT {
             throw new NoSuchElementException(CANNOT_FIND_TAG_EXCEPTION_MESSAGE);
         }
         Tag foundedTag = tag.get();
-        assertEquals(TAG_NAME_TO_FIND,foundedTag.getName());
+        assertEquals(TAG_NAME_TO_FIND,foundedTag.getTagName());
     }
 
     @Test
@@ -79,7 +79,7 @@ class TagDaoImplTestIT {
         if (!foundTag.isPresent()){
             throw new NoSuchElementException(CANNOT_FIND_TAG_EXCEPTION_MESSAGE);
         }
-        assertEquals(TAG_NAME_TO_FIND,foundTag.get().getName());
+        assertEquals(TAG_NAME_TO_FIND,foundTag.get().getTagName());
     }
 
     @Test

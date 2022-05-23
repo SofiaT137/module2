@@ -1,10 +1,7 @@
 package com.epam.esm.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -19,28 +16,28 @@ import java.util.Objects;
 public class Tag extends AbstractEntity<Long> {
 
     @Column(name = "tag_name")
-    private String name;
+    private String tagName;
 
     @ManyToMany(mappedBy = "tagList")
     private List<GiftCertificate> giftCertificates = new ArrayList<>();
 
     public Tag(){}
 
-    public Tag(Long id,String name) {
+    public Tag(Long id,String tagName) {
         super(id);
-        this.name = name;
+        this.tagName = tagName;
     }
 
-    public Tag(String name) {
-        this.name = name;
+    public Tag(String tagName) {
+        this.tagName = tagName;
     }
 
-    public String getName() {
-        return name;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     public List<GiftCertificate> getGiftCertificates() {
@@ -57,18 +54,18 @@ public class Tag extends AbstractEntity<Long> {
         if (!(o instanceof Tag)) return false;
         if (!super.equals(o)) return false;
         Tag tag = (Tag) o;
-        return Objects.equals(getName(), tag.getName());
+        return Objects.equals(getTagName(), tag.getTagName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getName());
+        return Objects.hash(super.hashCode(), getTagName());
     }
 
     @Override
     public String toString() {
         return "Tag{" +
-                "name='" + name + '\'' +
+                "tagName='" + tagName + '\'' +
                 '}';
     }
 }
