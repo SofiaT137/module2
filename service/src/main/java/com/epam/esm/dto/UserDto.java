@@ -9,16 +9,19 @@ import java.util.Objects;
  */
 public class UserDto extends RepresentationModel<UserDto> {
 
-    private Long id;
-    private String name;
+    private Long id = 0L;
+    private String login;
+    private String password;
 
-    public UserDto(Long id,String name) {
+    public UserDto(Long id,String login,String password) {
         this.id = id;
-        this.name = name;
+        this.login = login;
+        this.password = password;
     }
 
-    public UserDto(String name) {
-        this.name = name;
+    public UserDto(String login,String password) {
+        this.login = login;
+        this.password = password;
     }
 
     public UserDto() {
@@ -32,12 +35,20 @@ public class UserDto extends RepresentationModel<UserDto> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -45,19 +56,19 @@ public class UserDto extends RepresentationModel<UserDto> {
         if (this == o) return true;
         if (!(o instanceof UserDto)) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(getName(), userDto.getName());
+        return Objects.equals(getLogin(), userDto.getLogin());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getName());
+        return Objects.hash(super.hashCode(), getLogin());
     }
 
     @Override
     public String toString() {
         return "UserDto{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", login='" + login + '\'' +
                 '}';
     }
 }

@@ -3,7 +3,11 @@ package com.epam.esm.security;
 import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.UserService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +34,7 @@ public class JwtTokenProvider {
 
     private final PasswordEncoder passwordEncoder;
 
+
     private UserService<User> userLogicService;
 
     private static final String AUTHORIZATION = "Authorization";
@@ -51,9 +56,9 @@ public class JwtTokenProvider {
         secretWord = Base64.getEncoder().encodeToString(secretWord.getBytes());
     }
 
-    private String createToken(User user){
+    public String createToken(User user){
         Claims claims = Jwts.claims().setSubject(user.getLogin());
-        claims.put("roles",getRoleNames(user.getRoleList()));
+        claims.put("roles",getRoleNames(user.getRoles()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + expireTokenTime);
 
@@ -65,8 +70,8 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userLogicService.loadUserByUsername(getLogin(token));
+    public Authentication getAuthentication(String token){
+        UserDetails userDetails = this.userLogicService.loadUserByUsername(getLogin(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -90,7 +95,6 @@ public class JwtTokenProvider {
             return false;
         }
     }
-
 
     private List<String> getRoleNames(List<Role> roleList){
         List<String> roleNames = new ArrayList<>();

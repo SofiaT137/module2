@@ -6,19 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import static org.springframework.http.HttpMethod.GET;
+
+@EnableWebSecurity
 @Configuration
-@EnableMethodSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public SecurityConfiguration(JwtTokenProvider jwtTokenProvider) {
+    public SecurityConfiguration(JwtTokenProvider jwtTokenProvider){
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -34,8 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeHttpRequests()
-                .antMatchers("/").permitAll()
+                .authorizeRequests()
+                .antMatchers("/auth/signIn","/auth/signUp","/gift_certificates/**").permitAll()
+               .antMatchers(GET,"/users/**").hasRole("ADMINISTRATOR")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfiguration(jwtTokenProvider));

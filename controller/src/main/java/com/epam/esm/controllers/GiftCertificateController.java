@@ -35,11 +35,6 @@ public class GiftCertificateController {
     public GiftCertificateController(Hateoas<GiftCertificateDto> giftCertificateDtoHateoas) {
         this.giftCertificateDtoHateoas = giftCertificateDtoHateoas;
     }
-
-    private static final String CREATED_MESSAGE = "Created!";
-    private static final String UPDATED_MESSAGE = "Updated!";
-    private static final String DELETED_MESSAGE = "Deleted!";
-
     @Autowired
     @Qualifier("giftCertificateBusinessService")
     public void setGiftCertificateService(GiftCertificateService<GiftCertificateDto> giftCertificateService) {

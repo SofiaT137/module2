@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,14 +37,21 @@ public class UserBusinessService implements UserService<UserDto> {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ADMINISTRATOR')")
-    public UserDto getById(long id) {
-        User user = userLogicService.getById(id);
-        return userConverter.convert(user);
+    @Transactional
+    public UserDto insert(UserDto entity) {
+        User convertUser = userConverter.convert(entity);
+        userLogicService.insert(convertUser);
+        return userConverter.convert(convertUser);
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('ADMINISTRATOR')")
+    public UserDto getById(long id) {
+        User user = userLogicService.getById(id);
+        UserDto userDto = userConverter.convert(user);
+        return userDto;
+    }
+
+    @Override
     public List<UserDto> getAll(int pageSize, int pageNumber) {
         List<User> userList = userLogicService.getAll(pageSize, pageNumber);
         return userList.stream().map(userConverter::convert).collect(Collectors.toList());
@@ -51,5 +60,17 @@ public class UserBusinessService implements UserService<UserDto> {
     @Override
     public UserDetails loadUserByUsername(String username) {
         return userLogicService.loadUserByUsername(username);
+    }
+
+    @Override
+    public User findUserByUserLogin(String login) {
+        return userLogicService.findUserByUserLogin(login);
+    }
+
+
+    @Override
+    @Transactional
+    public void deleteByID(long id) {
+        userLogicService.deleteByID(id);
     }
 }

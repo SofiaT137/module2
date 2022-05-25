@@ -12,7 +12,7 @@ public class Role extends AbstractEntity<Long>{
     @Column(name = "role_name")
     private String roleName;
 
-    @ManyToMany(mappedBy = "roleList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> userList = new ArrayList<>();
 
     public String getRoleName() {

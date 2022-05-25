@@ -39,10 +39,6 @@ public class OrderController {
         this.orderLogicService = orderLogicService;
     }
 
-    private static final String CREATED_MESSAGE = "Created!";
-    private static final String DELETED_MESSAGE = "Deleted!";
-
-
     /**
      * Method insertOrder inserts the OrderDto entity
      * @param order OrderDto orderDto

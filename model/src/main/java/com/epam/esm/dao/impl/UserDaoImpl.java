@@ -51,4 +51,15 @@ public class UserDaoImpl implements UserDao {
         }
         return Optional.of(user);
     }
+
+    @Override
+    public Optional<User> insert(User entity) {
+        entityManager.persist(entity);
+        return Optional.of(entity);
+    }
+
+    @Override
+    public void delete(User entity) {
+        entityManager.remove(entity);
+    }
 }

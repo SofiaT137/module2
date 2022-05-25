@@ -35,7 +35,7 @@ public class User extends AbstractEntity<Long> {
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private List<Role> roleList = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
     public User() {}
 
@@ -55,7 +55,7 @@ public class User extends AbstractEntity<Long> {
     }
 
     public void addRoleToUser(Role role){
-        this.roleList.add(role);
+        this.roles.add(role);
         role.getUserList().add(this);
     }
 
@@ -83,12 +83,12 @@ public class User extends AbstractEntity<Long> {
         this.password = password;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -99,19 +99,19 @@ public class User extends AbstractEntity<Long> {
         User user = (User) o;
         return Objects.equals(getLogin(), user.getLogin())
                 && Objects.equals(getOrderList(), user.getOrderList())
-                && Objects.equals(getRoleList(), user.getRoleList());
+                && Objects.equals(getRoles(), user.getRoles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getLogin(), getOrderList(), getRoleList());
+        return Objects.hash(super.hashCode(), getLogin(), getOrderList(), getRoles());
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
-                ", roleList=" + roleList +
+                ", roles=" + roles +
                 '}';
     }
 }
