@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController {
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
@@ -34,7 +34,7 @@ public class AuthenticationController {
     }
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -42,7 +42,6 @@ public class AuthenticationController {
     @PostMapping(value = "/signUp")
     public ResponseEntity<Object> signUp(@RequestBody UserDto userDto){
         userService.insert(userDto);
-        Long id = userDto.getId();
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
