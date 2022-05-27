@@ -64,4 +64,9 @@ public class OrderBusinessService implements OrderService<OrderDto> {
         return orderList.stream().map(orderConverter::convert).collect(Collectors.toList());
     }
 
+    @Override
+    public List<OrderDto> getAll() {
+        return null;
+    }
+
 }

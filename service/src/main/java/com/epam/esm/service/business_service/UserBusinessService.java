@@ -58,6 +58,11 @@ public class UserBusinessService implements UserService<UserDto> {
     }
 
     @Override
+    public List<UserDto> getAll() {
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) {
         return userLogicService.loadUserByUsername(username);
     }

@@ -53,22 +53,22 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public User insert(User entity) {
-        Optional<Role> roleUser = roleDao.getById(2L);
+        Optional<Role> roleUser = roleDao.findById(2L);
         roleUser.ifPresent(entity::addRoleToUser);
         String password = entity.getPassword();
         entity.setPassword(null);
         entity.setPassword(encoder.encode(password));
-        Optional<User> insertedUser = userDao.insert(entity);
-        if (!insertedUser.isPresent()){
+        User insertedUser = userDao.save(entity);
+        if (insertedUser == null){
             throw new CannotInsertEntityException("Cannot insert this user",CANNOT_INSERT_ENTITY_CODE);
         }
-        return insertedUser.get();
+        return insertedUser;
     }
 
     @Override
     public User getById(long id) {
         userValidator.checkID(id);
-        Optional<User> receivedUserById = userDao.getById(id);
+        Optional<User> receivedUserById = userDao.findById(id);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION,NO_SUCH_ENTITY_CODE);
         }
@@ -77,13 +77,19 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public List<User> getAll(int pageSize, int pageNumber) {
-        return userDao.getAll(pageSize,pageNumber);
+        return null;
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDao.findAll();
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User u = userDao.findByUserLogin(login).get();
-        return new org.springframework.security.core.userdetails.User(u.getLogin(), u.getPassword(), mapToGrantedAuthorities(u.getRoles()));
+        return new org.springframework.security.core.userdetails.User(u.getLogin(),
+                u.getPassword(), mapToGrantedAuthorities(u.getRoles()));
 
     }
 
@@ -115,7 +121,7 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
     @Override
     public void deleteByID(long id) {
         userValidator.checkID(id);
-        Optional<User> receivedUserById = userDao.getById(id);
+        Optional<User> receivedUserById = userDao.findById(id);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException("No user with that id exception",NO_SUCH_ENTITY_CODE);
         }

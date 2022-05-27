@@ -32,14 +32,14 @@ class UserLogicServiceTest {
 
     @Test
     void getById() {
-        Mockito.when(userDao.getById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(userDao.getById(user.getId())).thenReturn(user);
         User foundUser = userLogicService.getById(user.getId());
         assertEquals(user,foundUser);
     }
 
     @Test
     void getAll() {
-        Mockito.when(userDao.getAll(1,1)).thenReturn(Collections.singletonList(user));
+        Mockito.when(userDao.findAll()).thenReturn(Collections.singletonList(user));
         List<User> userList = userLogicService.getAll(1,1);
         assertEquals(1,userList.size());
     }

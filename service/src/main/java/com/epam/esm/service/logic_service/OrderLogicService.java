@@ -69,11 +69,11 @@ public class OrderLogicService implements OrderService<Order> {
         entity.addUserToOrder(user);
         entity.setPrice(saveGiftCertificatesToOrder(entity));
         entity.setPurchaseTime(LocalDateTime.now());
-        Optional<Order> insertedOrder = orderDao.insert(entity);
-        if (!insertedOrder.isPresent()){
+        Order insertedOrder = orderDao.save(entity);
+        if (insertedOrder == null){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
-        return insertedOrder.get();
+        return insertedOrder;
     }
 
     private User getUser(Order entity){
@@ -102,7 +102,7 @@ public class OrderLogicService implements OrderService<Order> {
     @Transactional
     public void deleteByID(long id) {
         orderValidator.checkID(id);
-        Optional<Order> receivedOrderById = orderDao.getById(id);
+        Optional<Order> receivedOrderById = orderDao.findById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
@@ -112,7 +112,7 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     public Order getById(long id) {
         orderValidator.checkID(id);
-        Optional<Order> receivedOrderById = orderDao.getById(id);
+        Optional<Order> receivedOrderById = orderDao.findById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
@@ -121,7 +121,12 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     public List<Order> getAll(int pageSize, int pageNumber) {
-        return orderDao.getAll(pageSize,pageNumber);
+        return orderDao.findAll();
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return null;
     }
 
     @Override
@@ -131,6 +136,6 @@ public class OrderLogicService implements OrderService<Order> {
         if (user.getOrderList().isEmpty()){
             throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);
         }
-        return orderDao.ordersByUserId(user.getId(),pageSize,pageNumber);
+        return orderDao.ordersByUserId(user.getId());
     }
 }

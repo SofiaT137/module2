@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.impl.OrderDaoImpl;
+import com.epam.esm.dao.OrderDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class OrderLogicServiceTest {
 
     @Mock
-    private OrderDaoImpl orderDao;
+    private OrderDao orderDao;
 
     @Mock
     private OrderValidator orderValidator;
@@ -68,28 +68,28 @@ class OrderLogicServiceTest {
     void insertOrder() {
         Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
         Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
-        Mockito.when(orderDao.insert(order)).thenReturn(Optional.of(order));
+        Mockito.when(orderDao.save(order)).thenReturn(order);
         Order order1 = orderLogicService.insert(order);
         assertEquals(order,order1);
     }
 
     @Test
     void deleteOrder() {
-        Mockito.when(orderDao.getById(1L)).thenReturn(Optional.of(order));
+        Mockito.when(orderDao.findById(1L)).thenReturn(Optional.of(order));
         orderLogicService.deleteByID(order.getId());
         Mockito.verify(orderDao, Mockito.times(1)).delete(order);
     }
 
     @Test
     void getById() {
-        Mockito.when(orderDao.getById(order.getId())).thenReturn(Optional.of(order));
+        Mockito.when(orderDao.findById(order.getId())).thenReturn(Optional.of(order));
         Order foundOrder = orderLogicService.getById(order.getId());
         assertEquals(order,foundOrder);
     }
 
     @Test
     void getAll() {
-        Mockito.when(orderDao.getAll(1,1)).thenReturn(Collections.singletonList(order));
+        Mockito.when(orderDao.findAll()).thenReturn(Collections.singletonList(order));
         List<Order> orderList = orderLogicService.getAll(1,1);
         assertEquals(1,orderList.size());
     }
@@ -97,7 +97,7 @@ class OrderLogicServiceTest {
     @Test
     void ordersByUserId() {
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
-        Mockito.when(orderDao.ordersByUserId(1L,1,1))
+        Mockito.when(orderDao.ordersByUserId(1L))
                 .thenReturn(Collections.singletonList(order));
         List<Order> orderList = orderLogicService.ordersByUserId(1L,1,1);
         assertEquals(1,orderList.size());

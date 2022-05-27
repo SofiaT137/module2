@@ -1,36 +1,36 @@
-package com.epam.esm.dao.impl;
+package com.epam.esm.dao;
 
-import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.GiftCertificateDaoFilter;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.*;
-import java.time.LocalDateTime;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * Class GiftCertificateDaoImpl is implementation of interface GiftCertificateDao
  * This class is intended for work with GiftCertificate entity
  */
-@Repository
-public class GiftCertificateDaoImpl implements GiftCertificateDao {
+
+class GiftCertificateDaoFilterImpl implements GiftCertificateDaoFilter {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     private static final String TAG_NAME = "tag_name";
-    private static final String NAME_COLUMN = "name";
+    private static final String NAME = "tagName";
     private static final String TAG_PARAMETER = "tag_name";
     private static final String PERCENT = "%";
     private static final String JOIN_TAGS = "tagList";
@@ -50,40 +50,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private static final String COMA = ", ";
     private static final String ASC = "asc";
     private static final String PART_OF_SEARCHING_QUERY = "from GiftCertificate order by id";
-
-
-    @Override
-    public Optional<GiftCertificate> insert(GiftCertificate entity) {
-        entityManager.persist(entity);
-        return Optional.of(entity);
-    }
-
-    @Override
-    public void delete(GiftCertificate entity) {
-        entityManager.remove(entity);
-    }
-
-    @Override
-    public Optional<GiftCertificate> update(int duration,GiftCertificate entity) {
-        GiftCertificate mergedCertificate = entityManager.merge(entity);
-        entity.setDuration(duration);
-        entity.setLastUpdateDate(LocalDateTime.now());
-        return mergedCertificate != null ? Optional.of(mergedCertificate) : Optional.empty();
-    }
-
-    @Override
-    public Optional<GiftCertificate> getById(long id) {
-        GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, id);
-        return giftCertificate != null ? Optional.of(giftCertificate) : Optional.empty();
-    }
-
-    @Override
-    public List<GiftCertificate> getAll(int pageSize,int pageNumber) {
-        Query query = entityManager.createQuery(PART_OF_SEARCHING_QUERY);
-        query.setFirstResult((pageNumber-1) * pageSize);
-        query.setMaxResults(pageSize);
-        return query.getResultList();
-    }
 
     @Override
     public List<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String,
@@ -130,11 +96,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         for (String tag:tags){
             Join<GiftCertificate,Tag> joinTags = root.join(JOIN_TAGS);
             predicates.add(
-                    criteriaBuilder.equal(joinTags.get(NAME_COLUMN),tag));
+                    criteriaBuilder.equal(joinTags.get(NAME),tag));
         }
     }
     private void addSearchByCertificateName(MultiValueMap<String, String> mapWithFilters, List<Predicate> predicates,
-                                 CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root){
+                                            CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root){
 
         String name = mapWithFilters.get(PART_OF_CERTIFICATE_NAME).get(0);
         predicates.add(
@@ -151,11 +117,11 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     private List<GiftCertificate> addSortingByName(MultiValueMap<String, String> mapWithFilters,
-                                                           List<GiftCertificate> resultList){
-         List<GiftCertificate> result = resultList.stream()
+                                                   List<GiftCertificate> resultList){
+        List<GiftCertificate> result = resultList.stream()
                 .sorted(Comparator
                         .comparing(GiftCertificate::getGiftCertificateName))
-                 .collect(Collectors.toList());
+                .collect(Collectors.toList());
         if (!mapWithFilters.get(SORT_BY_NAME).get(0).equalsIgnoreCase(ASC)) {
             Collections.reverse(result);
         }

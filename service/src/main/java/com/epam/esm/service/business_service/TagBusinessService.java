@@ -57,6 +57,11 @@ public class TagBusinessService implements TagService<TagDto> {
     }
 
     @Override
+    public List<TagDto> getAll() {
+        return null;
+    }
+
+    @Override
     public TagDto findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
         Tag tag = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
         return tagConverter.convert(tag);

@@ -19,4 +19,5 @@ public interface RService<T>{
      * @return List of the entity objects
      */
     List<T> getAll(int pageSize, int pageNumber);
+    List<T> getAll();
 }

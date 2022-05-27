@@ -65,17 +65,17 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         }
         entity.setCreateDate(LocalDateTime.now());
         entity.setLastUpdateDate(LocalDateTime.now());
-        Optional<GiftCertificate> insertedCertificate = giftCertificateDao.insert(entity);
-        if (!insertedCertificate.isPresent()){
+        GiftCertificate insertedCertificate = giftCertificateDao.save(entity);
+        if (insertedCertificate == null){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
-       return insertedCertificate.get();
+       return insertedCertificate;
     }
 
     @Override
     public GiftCertificate getById(long id) {
         certificateValidator.checkID(id);
-        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.getById(id);
+        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.findById(id);
         if (!receivedGiftCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
@@ -84,25 +84,30 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     public List<GiftCertificate> getAll(int pageSize,int pageNumber) {
-        return giftCertificateDao.getAll(pageSize, pageNumber);
+        return giftCertificateDao.findAll();
+    }
+
+    @Override
+    public List<GiftCertificate> getAll() {
+        return null;
     }
 
     @Override
     @Transactional
     public GiftCertificate update(Long id, GiftCertificate entity) {
         certificateValidator.checkID(id);
-        Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.getById(id);
+        Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.findById(id);
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
         certificateValidator.validateDuration(entity.getDuration());
-        Optional<GiftCertificate> updatedEntity = giftCertificateDao.update(entity.getDuration(),
-                foundedCertificateById.get());
-        if (!updatedEntity.isPresent()){
+        int updatedRows = giftCertificateDao.update(entity.getDuration(),
+                foundedCertificateById.get().getId());
+        if (updatedRows == 0){
             throw new NoSuchEntityException(CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
-        return updatedEntity.get();
+        return giftCertificateDao.findById(id).get();
     }
 
     private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
@@ -118,7 +123,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Transactional
     public void deleteByID(long id) {
         certificateValidator.checkID(id);
-        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.getById(id);
+        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.findById(id);
         if (!receivedGiftCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE,NO_SUCH_ENTITY_CODE);
         }

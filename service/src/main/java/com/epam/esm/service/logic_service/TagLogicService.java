@@ -56,17 +56,17 @@ public class TagLogicService implements TagService<Tag> {
         if (checkIfTagNameExists(entity.getTagName())){
             throw new CannotInsertEntityException(NOT_UNIQUE_TAG_NAME_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
-        Optional<Tag> insertedTag = tagDao.insert(entity);
-        if (!insertedTag.isPresent()){
+        Tag insertedTag = tagDao.save(entity);
+        if (insertedTag == null){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
         }
-        return insertedTag.get();
+        return insertedTag;
     }
 
     @Override
     public Tag getById(long id) {
         tagValidator.checkID(id);
-        Optional<Tag> receivedTagById = tagDao.getById(id);
+        Optional<Tag> receivedTagById = tagDao.findById(id);
         if (!receivedTagById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
@@ -75,14 +75,19 @@ public class TagLogicService implements TagService<Tag> {
 
     @Override
     public List<Tag> getAll(int pageSize,int pageNumber){
-        return tagDao.getAll(pageSize,pageNumber);
+        return tagDao.findAll();
+    }
+
+    @Override
+    public List<Tag> getAll() {
+        return null;
     }
 
     @Override
     @Transactional
     public void deleteByID(long id) {
         tagValidator.checkID(id);
-        Optional<Tag> receivedTagById = tagDao.getById(id);
+        Optional<Tag> receivedTagById = tagDao.findById(id);
         if (!receivedTagById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);
         }
@@ -117,7 +122,7 @@ public class TagLogicService implements TagService<Tag> {
         for (Tag entityHasTag : tagList) {
             Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getTagName());
             if (!currentTag.isPresent()){
-                currentTag = tagDao.insert(entityHasTag);
+                currentTag = Optional.of(tagDao.save(entityHasTag));
                 if (!currentTag.isPresent()){
                     throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
                 }

@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.impl.TagDaoImpl;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TagLogicServiceTest {
 
     @Mock
-    private TagDaoImpl tagDao;
+    private TagDao tagDao;
     @Mock
     private UserService<User> userLogicService;
     @Mock
@@ -50,28 +50,28 @@ class TagLogicServiceTest {
 
     @Test
     void insert() {
-        Mockito.when(tagDao.insert(tag)).thenReturn(Optional.of(tag));
+        Mockito.when(tagDao.save(tag)).thenReturn(tag);
         Tag tag1 = tagLogicService.insert(tag);
         assertEquals(tag,tag1);
     }
 
     @Test
     void getById() {
-        Mockito.when(tagDao.getById(1L)).thenReturn(Optional.of(tag));
+        Mockito.when(tagDao.findById(1L)).thenReturn(Optional.of(tag));
         Tag tag1 = tagLogicService.getById(1L);
         assertEquals(tag,tag1);
     }
 
     @Test
     void getAll() {
-        Mockito.when(tagDao.getAll(1,1)).thenReturn(Collections.singletonList(tag));
+        Mockito.when(tagDao.findAll()).thenReturn(Collections.singletonList(tag));
         List<Tag> tagList = tagLogicService.getAll(1,1);
         assertEquals(1,tagList.size());
     }
 
     @Test
     void deleteByID() {
-        Mockito.when(tagDao.getById(1L)).thenReturn(Optional.of(tag));
+        Mockito.when(tagDao.findById(1L)).thenReturn(Optional.of(tag));
         tagLogicService.deleteByID(1L);
         Mockito.verify(tagDao,Mockito.times(1)).delete(tag);
     }

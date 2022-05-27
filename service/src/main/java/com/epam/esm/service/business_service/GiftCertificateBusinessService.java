@@ -52,6 +52,11 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
+    public List<GiftCertificateDto> getAll() {
+        return null;
+    }
+
+    @Override
     public void deleteByID(long id) {
         giftCertificateLogicService.deleteByID(id);
     }
