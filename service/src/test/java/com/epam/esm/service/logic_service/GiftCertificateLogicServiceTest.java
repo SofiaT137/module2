@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -67,8 +68,8 @@ class GiftCertificateLogicServiceTest {
     void getAll() {
         Mockito.when(giftCertificateDao.findAll())
                 .thenReturn(Collections.singletonList(giftCertificate));
-        List<GiftCertificate> giftCertificates = giftCertificateLogicService.getAll(1,1);
-        assertEquals(1,giftCertificates.size());
+        Page<GiftCertificate> giftCertificates = giftCertificateLogicService.getAll(1,1);
+        assertEquals(1,giftCertificates.getTotalElements());
     }
 
     @Test

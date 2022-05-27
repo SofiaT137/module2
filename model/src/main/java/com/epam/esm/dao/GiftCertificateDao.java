@@ -4,9 +4,7 @@ import com.epam.esm.entity.GiftCertificate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface GiftCertificateDao extends JpaRepository<GiftCertificate,Long>, GiftCertificateDaoFilter{
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
@@ -14,5 +12,4 @@ public interface GiftCertificateDao extends JpaRepository<GiftCertificate,Long>,
             "set gs.duration = :duration " +
             "where gs.id = :id")
     int update(int duration, Long id);
-
 }

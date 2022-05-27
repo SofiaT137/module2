@@ -1,5 +1,7 @@
 package com.epam.esm.service;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 /**
@@ -18,6 +20,5 @@ public interface RService<T>{
      * The method provides service layer functionality for searching all the entity objects
      * @return List of the entity objects
      */
-    List<T> getAll(int pageSize, int pageNumber);
-    List<T> getAll();
+    Page<T> getAll(int pageSize, int pageNumber);
 }

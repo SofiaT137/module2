@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ class UserLogicServiceTest {
     @Test
     void getAll() {
         Mockito.when(userDao.findAll()).thenReturn(Collections.singletonList(user));
-        List<User> userList = userLogicService.getAll(1,1);
-        assertEquals(1,userList.size());
+        Page<User> userList = userLogicService.getAll(1,1);
+        assertEquals(1,userList.getTotalElements());
     }
 }

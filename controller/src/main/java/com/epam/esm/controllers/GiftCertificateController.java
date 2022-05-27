@@ -6,6 +6,7 @@ import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -64,7 +65,7 @@ public class GiftCertificateController {
                                                                      int pageSize,
                                                          @RequestParam (defaultValue = "1", required = false)
                                                                  int pageNumber){
-        List<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageSize,pageNumber);
+        Page<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageSize,pageNumber);
         giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
         return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }

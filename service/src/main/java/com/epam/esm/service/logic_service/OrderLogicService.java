@@ -13,15 +13,21 @@ import com.epam.esm.service.UserService;
 import com.epam.esm.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.epam.esm.exceptions.ExceptionErrorCode.*;
+import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
+import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_ID;
+import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
+import static com.epam.esm.exceptions.ExceptionErrorCode.USER_HAVE_NOT_ANY_ORDERS;
 
 /**
  * Class OrderLogicService is implementation of interface OrderService
@@ -120,22 +126,18 @@ public class OrderLogicService implements OrderService<Order> {
     }
 
     @Override
-    public List<Order> getAll(int pageSize, int pageNumber) {
-        return orderDao.findAll();
+    public Page<Order> getAll(int pageSize, int pageNumber) {
+        return orderDao.findAll(PageRequest.of(pageSize,pageNumber));
     }
 
     @Override
-    public List<Order> getAll() {
-        return null;
-    }
-
-    @Override
-    public List<Order> ordersByUserId(long userId,int pageSize, int pageNumber){
+    public List<Order> ordersByUserId(long userId, int pageSize, int pageNumber){
         orderValidator.checkID(userId);
         User user = userLogicService.getById(userId);
         if (user.getOrderList().isEmpty()){
             throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);
         }
-        return orderDao.ordersByUserId(user.getId());
+        return orderDao.findAllByUserId(user.getId(),PageRequest.of(pageSize,pageNumber));
     }
+
 }

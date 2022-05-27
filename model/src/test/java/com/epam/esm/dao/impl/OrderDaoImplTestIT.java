@@ -49,7 +49,7 @@ class OrderDaoImplTestIT {
 //        }
 //        User user = userDaoOptional.get();
 //        orderDao.insert(new Order(NEW_PRICE, LocalDateTime.now(),user));
-//        List<Order> order = orderDao.ordersByUserId(ID,PAGE_SIZE,PAGE_NUMBER);
+//        List<Order> order = orderDao.findByUserId(ID,PAGE_SIZE,PAGE_NUMBER);
 //        System.out.println(order);
 //        assertEquals(ORDERS_LIST_SIZE,order.size());
 //    }
@@ -83,8 +83,8 @@ class OrderDaoImplTestIT {
 //    }
 //
 //    @Test
-//    void ordersByUserId() {
-//        List<Order> order = orderDao.ordersByUserId(ID,PAGE_SIZE,PAGE_NUMBER);
+//    void findByUserId() {
+//        List<Order> order = orderDao.findByUserId(ID,PAGE_SIZE,PAGE_NUMBER);
 //        System.out.println(order);
 //        assertEquals(ORDERS_USER_LIST_SIZE,order.size());
 //    }

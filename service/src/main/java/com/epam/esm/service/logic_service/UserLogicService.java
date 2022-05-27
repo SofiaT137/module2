@@ -9,6 +9,8 @@ import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;
 import com.epam.esm.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,18 +77,13 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
     }
 
     @Override
-    public List<User> getAll(int pageSize, int pageNumber) {
-        return null;
-    }
-
-    @Override
-    public List<User> getAll() {
-        return userDao.findAll();
+    public Page<User> getAll(int pageSize, int pageNumber) {
+        return userDao.findAll(PageRequest.of(pageSize,pageNumber));
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User u = userDao.findByUserLogin(login).get();
+        User u = userDao.findByLogin(login).get();
         return new org.springframework.security.core.userdetails.User(u.getLogin(),
                 u.getPassword(), mapToGrantedAuthorities(u.getRoles()));
 
@@ -104,7 +100,7 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public User findUserByUserLogin(String login) {
-        Optional<User> receivedUserById = userDao.findByUserLogin(login);
+        Optional<User> receivedUserById = userDao.findByLogin(login);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException("Failed to retrieve user: ",NO_SUCH_ENTITY_CODE);
         }

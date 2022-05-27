@@ -2,6 +2,7 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**

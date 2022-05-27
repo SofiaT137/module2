@@ -5,6 +5,7 @@ import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,7 +73,7 @@ public class OrderController {
     public ResponseEntity<Object> getAllOrders(@RequestParam(defaultValue = "5",required = false) int pageSize,
                                                          @RequestParam (defaultValue = "1", required = false)
                                                                  int pageNumber){
-        List<OrderDto> orderDtoList = orderLogicService.getAll(pageSize,pageNumber);
+        Page<OrderDto> orderDtoList = orderLogicService.getAll(pageSize,pageNumber);
         orderDtoList.forEach(orderDtoHateoas::addLinks);
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }
@@ -89,7 +90,7 @@ public class OrderController {
     }
 
     /**
-     * Method ordersByUserId returns all the Users OrderDto entity
+     * Method findByUserId returns all the Users OrderDto entity
      * @param userId User id(Long value)
      * @param pageSize Number of OrderDto entities per page(default value is 5)
      * @param pageNumber Number of the page with OrderDto entities(default value is 1)

@@ -6,9 +6,11 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,15 +48,11 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public List<GiftCertificateDto> getAll(int pageSize,int pageNumber){
-        List<GiftCertificate> giftCertificateList = giftCertificateLogicService.getAll(pageSize, pageNumber);
-        return giftCertificateList.stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
+    public Page<GiftCertificateDto> getAll(int pageSize, int pageNumber){
+        Page<GiftCertificate> giftCertificateList = giftCertificateLogicService.getAll(pageSize, pageNumber);
+        return giftCertificateList.map(giftCertificateConverter::convert);
     }
 
-    @Override
-    public List<GiftCertificateDto> getAll() {
-        return null;
-    }
 
     @Override
     public void deleteByID(long id) {

@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.entity.Order;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface OrderService<T> extends CRDService<T>{
      * @param pageNumber int page number
      * @return List Of Order or OrderDto entities
      */
-    List<T> ordersByUserId(long userId,int pageSize, int pageNumber);
+    List<T> ordersByUserId(long userId, int pageSize, int pageNumber);
 }

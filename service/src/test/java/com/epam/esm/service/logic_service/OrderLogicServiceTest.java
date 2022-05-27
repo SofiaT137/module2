@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -90,15 +92,15 @@ class OrderLogicServiceTest {
     @Test
     void getAll() {
         Mockito.when(orderDao.findAll()).thenReturn(Collections.singletonList(order));
-        List<Order> orderList = orderLogicService.getAll(1,1);
-        assertEquals(1,orderList.size());
+        Page<Order> orderList = orderLogicService.getAll(1,1);
+        assertEquals(1,orderList.getTotalElements());
     }
 
     @Test
     void ordersByUserId() {
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
-        Mockito.when(orderDao.ordersByUserId(1L))
-                .thenReturn(Collections.singletonList(order));
+        Mockito.when(orderDao.findAllByUserId(1L, PageRequest.of(1,1))).
+                thenReturn(Collections.singletonList(order));
         List<Order> orderList = orderLogicService.ordersByUserId(1L,1,1);
         assertEquals(1,orderList.size());
     }

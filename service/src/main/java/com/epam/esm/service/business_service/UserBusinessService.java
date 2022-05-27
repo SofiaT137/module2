@@ -6,6 +6,7 @@ import com.epam.esm.entity.User;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -47,20 +48,15 @@ public class UserBusinessService implements UserService<UserDto> {
     @Override
     public UserDto getById(long id) {
         User user = userLogicService.getById(id);
-        UserDto userDto = userConverter.convert(user);
-        return userDto;
+        return userConverter.convert(user);
     }
 
     @Override
-    public List<UserDto> getAll(int pageSize, int pageNumber) {
-        List<User> userList = userLogicService.getAll(pageSize, pageNumber);
-        return userList.stream().map(userConverter::convert).collect(Collectors.toList());
+    public Page<UserDto> getAll(int pageSize, int pageNumber) {
+        Page<User> userList = userLogicService.getAll(pageSize, pageNumber);
+        return userList.map(userConverter::convert);
     }
 
-    @Override
-    public List<UserDto> getAll() {
-        return null;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {

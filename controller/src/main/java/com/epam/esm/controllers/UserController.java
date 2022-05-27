@@ -6,6 +6,7 @@ import com.epam.esm.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,7 @@ public class UserController {
                                                                      int pageSize,
                                                          @RequestParam (defaultValue = "1", required = false)
                                                                  int pageNumber){
-        List<UserDto> userDtoList = userService.getAll(pageSize,pageNumber);
+        Page<UserDto> userDtoList = userService.getAll(pageSize,pageNumber);
         userDtoList.forEach(userDtoHateoas::addLinks);
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }

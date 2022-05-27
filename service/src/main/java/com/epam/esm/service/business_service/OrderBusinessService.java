@@ -6,6 +6,7 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -59,14 +60,8 @@ public class OrderBusinessService implements OrderService<OrderDto> {
     }
 
     @Override
-    public List<OrderDto> getAll(int pageSize, int pageNumber) {
-        List<Order> orderList = orderLogicService.getAll(pageSize, pageNumber);
-        return orderList.stream().map(orderConverter::convert).collect(Collectors.toList());
+    public Page<OrderDto> getAll(int pageSize, int pageNumber) {
+        Page<Order> orderList = orderLogicService.getAll(pageSize, pageNumber);
+        return orderList.map(orderConverter::convert);
     }
-
-    @Override
-    public List<OrderDto> getAll() {
-        return null;
-    }
-
 }

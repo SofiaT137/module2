@@ -11,6 +11,8 @@ import com.epam.esm.service.TagService;
 import com.epam.esm.validator.GiftCertificateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
@@ -83,14 +85,10 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     }
 
     @Override
-    public List<GiftCertificate> getAll(int pageSize,int pageNumber) {
-        return giftCertificateDao.findAll();
+    public Page<GiftCertificate> getAll(int pageSize, int pageNumber) {
+        return giftCertificateDao.findAll(PageRequest.of(pageSize,pageNumber));
     }
 
-    @Override
-    public List<GiftCertificate> getAll() {
-        return null;
-    }
 
     @Override
     @Transactional
