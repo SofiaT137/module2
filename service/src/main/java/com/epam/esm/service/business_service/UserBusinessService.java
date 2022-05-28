@@ -4,6 +4,7 @@ import com.epam.esm.converter.impl.UserConverter;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.UserService;
+import com.epam.esm.validator.ValidationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -24,11 +25,13 @@ import java.util.stream.Collectors;
 public class UserBusinessService implements UserService<UserDto> {
 
     private final UserConverter userConverter;
+    private final ValidationFacade validationFacade;
     private UserService<User> userLogicService;
 
     @Autowired
-    public UserBusinessService(UserConverter userConverter) {
+    public UserBusinessService(UserConverter userConverter,ValidationFacade validationFacade) {
         this.userConverter = userConverter;
+        this.validationFacade = validationFacade;
     }
 
     @Autowired
@@ -40,6 +43,7 @@ public class UserBusinessService implements UserService<UserDto> {
     @Override
     @Transactional
     public UserDto insert(UserDto entity) {
+        validationFacade.validate(entity);
         User convertUser = userConverter.convert(entity);
         userLogicService.insert(convertUser);
         return userConverter.convert(convertUser);

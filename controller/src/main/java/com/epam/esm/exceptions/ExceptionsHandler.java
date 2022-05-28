@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import javax.validation.ConstraintViolationException;
 
 
 /**
@@ -71,10 +72,10 @@ public class ExceptionsHandler {
      * @param exception ValidatorException exception
      * @return Response entity with ExceptionEntity entity and HttpStatus "BAD_REQUEST"
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> badRequestException(ValidatorException exception) {
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> badRequestException(ConstraintViolationException exception) {
         String exceptionMessage = translation.translate(exception.getMessage());
-        String exceptionCode = exception.getErrorCode();
+        String exceptionCode = "403000";
         ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage,exceptionCode);
         return new ResponseEntity<>(exceptionEntity, HttpStatus.BAD_REQUEST);
     }

@@ -4,10 +4,10 @@ import com.epam.esm.converter.impl.OrderConverter;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.entity.Order;
 import com.epam.esm.service.OrderService;
+import com.epam.esm.validator.ValidationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +21,13 @@ import java.util.stream.Collectors;
 public class OrderBusinessService implements OrderService<OrderDto> {
 
     private final OrderConverter orderConverter;
+    private final ValidationFacade validationFacade;
     private OrderService<Order> orderLogicService;
 
     @Autowired
-    public OrderBusinessService(OrderConverter orderConverter) {
+    public OrderBusinessService(OrderConverter orderConverter, ValidationFacade validationFacade) {
         this.orderConverter = orderConverter;
+        this.validationFacade = validationFacade;
     }
 
     @Autowired
@@ -36,6 +38,7 @@ public class OrderBusinessService implements OrderService<OrderDto> {
 
     @Override
     public OrderDto insert(OrderDto entity) {
+        validationFacade.validate(entity);
         Order convertOrder = orderConverter.convert(entity);
         orderLogicService.insert(convertOrder);
         return orderConverter.convert(convertOrder);

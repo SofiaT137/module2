@@ -7,7 +7,6 @@ import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;
-import com.epam.esm.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,9 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
-import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
-
 /**
  * Class UserLogicService is implementation of interface UserService
  * The class presents service logic layer for User entity
@@ -37,18 +33,15 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     private final RoleDao roleDao;
 
-    private final UserValidator userValidator;
-
     private final BCryptPasswordEncoder encoder;
 
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION = "noUserWithId";
 
     @Autowired
-    public UserLogicService(UserDao userDao, RoleDao roleDao, UserValidator userValidator,
+    public UserLogicService(UserDao userDao, RoleDao roleDao,
                             BCryptPasswordEncoder encoder) {
         this.userDao = userDao;
         this.roleDao = roleDao;
-        this.userValidator = userValidator;
         this.encoder = encoder;
     }
 
@@ -59,19 +52,14 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
         String password = entity.getPassword();
         entity.setPassword(null);
         entity.setPassword(encoder.encode(password));
-        User insertedUser = userDao.save(entity);
-        if (insertedUser == null){
-            throw new CannotInsertEntityException("Cannot insert this user",CANNOT_INSERT_ENTITY_CODE);
-        }
-        return insertedUser;
+        return userDao.save(entity);
     }
 
     @Override
     public User getById(long id) {
-        userValidator.checkID(id);
         Optional<User> receivedUserById = userDao.findById(id);
         if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION);
         }
         return receivedUserById.get();
     }
@@ -83,26 +71,16 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User u = userDao.findByLogin(login).get();
-        return new org.springframework.security.core.userdetails.User(u.getLogin(),
-                u.getPassword(), mapToGrantedAuthorities(u.getRoles()));
-
+        User foundedUser = findUserByUserLogin(login);
+        return new org.springframework.security.core.userdetails.User(foundedUser.getLogin(),
+                foundedUser.getPassword(), mapToGrantedAuthorities(foundedUser.getRoles()));
     }
-
-//        return userDao.findByUserLogin(login)
-//                .map(user -> new org.springframework.security.core.userdetails.User(
-//                        user.getLogin(),
-//                        user.getPassword(),
-//                        mapToGrantedAuthorities(user.getRoles())
-//                ))
-//                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + login));
-
 
     @Override
     public User findUserByUserLogin(String login) {
         Optional<User> receivedUserById = userDao.findByLogin(login);
         if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException("Failed to retrieve user: ",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException("Failed to retrieve user: ");
         }
         return receivedUserById.get();
     }
@@ -116,10 +94,9 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public void deleteByID(long id) {
-        userValidator.checkID(id);
         Optional<User> receivedUserById = userDao.findById(id);
         if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException("No user with that id exception",NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException("No user with that id exception");
         }
         userDao.delete(receivedUserById.get());
     }

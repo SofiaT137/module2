@@ -4,7 +4,7 @@ import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
-import com.epam.esm.validator.GiftCertificateValidator;
+//import com.epam.esm.validator.GiftCertificateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,8 +27,8 @@ class GiftCertificateLogicServiceTest {
     @Mock
     private GiftCertificateDao giftCertificateDao;
 
-    @Mock
-    private GiftCertificateValidator certificateValidator;
+//    @Mock
+//    private GiftCertificateValidator certificateValidator;
 
     @Mock
     private TagService<Tag> tagLogicService;
@@ -86,8 +86,8 @@ class GiftCertificateLogicServiceTest {
                 .thenReturn(Optional.of(giftCertificate));
         Mockito.when(giftCertificateDao.update(15,giftCertificate.getId()))
                 .thenReturn(1);
-        GiftCertificate resultCertificate = giftCertificateLogicService.update(1L,giftCertificateForUpdate);
-        assertEquals(updatedGiftCertificate,resultCertificate);
+        int updatedRows=giftCertificateLogicService.update(1L,giftCertificateForUpdate);
+        assertEquals(1, updatedRows);
     }
 
     @Test

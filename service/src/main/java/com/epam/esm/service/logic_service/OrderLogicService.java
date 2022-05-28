@@ -10,24 +10,17 @@ import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
-import com.epam.esm.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.epam.esm.exceptions.ExceptionErrorCode.CANNOT_INSERT_ENTITY_CODE;
-import static com.epam.esm.exceptions.ExceptionErrorCode.INCORRECT_ID;
-import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
-import static com.epam.esm.exceptions.ExceptionErrorCode.USER_HAVE_NOT_ANY_ORDERS;
 
 /**
  * Class OrderLogicService is implementation of interface OrderService
@@ -37,14 +30,12 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.USER_HAVE_NOT_ANY_ORDER
 public class OrderLogicService implements OrderService<Order> {
 
     private final OrderDao orderDao;
-    private final OrderValidator orderValidator;
     private UserService<User> userLogicService;
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
 
     @Autowired
-    public OrderLogicService(OrderDao orderDao, OrderValidator orderValidator) {
+    public OrderLogicService(OrderDao orderDao){
         this.orderDao = orderDao;
-        this.orderValidator = orderValidator;
     }
 
     @Autowired
@@ -70,16 +61,11 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     @Transactional
     public Order insert(Order entity) {
-        orderValidator.validate(entity);
         User user = getUser(entity);
         entity.addUserToOrder(user);
         entity.setPrice(saveGiftCertificatesToOrder(entity));
         entity.setPurchaseTime(LocalDateTime.now());
-        Order insertedOrder = orderDao.save(entity);
-        if (insertedOrder == null){
-            throw new CannotInsertEntityException(CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
-        }
-        return insertedOrder;
+        return orderDao.save(entity);
     }
 
     private User getUser(Order entity){
@@ -87,7 +73,7 @@ public class OrderLogicService implements OrderService<Order> {
         if (entity.getUser().getId() != null) {
             user = userLogicService.getById(entity.getUser().getId());
         }else{
-            throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE, INCORRECT_ID);
+            throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE);
         }
         return user;
     }
@@ -107,20 +93,18 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     @Transactional
     public void deleteByID(long id) {
-        orderValidator.checkID(id);
         Optional<Order> receivedOrderById = orderDao.findById(id);
         if (!receivedOrderById.isPresent()){
-            throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE);
         }
         orderDao.delete(receivedOrderById.get());
     }
 
     @Override
     public Order getById(long id) {
-        orderValidator.checkID(id);
         Optional<Order> receivedOrderById = orderDao.findById(id);
         if (!receivedOrderById.isPresent()){
-            throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE);
         }
         return receivedOrderById.get();
     }
@@ -132,10 +116,9 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     public List<Order> ordersByUserId(long userId, int pageSize, int pageNumber){
-        orderValidator.checkID(userId);
         User user = userLogicService.getById(userId);
         if (user.getOrderList().isEmpty()){
-            throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE,USER_HAVE_NOT_ANY_ORDERS);
+            throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE);
         }
         return orderDao.findAllByUserId(user.getId(),PageRequest.of(pageSize,pageNumber));
     }

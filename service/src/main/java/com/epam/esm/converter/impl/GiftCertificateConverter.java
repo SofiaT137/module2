@@ -48,10 +48,10 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         return valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
     }
 
-    private LocalDateTime validateDate(String dateTime){
+    private LocalDateTime validateDate(LocalDateTime dateTime){
         LocalDateTime date;
         if (dateTime != null){
-            date = LocalDateTime.parse(dateTime);
+            date = LocalDateTime.now();
         } else {
             date = null;
         }
@@ -60,16 +60,11 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificateDto convert(GiftCertificate value) {
-        String createDate = getFormatDate(value.getCreateDate());
-        String lastUpdateDate = getFormatDate(value.getLastUpdateDate());
+        LocalDateTime createDate = validateDate(value.getCreateDate());
+        LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
         return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
                 value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
-    }
-
-    private String getFormatDate(LocalDateTime dateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return formatter.format(dateTime);
     }
 
     private Set<TagDto> convertTagList(List<Tag> valueTagList){

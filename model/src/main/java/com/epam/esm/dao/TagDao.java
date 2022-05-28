@@ -2,6 +2,7 @@ package com.epam.esm.dao;
 
 import com.epam.esm.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -20,4 +21,9 @@ public interface TagDao extends JpaRepository<Tag,Long> {
     List<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId);
 
     Optional<Tag> findByTagName(String tagName);
+
+    @Modifying(clearAutomatically = true,flushAutomatically = true)
+    @Query(value = "DELETE FROM gift_certificate_tag WHERE tag_id = :id "
+            ,nativeQuery = true)
+    void deleteParentRelationShips(Long id);
 }

@@ -2,7 +2,8 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
@@ -11,7 +12,10 @@ import java.util.Objects;
 public class UserDto extends RepresentationModel<UserDto> {
 
     private Long id = 0L;
+    @NotEmpty(message = "{loginCannotBeNull}")
+    @Size(min = 4 ,max = 30,message = "{thisUserNameLengthIsForbidden}" )
     private String login;
+    @NotEmpty(message = "{passwordCannotBeNull}")
     private String password;
 
     public UserDto(Long id,String login,String password) {

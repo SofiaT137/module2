@@ -7,7 +7,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.UserService;
-import com.epam.esm.validator.OrderValidator;
+//import com.epam.esm.validator.OrderValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +32,8 @@ class OrderLogicServiceTest {
     @Mock
     private OrderDao orderDao;
 
-    @Mock
-    private OrderValidator orderValidator;
+//    @Mock
+//    private OrderValidator orderValidator;
 
     @Mock
     private UserService<User> userLogicService;

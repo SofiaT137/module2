@@ -5,16 +5,15 @@ package com.epam.esm.exceptions;
  */
 public class NoPermissionException extends RuntimeException{
 
-    private String errorCode;
+    private static final String ERROR_CODE = "403000";
 
     public NoPermissionException() {
     }
-    public NoPermissionException(String message, String errorCode) {
+    public NoPermissionException(String message) {
         super(message);
-        this.errorCode = errorCode;
     }
 
     public String getErrorCode() {
-        return errorCode;
+        return ERROR_CODE;
     }
 }

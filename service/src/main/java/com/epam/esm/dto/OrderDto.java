@@ -2,6 +2,7 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,9 @@ public class OrderDto extends RepresentationModel<OrderDto> {
     private Long id;
     private Double price;
     private String purchaseTime;
+    @NotEmpty(message = "{giftCertificateListCannotBeNull}")
     private List<GiftCertificateDto> giftCertificateDto;
+    @NotEmpty(message = "{userCannotBeNull}")
     private Long userId;
 
    public OrderDto() {

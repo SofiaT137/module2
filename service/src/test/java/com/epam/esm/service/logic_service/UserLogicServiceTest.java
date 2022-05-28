@@ -2,7 +2,7 @@ package com.epam.esm.service.logic_service;
 
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.User;
-import com.epam.esm.validator.UserValidator;
+//import com.epam.esm.validator.UserValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,8 +23,8 @@ class UserLogicServiceTest {
     @Mock
     private UserDao userDao;
 
-    @Mock
-    private UserValidator userValidator;
+//    @Mock
+//    private UserValidator userValidator;
 
     @InjectMocks
     private UserLogicService userLogicService;

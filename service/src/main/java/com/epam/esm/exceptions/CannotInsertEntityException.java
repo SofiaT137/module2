@@ -6,16 +6,15 @@ package com.epam.esm.exceptions;
  */
 public class CannotInsertEntityException extends RuntimeException{
 
-    private String errorCode;
+    private static final String ERROR_CODE = "404002";
 
     public CannotInsertEntityException() {
     }
-    public CannotInsertEntityException(String message, String errorCode) {
+    public CannotInsertEntityException(String message) {
         super(message);
-        this.errorCode = errorCode;
     }
 
     public String getErrorCode() {
-        return errorCode;
+        return ERROR_CODE;
     }
 }
