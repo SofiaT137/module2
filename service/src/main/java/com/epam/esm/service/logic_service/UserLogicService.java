@@ -1,10 +1,9 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.RoleDao;
-import com.epam.esm.dao.UserDao;
+import com.epam.esm.repository.RoleRepository;
+import com.epam.esm.repository.UserRepository;
 import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
-import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,35 +28,35 @@ import java.util.stream.Collectors;
 @Service("userLogicService")
 public class UserLogicService implements UserService<User>, UserDetailsService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
-    private final RoleDao roleDao;
+    private final RoleRepository roleRepository;
 
     private final BCryptPasswordEncoder encoder;
 
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION = "noUserWithId";
 
     @Autowired
-    public UserLogicService(UserDao userDao, RoleDao roleDao,
+    public UserLogicService(UserRepository userRepository, RoleRepository roleRepository,
                             BCryptPasswordEncoder encoder) {
-        this.userDao = userDao;
-        this.roleDao = roleDao;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.encoder = encoder;
     }
 
     @Override
     public User insert(User entity) {
-        Optional<Role> roleUser = roleDao.findById(2L);
+        Optional<Role> roleUser = roleRepository.findById(2L);
         roleUser.ifPresent(entity::addRoleToUser);
         String password = entity.getPassword();
         entity.setPassword(null);
         entity.setPassword(encoder.encode(password));
-        return userDao.save(entity);
+        return userRepository.save(entity);
     }
 
     @Override
     public User getById(long id) {
-        Optional<User> receivedUserById = userDao.findById(id);
+        Optional<User> receivedUserById = userRepository.findById(id);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION);
         }
@@ -66,7 +65,7 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public Page<User> getAll(int pageSize, int pageNumber) {
-        return userDao.findAll(PageRequest.of(pageSize,pageNumber));
+        return userRepository.findAll(PageRequest.of(pageSize,pageNumber));
     }
 
     @Override
@@ -78,7 +77,7 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     @Override
     public User findUserByUserLogin(String login) {
-        Optional<User> receivedUserById = userDao.findByLogin(login);
+        Optional<User> receivedUserById = userRepository.findUserByLogin(login);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException("Failed to retrieve user: ");
         }
@@ -88,16 +87,16 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> userRoles) {
         return userRoles.stream()
                 .map(role ->
-                        new SimpleGrantedAuthority(role.getRoleName())
+                        new SimpleGrantedAuthority(role.getName())
                 ).collect(Collectors.toList());
     }
 
     @Override
     public void deleteByID(long id) {
-        Optional<User> receivedUserById = userDao.findById(id);
+        Optional<User> receivedUserById = userRepository.findById(id);
         if (!receivedUserById.isPresent()){
             throw new NoSuchEntityException("No user with that id exception");
         }
-        userDao.delete(receivedUserById.get());
+        userRepository.delete(receivedUserById.get());
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.OrderDao;
+import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
@@ -17,9 +17,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class OrderLogicServiceTest {
 
     @Mock
-    private OrderDao orderDao;
-
-//    @Mock
-//    private OrderValidator orderValidator;
+    private OrderRepository orderRepository;
 
     @Mock
     private UserService<User> userLogicService;
@@ -70,28 +69,29 @@ class OrderLogicServiceTest {
     void insertOrder() {
         Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
         Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
-        Mockito.when(orderDao.save(order)).thenReturn(order);
+        Mockito.when(orderRepository.save(order)).thenReturn(order);
         Order order1 = orderLogicService.insert(order);
         assertEquals(order,order1);
     }
 
     @Test
     void deleteOrder() {
-        Mockito.when(orderDao.findById(1L)).thenReturn(Optional.of(order));
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         orderLogicService.deleteByID(order.getId());
-        Mockito.verify(orderDao, Mockito.times(1)).delete(order);
+        Mockito.verify(orderRepository, Mockito.times(1)).delete(order);
     }
 
     @Test
     void getById() {
-        Mockito.when(orderDao.findById(order.getId())).thenReturn(Optional.of(order));
+        Mockito.when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         Order foundOrder = orderLogicService.getById(order.getId());
         assertEquals(order,foundOrder);
     }
 
     @Test
     void getAll() {
-        Mockito.when(orderDao.findAll()).thenReturn(Collections.singletonList(order));
+        Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
+        Mockito.when(orderRepository.findAll(PageRequest.of(1,1))).thenReturn(page);
         Page<Order> orderList = orderLogicService.getAll(1,1);
         assertEquals(1,orderList.getTotalElements());
     }
@@ -99,7 +99,7 @@ class OrderLogicServiceTest {
     @Test
     void ordersByUserId() {
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
-        Mockito.when(orderDao.findAllByUserId(1L, PageRequest.of(1,1))).
+        Mockito.when(orderRepository.findAllByUserId(1L, PageRequest.of(1,1))).
                 thenReturn(Collections.singletonList(order));
         List<Order> orderList = orderLogicService.ordersByUserId(1L,1,1);
         assertEquals(1,orderList.size());

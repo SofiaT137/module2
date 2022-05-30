@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.CannotInsertEntityException;
@@ -28,7 +28,7 @@ import java.util.Optional;
 @Service("giftCertificateLogicService")
 public class GiftCertificateLogicService implements GiftCertificateService<GiftCertificate> {
 
-    private final GiftCertificateDao giftCertificateDao;
+    private final GiftCertificateRepository giftCertificateRepository;
     private TagService<Tag> tagLogicService;
 
     private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "giftCertificateNameIsNotUnique";
@@ -38,8 +38,8 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
 
     @Autowired
-    public GiftCertificateLogicService(GiftCertificateDao giftCertificateDao) {
-        this.giftCertificateDao = giftCertificateDao;
+    public GiftCertificateLogicService(GiftCertificateRepository giftCertificateRepository) {
+        this.giftCertificateRepository = giftCertificateRepository;
     }
 
     @Autowired
@@ -51,13 +51,13 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Override
     @Transactional
     public GiftCertificate insert(GiftCertificate entity) {
-        checkIfGiftCertificateNameIsUnique(entity.getGiftCertificateName());
+        checkIfGiftCertificateNameIsUnique(entity.getName());
         if (!entity.getTagList().isEmpty()){
             addTagsToGiftCertificateList(entity.getTagList(),entity);
         }
         entity.setCreateDate(LocalDateTime.now());
         entity.setLastUpdateDate(LocalDateTime.now());
-        return giftCertificateDao.save(entity);
+        return giftCertificateRepository.save(entity);
     }
 
     private void addTagsToGiftCertificateList(List<Tag> tagList,GiftCertificate entity){
@@ -67,7 +67,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     }
 
     private void checkIfGiftCertificateNameIsUnique(String giftCertificateName) {
-        Optional<GiftCertificate> giftCertificate = giftCertificateDao.findByGiftCertificateName(giftCertificateName);
+        Optional<GiftCertificate> giftCertificate = giftCertificateRepository.findByName(giftCertificateName);
         if (giftCertificate.isPresent()){
             throw new CannotInsertEntityException(CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
@@ -75,7 +75,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     public GiftCertificate getById(long id) {
-        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.findById(id);
+        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateRepository.findById(id);
         if (!receivedGiftCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
@@ -84,19 +84,19 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     public Page<GiftCertificate> getAll(int pageSize, int pageNumber) {
-        return giftCertificateDao.findAll(PageRequest.of(pageSize,pageNumber));
+        return giftCertificateRepository.findAll(PageRequest.of(pageSize,pageNumber));
     }
 
 
     @Override
     @Transactional
     public int update(Long id, GiftCertificate entity) {
-        Optional<GiftCertificate> foundedCertificateById = giftCertificateDao.findById(id);
+        Optional<GiftCertificate> foundedCertificateById = giftCertificateRepository.findById(id);
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
-        int updatedRows = giftCertificateDao.update(entity.getDuration(),
+        int updatedRows = giftCertificateRepository.update(entity.getDuration(),
                 foundedCertificateById.get().getId());
         if (updatedRows == 0){
             throw new NoSuchEntityException(CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE);
@@ -106,7 +106,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
         if (entity.getPrice() != null || entity.getDescription()!= null
-            || entity.getGiftCertificateName()!= null || entity.getCreateDate()!=null
+            || entity.getName()!= null || entity.getCreateDate()!=null
             || entity.getLastUpdateDate()!=null || !entity.getTagList().isEmpty()){
            throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE);
         }
@@ -115,16 +115,16 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Override
     @Transactional
     public void deleteByID(long id) {
-        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateDao.findById(id);
+        Optional<GiftCertificate> receivedGiftCertificateById = giftCertificateRepository.findById(id);
         if (!receivedGiftCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
-        giftCertificateDao.delete(receivedGiftCertificateById.get());
+        giftCertificateRepository.delete(receivedGiftCertificateById.get());
     }
 
     @Override
     public List<GiftCertificate> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters) {
-        List< GiftCertificate> giftCertificateList = giftCertificateDao
+        List< GiftCertificate> giftCertificateList = giftCertificateRepository
                 .findGiftCertificatesByTransferredConditions(mapWithFilters);
         if (giftCertificateList.isEmpty()){
             throw new NoSuchEntityException(CANNOT_FIND_ANY_CERTIFICATE_BY_CONDITIONS_MESSAGE);

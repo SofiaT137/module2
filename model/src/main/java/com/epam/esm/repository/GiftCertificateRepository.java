@@ -1,4 +1,4 @@
-package com.epam.esm.dao;
+package com.epam.esm.repository;
 
 import com.epam.esm.entity.GiftCertificate;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface GiftCertificateDao extends JpaRepository<GiftCertificate,Long>, GiftCertificateDaoFilter{
+public interface GiftCertificateRepository extends JpaRepository<GiftCertificate,Long>, GiftCertificateFilter {
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update GiftCertificate gs " +
@@ -15,5 +15,5 @@ public interface GiftCertificateDao extends JpaRepository<GiftCertificate,Long>,
             "where gs.id = :id")
     int update(int duration, Long id);
 
-    Optional<GiftCertificate> findByGiftCertificateName(String name);
+    Optional<GiftCertificate> findByName(String name);
 }

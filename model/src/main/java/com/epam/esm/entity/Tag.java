@@ -13,28 +13,28 @@ import java.util.Objects;
 public class Tag extends AbstractEntity<Long> {
 
     @Column(name = "tag_name")
-    private String tagName;
+    private String name;
 
     @ManyToMany(mappedBy = "tagList")
     private List<GiftCertificate> giftCertificates = new ArrayList<>();
 
     public Tag(){}
 
-    public Tag(Long id,String tagName) {
+    public Tag(Long id,String name) {
         super(id);
-        this.tagName = tagName;
+        this.name = name;
     }
 
-    public Tag(String tagName) {
-        this.tagName = tagName;
+    public Tag(String name) {
+        this.name = name;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getName() {
+        return name;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<GiftCertificate> getGiftCertificates() {
@@ -51,18 +51,18 @@ public class Tag extends AbstractEntity<Long> {
         if (!(o instanceof Tag)) return false;
         if (!super.equals(o)) return false;
         Tag tag = (Tag) o;
-        return Objects.equals(getTagName(), tag.getTagName());
+        return Objects.equals(getName(), tag.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getTagName());
+        return Objects.hash(super.hashCode(), getName());
     }
 
     @Override
     public String toString() {
         return "Tag{" +
-                "tagName='" + tagName + '\'' +
+                "name='" + name + '\'' +
                 '}';
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +31,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
-        LocalDateTime createDate = validateDate(value.getCreateDate());
+        LocalDateTime createDate = value.getCreateDate();
         LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = value.getTags();
         List<Tag> valueTagList = new ArrayList<>();
@@ -63,7 +62,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         LocalDateTime createDate = validateDate(value.getCreateDate());
         LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
-        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
+        return new GiftCertificateDto(value.getId(), value.getName(), value.getDescription(),
                 value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
     }
 

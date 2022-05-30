@@ -83,7 +83,7 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     private void checkTransferredMapParameters(MultiValueMap<String, String> mapWithFilters){
-        List<String> allowedKeys = Arrays.asList("tag_name", "partName", "partDescription", "sortByName",
+        List<String> allowedKeys = Arrays.asList("tagName", "partName", "partDescription", "sortByName",
                 "sortByCreationDate");
         List<String> transferredKeys = new ArrayList<>(mapWithFilters.keySet());
         for (String transferredKey : transferredKeys) {

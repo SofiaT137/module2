@@ -1,6 +1,7 @@
 package com.epam.esm.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,17 +11,24 @@ import java.util.Objects;
 public class Role extends AbstractEntity<Long>{
 
     @Column(name = "role_name")
-    private String roleName;
+    private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> userList = new ArrayList<>();
 
-    public String getRoleName() {
-        return roleName;
+    public Role() {
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public Role(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<User> getUserList() {
@@ -37,11 +45,11 @@ public class Role extends AbstractEntity<Long>{
         if (!(o instanceof Role)) return false;
         if (!super.equals(o)) return false;
         Role role = (Role) o;
-        return Objects.equals(getRoleName(), role.getRoleName());
+        return Objects.equals(getName(), role.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getRoleName());
+        return Objects.hash(super.hashCode(), getName());
     }
 }

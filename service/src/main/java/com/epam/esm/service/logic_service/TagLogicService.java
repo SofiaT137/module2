@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @Service("tagLogicService")
 public class TagLogicService implements TagService<Tag> {
 
-    private final TagDao tagDao;
+    private final TagRepository tagRepository;
     private UserService<User> userLogicService;
 
     private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
@@ -37,8 +37,8 @@ public class TagLogicService implements TagService<Tag> {
             "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
 
     @Autowired
-    public TagLogicService(TagDao tagDao){
-        this.tagDao = tagDao;
+    public TagLogicService(TagRepository tagRepository){
+        this.tagRepository = tagRepository;
     }
 
     @Autowired
@@ -50,15 +50,15 @@ public class TagLogicService implements TagService<Tag> {
     @Override
     @Transactional
     public Tag insert(Tag entity){
-        if (checkIfTagNameExists(entity.getTagName())){
+        if (checkIfTagNameExists(entity.getName())){
             throw new CannotInsertEntityException(NOT_UNIQUE_TAG_NAME_MESSAGE);
         }
-        return tagDao.save(entity);
+        return tagRepository.save(entity);
     }
 
     @Override
     public Tag getById(long id) {
-        Optional<Tag> receivedTagById = tagDao.findById(id);
+        Optional<Tag> receivedTagById = tagRepository.findById(id);
         if (!receivedTagById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE);
         }
@@ -67,24 +67,24 @@ public class TagLogicService implements TagService<Tag> {
 
     @Override
     public Page<Tag> getAll(int pageNumber,int pageSize){
-        return tagDao.findAll(PageRequest.of(pageNumber,pageSize));
+        return tagRepository.findAll(PageRequest.of(pageNumber,pageSize));
     }
 
     @Override
     @Transactional
     public void deleteByID(long id) {
-        Optional<Tag> receivedTagById = tagDao.findById(id);
+        Optional<Tag> receivedTagById = tagRepository.findById(id);
         if (!receivedTagById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE);
         }
-        tagDao.deleteParentRelationShips(id);
-        tagDao.delete(receivedTagById.get());
+        tagRepository.deleteParentRelationShips(id);
+        tagRepository.delete(receivedTagById.get());
     }
 
     @Override
     public Tag findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
         User receivedUserById = userLogicService.getById(userId);
-        List<Tag> resultTagList = tagDao.
+        List<Tag> resultTagList = tagRepository.
                 findTheMostWidelyUsedUserTagWithHighersOrderCost(receivedUserById.getId());
         if (resultTagList.isEmpty()){
             throw new NoSuchEntityException(CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG);
@@ -93,7 +93,7 @@ public class TagLogicService implements TagService<Tag> {
     }
     @Override
     public Tag findTagByTagName(String name) {
-        Optional<Tag> tag = tagDao.findByTagName(name);
+        Optional<Tag> tag = tagRepository.findTagByName(name);
         if (!tag.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE);
         }
@@ -104,9 +104,9 @@ public class TagLogicService implements TagService<Tag> {
     public List<Tag> getCertificateTagList(List<Tag> tagList){
         List<Tag> tags = new ArrayList<>();
         for (Tag entityHasTag : tagList) {
-            Optional<Tag> currentTag = tagDao.findByTagName(entityHasTag.getTagName());
+            Optional<Tag> currentTag = tagRepository.findTagByName(entityHasTag.getName());
             if (!currentTag.isPresent()){
-                currentTag = Optional.of(tagDao.save(entityHasTag));
+                currentTag = Optional.of(tagRepository.save(entityHasTag));
             }
             tags.add(currentTag.get());
         }

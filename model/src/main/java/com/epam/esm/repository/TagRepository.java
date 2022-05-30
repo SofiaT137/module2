@@ -1,4 +1,4 @@
-package com.epam.esm.dao;
+package com.epam.esm.repository;
 
 import com.epam.esm.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface TagDao extends JpaRepository<Tag,Long> {
+public interface TagRepository extends JpaRepository<Tag,Long> {
 
     @Query(value = "(SELECT t.id,t.tag_name,t.operation,t.time_mark," +
             " g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
@@ -20,7 +20,7 @@ public interface TagDao extends JpaRepository<Tag,Long> {
             nativeQuery = true)
     List<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId);
 
-    Optional<Tag> findByTagName(String tagName);
+    Optional<Tag> findTagByName(String tagName);
 
     @Modifying(clearAutomatically = true,flushAutomatically = true)
     @Query(value = "DELETE FROM gift_certificate_tag WHERE tag_id = :id "

@@ -1,10 +1,9 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.OrderDao;
+import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
-import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.GiftCertificateService;
@@ -29,13 +28,13 @@ import java.util.Optional;
 @Service("orderLogicService")
 public class OrderLogicService implements OrderService<Order> {
 
-    private final OrderDao orderDao;
+    private final OrderRepository orderRepository;
     private UserService<User> userLogicService;
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
 
     @Autowired
-    public OrderLogicService(OrderDao orderDao){
-        this.orderDao = orderDao;
+    public OrderLogicService(OrderRepository orderRepository){
+        this.orderRepository = orderRepository;
     }
 
     @Autowired
@@ -65,7 +64,7 @@ public class OrderLogicService implements OrderService<Order> {
         entity.addUserToOrder(user);
         entity.setPrice(saveGiftCertificatesToOrder(entity));
         entity.setPurchaseTime(LocalDateTime.now());
-        return orderDao.save(entity);
+        return orderRepository.save(entity);
     }
 
     private User getUser(Order entity){
@@ -93,16 +92,16 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     @Transactional
     public void deleteByID(long id) {
-        Optional<Order> receivedOrderById = orderDao.findById(id);
+        Optional<Order> receivedOrderById = orderRepository.findById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE);
         }
-        orderDao.delete(receivedOrderById.get());
+        orderRepository.delete(receivedOrderById.get());
     }
 
     @Override
     public Order getById(long id) {
-        Optional<Order> receivedOrderById = orderDao.findById(id);
+        Optional<Order> receivedOrderById = orderRepository.findById(id);
         if (!receivedOrderById.isPresent()){
             throw new NoSuchEntityException(NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE);
         }
@@ -111,7 +110,7 @@ public class OrderLogicService implements OrderService<Order> {
 
     @Override
     public Page<Order> getAll(int pageSize, int pageNumber) {
-        return orderDao.findAll(PageRequest.of(pageSize,pageNumber));
+        return orderRepository.findAll(PageRequest.of(pageSize,pageNumber));
     }
 
     @Override
@@ -120,7 +119,7 @@ public class OrderLogicService implements OrderService<Order> {
         if (user.getOrderList().isEmpty()){
             throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE);
         }
-        return orderDao.findAllByUserId(user.getId(),PageRequest.of(pageSize,pageNumber));
+        return orderRepository.findAllByUserId(user.getId(),PageRequest.of(pageSize,pageNumber));
     }
 
 }

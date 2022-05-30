@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
@@ -14,12 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TagLogicServiceTest {
 
     @Mock
-    private TagDao tagDao;
+    private TagRepository tagRepository;
     @Mock
     private UserService<User> userLogicService;
     @InjectMocks
@@ -48,36 +47,37 @@ class TagLogicServiceTest {
 
     @Test
     void insert() {
-        Mockito.when(tagDao.save(tag)).thenReturn(tag);
+        Mockito.when(tagRepository.save(tag)).thenReturn(tag);
         Tag tag1 = tagLogicService.insert(tag);
         assertEquals(tag,tag1);
     }
 
     @Test
     void getById() {
-        Mockito.when(tagDao.findById(1L)).thenReturn(Optional.of(tag));
+        Mockito.when(tagRepository.findById(1L)).thenReturn(Optional.of(tag));
         Tag tag1 = tagLogicService.getById(1L);
         assertEquals(tag,tag1);
     }
 
     @Test
     void getAll() {
-        Mockito.when(tagDao.findAll()).thenReturn(Collections.singletonList(tag));
+        Page<Tag> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(tag)));
+        Mockito.when(tagRepository.findAll(PageRequest.of(1,1))).thenReturn(page);
         Page<Tag> tagList = tagLogicService.getAll(1,1);
         assertEquals(1,tagList.getTotalElements());
     }
 
     @Test
     void deleteByID() {
-        Mockito.when(tagDao.findById(1L)).thenReturn(Optional.of(tag));
+        Mockito.when(tagRepository.findById(1L)).thenReturn(Optional.of(tag));
         tagLogicService.deleteByID(1L);
-        Mockito.verify(tagDao,Mockito.times(1)).delete(tag);
+        Mockito.verify(tagRepository,Mockito.times(1)).delete(tag);
     }
 
     @Test
     void findTheMostWidelyUsedUserTagWithHigherOrderCost() {
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
-        Mockito.when(tagDao.findTheMostWidelyUsedUserTagWithHighersOrderCost(user.getId()))
+        Mockito.when(tagRepository.findTheMostWidelyUsedUserTagWithHighersOrderCost(user.getId()))
                 .thenReturn(Collections.singletonList(tag));
         Tag tagFound = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(user.getId());
         assertEquals(tag,tagFound);
@@ -85,15 +85,15 @@ class TagLogicServiceTest {
 
     @Test
     void findTagByTagName() {
-        Mockito.when(tagDao.findByTagName("shark")).thenReturn(Optional.of(tag));
+        Mockito.when(tagRepository.findTagByName("shark")).thenReturn(Optional.of(tag));
         Tag foundTag = tagLogicService.findTagByTagName("shark");
         assertEquals(tag,foundTag);
     }
 
     @Test
     void getCertificateTagList() {
-        Mockito.when(tagDao.findByTagName("shark")).thenReturn(Optional.of(tag));
-        Mockito.when(tagDao.findByTagName("joy")).thenReturn(Optional.of(tag2));
+        Mockito.when(tagRepository.findTagByName("shark")).thenReturn(Optional.of(tag));
+        Mockito.when(tagRepository.findTagByName("joy")).thenReturn(Optional.of(tag2));
         List<Tag> tagList = tagLogicService.getCertificateTagList(giftCertificate.getTagList());
         assertEquals(2,tagList.size());
     }

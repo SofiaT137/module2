@@ -20,7 +20,7 @@ public class TagConverter implements Converter<Tag, TagDto> {
     @Override
     public TagDto convert(Tag value) {
         Long id = value.getId();
-        String name = value.getTagName();
+        String name = value.getName();
         return new TagDto(id,name);
     }
 }

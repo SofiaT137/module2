@@ -137,15 +137,13 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
                 && Objects.equals(getDescription(), that.getDescription())
                 && Objects.equals(getPrice(), that.getPrice())
                 && Objects.equals(getDuration(), that.getDuration())
-                && Objects.equals(getCreateDate(), that.getCreateDate())
-                && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate())
                 && Objects.equals(getTags(), that.getTags());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getId(), getGiftCertificateName(),
-                getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), getTags());
+                getDescription(), getPrice(), getDuration(), getTags());
     }
 
     @Override

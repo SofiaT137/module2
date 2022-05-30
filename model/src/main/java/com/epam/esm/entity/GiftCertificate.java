@@ -14,7 +14,7 @@ import java.util.Objects;
 public class GiftCertificate extends AbstractEntity<Long>{
 
     @Column(name = "gift_certificate_name")
-    private String giftCertificateName;
+    private String name;
 
     @Column(name = "description")
     private String description;
@@ -45,10 +45,10 @@ public class GiftCertificate extends AbstractEntity<Long>{
 
     public GiftCertificate(Long id) {super(id);}
 
-    public GiftCertificate(Long id, String giftCertificateName, String description, Double price,
-                           Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate,List<Tag> tagList) {
+    public GiftCertificate(Long id, String name, String description, Double price,
+                           Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tagList) {
         super(id);
-        this.giftCertificateName = giftCertificateName;
+        this.name = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
@@ -59,7 +59,7 @@ public class GiftCertificate extends AbstractEntity<Long>{
 
     public GiftCertificate(String name, String description, Double price, Integer duration,
                            LocalDateTime createDate, LocalDateTime lastUpdateDate,List<Tag> tagList) {
-        this.giftCertificateName = name;
+        this.name = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
@@ -73,12 +73,12 @@ public class GiftCertificate extends AbstractEntity<Long>{
         tag.getGiftCertificates().add(this);
     }
 
-    public String getGiftCertificateName() {
-        return giftCertificateName;
+    public String getName() {
+        return name;
     }
 
-    public void setGiftCertificateName(String giftCertificateName) {
-        this.giftCertificateName = giftCertificateName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -143,7 +143,7 @@ public class GiftCertificate extends AbstractEntity<Long>{
         if (!(o instanceof GiftCertificate)) return false;
         if (!super.equals(o)) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
+        return Objects.equals(getName(), that.getName())
                 && Objects.equals(getDescription(), that.getDescription())
                 && Objects.equals(getPrice(), that.getPrice())
                 && Objects.equals(getDuration(), that.getDuration())
@@ -154,7 +154,7 @@ public class GiftCertificate extends AbstractEntity<Long>{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(),
-                getGiftCertificateName(),
+                getName(),
                 getDescription(),
                 getPrice(),
                 getDuration(),
@@ -165,7 +165,7 @@ public class GiftCertificate extends AbstractEntity<Long>{
     public String toString() {
         return "GiftCertificate{" +
                 "id='" + super.getId() + '\'' +
-                "giftCertificateName='" + giftCertificateName + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +

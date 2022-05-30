@@ -100,7 +100,7 @@ public class JwtTokenProvider {
         List<String> roleNames = new ArrayList<>();
         roleList.
                 forEach(role -> roleNames.add(role.
-                        getRoleName())
+                        getName())
                 );
         return roleNames;
     }

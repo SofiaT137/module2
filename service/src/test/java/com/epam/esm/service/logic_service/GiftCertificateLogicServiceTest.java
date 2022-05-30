@@ -1,6 +1,6 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -25,10 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GiftCertificateLogicServiceTest {
 
     @Mock
-    private GiftCertificateDao giftCertificateDao;
-
-//    @Mock
-//    private GiftCertificateValidator certificateValidator;
+    private GiftCertificateRepository giftCertificateRepository;
 
     @Mock
     private TagService<Tag> tagLogicService;
@@ -52,39 +51,40 @@ class GiftCertificateLogicServiceTest {
     @Test
     void insert() {
         Mockito.when(tagLogicService.getCertificateTagList(giftCertificate.getTagList())).thenReturn(tagList);
-        Mockito.when(giftCertificateDao.save(giftCertificate)).thenReturn(giftCertificate);
+        Mockito.when(giftCertificateRepository.save(giftCertificate)).thenReturn(giftCertificate);
         GiftCertificate giftCertificate1 = giftCertificateLogicService.insert(giftCertificate);
         assertEquals(giftCertificate,giftCertificate1);
     }
 
     @Test
     void getById() {
-        Mockito.when(giftCertificateDao.findById(giftCertificate.getId())).thenReturn(Optional.of(giftCertificate));
+        Mockito.when(giftCertificateRepository.findById(giftCertificate.getId())).thenReturn(Optional.of(giftCertificate));
         GiftCertificate giftCertificate1 = giftCertificateLogicService.getById(giftCertificate.getId());
         assertEquals(giftCertificate,giftCertificate1);
     }
 
     @Test
     void getAll() {
-        Mockito.when(giftCertificateDao.findAll())
-                .thenReturn(Collections.singletonList(giftCertificate));
+        Page<GiftCertificate> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(giftCertificate)));
+        Mockito.when(giftCertificateRepository.findAll(PageRequest.of(1,1)))
+                .thenReturn(page);
         Page<GiftCertificate> giftCertificates = giftCertificateLogicService.getAll(1,1);
-        assertEquals(1,giftCertificates.getTotalElements());
+        assertEquals(1L,giftCertificates.getTotalElements());
     }
 
     @Test
     void deleteByID() {
-        Mockito.when(giftCertificateDao.findById(1L))
+        Mockito.when(giftCertificateRepository.findById(1L))
                 .thenReturn(Optional.of(giftCertificate));
         giftCertificateLogicService.deleteByID(giftCertificate.getId());
-        Mockito.verify(giftCertificateDao, Mockito.times(1)).delete(giftCertificate);
+        Mockito.verify(giftCertificateRepository, Mockito.times(1)).delete(giftCertificate);
     }
 
     @Test
     void update(){
-        Mockito.when(giftCertificateDao.findById(1L))
+        Mockito.when(giftCertificateRepository.findById(1L))
                 .thenReturn(Optional.of(giftCertificate));
-        Mockito.when(giftCertificateDao.update(15,giftCertificate.getId()))
+        Mockito.when(giftCertificateRepository.update(15,giftCertificate.getId()))
                 .thenReturn(1);
         int updatedRows=giftCertificateLogicService.update(1L,giftCertificateForUpdate);
         assertEquals(1, updatedRows);
@@ -95,7 +95,7 @@ class GiftCertificateLogicServiceTest {
         MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
         map.set("tag_name","season");
         map.set("tag_name","hello");
-        Mockito.when(giftCertificateDao
+        Mockito.when(giftCertificateRepository
                 .findGiftCertificatesByTransferredConditions(map))
                 .thenReturn(Collections.singletonList(giftCertificate));
         List<GiftCertificate> giftCertificates = giftCertificateLogicService.getQueryWithConditions(map);
