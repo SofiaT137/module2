@@ -1,10 +1,10 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.validator.onCreate;
+import com.epam.esm.validator.onUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,17 +16,17 @@ import java.util.Set;
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 
     private Long id;
-    @NotEmpty(message = "{giftCertificateNameCannotBeNull}",groups = { PrePersist.class})
-    @Size(min = 3,max = 50,message = "{giftCertificateLengthIsForbidden}",groups = { PrePersist.class})
+    @NotEmpty(message = "giftCertificateNameCannotBeNull",groups = onCreate.class)
+    @Size(min = 3,max = 50,message = "{giftCertificateLengthIsForbidden}",groups = onCreate.class)
     private String giftCertificateName;
-    @Max(value = 450,message = "{giftCertificateDescriptionIsTooLong}",groups = { PrePersist.class})
+    @Size(max = 450,message = "{giftCertificateDescriptionIsTooLong}",groups = onCreate.class)
     private String description;
-    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = { PrePersist.class})
-    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = { PrePersist.class})
+    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = onCreate.class)
+    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = onCreate.class)
     private Double price;
-    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {PreUpdate.class, PrePersist.class})
-    @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {PreUpdate.class, PrePersist.class})
-    @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {PreUpdate.class, PrePersist.class})
+    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {onCreate.class, onUpdate.class})
+    @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {onCreate.class, onUpdate.class})
+    @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {onCreate.class, onUpdate.class})
     private Integer duration;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createDate;

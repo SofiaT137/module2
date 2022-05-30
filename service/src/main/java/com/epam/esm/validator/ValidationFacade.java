@@ -1,5 +1,6 @@
 package com.epam.esm.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -12,6 +13,7 @@ public class ValidationFacade {
 
     private final Validator validator;
 
+    @Autowired
     public ValidationFacade(Validator validator) {
         this.validator = validator;
     }

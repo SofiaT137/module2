@@ -6,6 +6,8 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exceptions.IncorrectTransferredParametersException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.ValidationFacade;
+import com.epam.esm.validator.onCreate;
+import com.epam.esm.validator.onUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -45,7 +47,7 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
 
     @Override
     public GiftCertificateDto insert(GiftCertificateDto entityDto){
-        validationFacade.validate(entityDto);
+        validationFacade.validate(entityDto, onCreate.class);
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
         return giftCertificateConverter.convert(giftCertificateLogicService.insert(entity));
     }
@@ -70,7 +72,7 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
 
     @Override
     public int update(Long id, GiftCertificateDto entity) {
-        validationFacade.validate(entity);
+        validationFacade.validate(entity,onUpdate.class);
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
         return giftCertificateLogicService.update(id,giftCertificateEntity);
     }
