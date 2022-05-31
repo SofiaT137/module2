@@ -6,7 +6,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
-public interface GiftCertificateFilter {
+public interface GiftCertificateCustomRepo {
 
     Page<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String,
             String> mapWithFilters, int pageNumber, int pageSize);

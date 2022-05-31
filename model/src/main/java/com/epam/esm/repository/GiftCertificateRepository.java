@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface GiftCertificateRepository extends JpaRepository<GiftCertificate,Long>, GiftCertificateFilter {
+public interface GiftCertificateRepository extends JpaRepository<GiftCertificate,Long>, GiftCertificateCustomRepo {
 
     Optional<GiftCertificate> findByName(String name);
 }

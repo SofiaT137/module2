@@ -39,6 +39,7 @@ class GiftCertificateConverterTest {
     private static List<Tag> tag_list_convert;
     private static GiftCertificateDto giftCertificateDto;
     private static GiftCertificate giftCertificate;
+    private static LocalDateTime localDateTime = LocalDateTime.now();
 
 
     @BeforeAll
@@ -49,7 +50,7 @@ class GiftCertificateConverterTest {
         giftCertificateConverter = new GiftCertificateConverter(tagConverter);
         tag_list_convert = tag_set.stream().map(tagConverter::convert).collect(Collectors.toList());
         giftCertificateDto = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION
-                ,CORRECT_PRICE,CORRECT_DURATION,tag_set);
+                ,CORRECT_PRICE,CORRECT_DURATION,localDateTime,localDateTime,tag_set);
         giftCertificate = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE
                 ,CORRECT_DURATION,tag_list_convert);
     }

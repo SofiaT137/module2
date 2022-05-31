@@ -2,12 +2,11 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.repository.GiftCertificateFilter;
+import com.epam.esm.repository.GiftCertificateCustomRepo;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.util.MultiValueMap;
 
 import javax.persistence.EntityManager;
@@ -26,7 +25,7 @@ import java.util.Optional;
  * This class is intended for work with GiftCertificate entity
  */
 
-class GiftCertificateFilterImpl implements GiftCertificateFilter {
+class GiftCertificateCustomRepoImpl implements GiftCertificateCustomRepo {
 
     @PersistenceContext
     private EntityManager entityManager;
