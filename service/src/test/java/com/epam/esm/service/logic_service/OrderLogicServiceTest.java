@@ -7,7 +7,6 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.UserService;
-//import com.epam.esm.validator.OrderValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +45,7 @@ class OrderLogicServiceTest {
     private static final User user = new User(1L,"AlexRendal","sss");
     private static final List<Tag> tagList = Collections.singletonList(new Tag("hello"));
     private static final GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
-            , "abc", 50.00, 13, LocalDateTime.now(), LocalDateTime.now(), tagList);
+            , "abc", 50.00, 13,  tagList);
     private static Order order;
 
     @BeforeEach
@@ -98,10 +97,11 @@ class OrderLogicServiceTest {
 
     @Test
     void ordersByUserId() {
+        Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
         Mockito.when(orderRepository.findAllByUserId(1L, PageRequest.of(1,1))).
-                thenReturn(Collections.singletonList(order));
-        List<Order> orderList = orderLogicService.ordersByUserId(1L,1,1);
-        assertEquals(1,orderList.size());
+                thenReturn(page);
+        Page<Order> orders = orderLogicService.ordersByUserId(1L,1,1);
+        assertEquals(1,orders.getTotalElements());
     }
 }

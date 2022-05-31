@@ -14,9 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,8 +57,8 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public Page<GiftCertificateDto> getAll(int pageSize, int pageNumber){
-        Page<GiftCertificate> giftCertificateList = giftCertificateLogicService.getAll(pageSize, pageNumber);
+    public Page<GiftCertificateDto> getAll(int pageNumber, int pageSize){
+        Page<GiftCertificate> giftCertificateList = giftCertificateLogicService.getAll(pageNumber, pageSize);
         return giftCertificateList.map(giftCertificateConverter::convert);
     }
 
@@ -71,22 +69,24 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     @Override
-    public int update(Long id, GiftCertificateDto entity) {
+    public GiftCertificateDto update(Long id, GiftCertificateDto entity) {
         validationFacade.validate(entity,onUpdate.class);
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
-        return giftCertificateLogicService.update(id,giftCertificateEntity);
+        GiftCertificate giftCertificate = giftCertificateLogicService.update(id,giftCertificateEntity);
+        return giftCertificateConverter.convert(giftCertificate);
     }
 
     @Override
-    public List<GiftCertificateDto> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters){
+    public Page<GiftCertificateDto> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters){
         checkTransferredMapParameters(mapWithFilters);
-        List<GiftCertificate> giftCertificateList = giftCertificateLogicService.getQueryWithConditions(mapWithFilters);
-        return giftCertificateList.stream().map(giftCertificateConverter::convert).collect(Collectors.toList());
+        Page<GiftCertificate> giftCertificate = giftCertificateLogicService.
+                getQueryWithConditions(mapWithFilters);
+        return giftCertificate.map(giftCertificateConverter::convert);
     }
 
     private void checkTransferredMapParameters(MultiValueMap<String, String> mapWithFilters){
         List<String> allowedKeys = Arrays.asList("tagName", "partName", "partDescription", "sortByName",
-                "sortByCreationDate");
+                "sortByCreationDate","pageSize","pageNumber");
         List<String> transferredKeys = new ArrayList<>(mapWithFilters.keySet());
         for (String transferredKey : transferredKeys) {
             if (!allowedKeys.contains(transferredKey)) {
@@ -94,4 +94,5 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
             }
         }
     }
+
 }

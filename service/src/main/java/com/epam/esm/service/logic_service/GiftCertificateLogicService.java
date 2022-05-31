@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,8 +54,6 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!entity.getTagList().isEmpty()){
             addTagsToGiftCertificateList(entity.getTagList(),entity);
         }
-        entity.setCreateDate(LocalDateTime.now());
-        entity.setLastUpdateDate(LocalDateTime.now());
         return giftCertificateRepository.save(entity);
     }
 
@@ -83,31 +80,30 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     }
 
     @Override
-    public Page<GiftCertificate> getAll(int pageSize, int pageNumber) {
-        return giftCertificateRepository.findAll(PageRequest.of(pageSize,pageNumber));
+    public Page<GiftCertificate> getAll(int pageNumber, int pageSize) {
+        return giftCertificateRepository.findAll(PageRequest.of(pageNumber,pageSize));
     }
 
 
     @Override
     @Transactional
-    public int update(Long id, GiftCertificate entity) {
+    public GiftCertificate update(Long id, GiftCertificate entity) {
         Optional<GiftCertificate> foundedCertificateById = giftCertificateRepository.findById(id);
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
         checkIfEntityHasMoreThatOneTransferredParameter(entity);
-        int updatedRows = giftCertificateRepository.update(entity.getDuration(),
-                foundedCertificateById.get().getId());
-        if (updatedRows == 0){
+        Optional<GiftCertificate> giftCertificate = giftCertificateRepository.update(entity.getDuration(),
+                foundedCertificateById.get());
+        if (!giftCertificate.isPresent()){
             throw new NoSuchEntityException(CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
-        return updatedRows;
+        return giftCertificate.get();
     }
 
     private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
         if (entity.getPrice() != null || entity.getDescription()!= null
-            || entity.getName()!= null || entity.getCreateDate()!=null
-            || entity.getLastUpdateDate()!=null || !entity.getTagList().isEmpty()){
+            || entity.getName()!= null || !entity.getTagList().isEmpty()){
            throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE);
         }
     }
@@ -123,12 +119,22 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     }
 
     @Override
-    public List<GiftCertificate> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters) {
-        List< GiftCertificate> giftCertificateList = giftCertificateRepository
-                .findGiftCertificatesByTransferredConditions(mapWithFilters);
-        if (giftCertificateList.isEmpty()){
+    public Page<GiftCertificate> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters) {
+        int[] pagination = getPagination(mapWithFilters);
+        Page< GiftCertificate> giftCertificate = giftCertificateRepository.
+                findGiftCertificatesByTransferredConditions(mapWithFilters,pagination[0],pagination[1]);
+        if (giftCertificate.isEmpty()){
             throw new NoSuchEntityException(CANNOT_FIND_ANY_CERTIFICATE_BY_CONDITIONS_MESSAGE);
         }
-        return giftCertificateList;
+        return giftCertificate;
+    }
+
+    private int[] getPagination(MultiValueMap<String, String> mapWithFilters){
+        int[] resultMassive = new int[2];
+        resultMassive[0] = mapWithFilters.get("pageNumber") == null ?
+                0 : Integer.parseInt(mapWithFilters.get("pageNumber").get(0));
+        resultMassive[1] = mapWithFilters.get("pageSize") == null ?
+                5 : Integer.parseInt(mapWithFilters.get("pageSize").get(0));
+        return resultMassive;
     }
 }

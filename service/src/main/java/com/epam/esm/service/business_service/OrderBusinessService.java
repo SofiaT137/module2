@@ -50,9 +50,9 @@ public class OrderBusinessService implements OrderService<OrderDto> {
     }
 
     @Override
-    public List<OrderDto> ordersByUserId(long userId, int pageSize, int pageNumber) {
-        List<Order> orderList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
-        return orderList.stream().map(orderConverter::convert).collect(Collectors.toList());
+    public Page<OrderDto> ordersByUserId(long userId, int pageSize, int pageNumber) {
+        Page<Order> orderList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
+        return orderList.map(orderConverter::convert);
     }
 
 

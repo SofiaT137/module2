@@ -100,7 +100,7 @@ public class OrderController {
     public ResponseEntity<Object> ordersByUserId(@PathVariable long userId,
                                                  @RequestParam(defaultValue = "5",required = false) int pageSize,
                                                  @RequestParam (defaultValue = "1", required = false) int pageNumber){
-        List<OrderDto> orderDtoList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
+        Page<OrderDto> orderDtoList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
         orderDtoList.forEach(orderDtoHateoas::addLinks);
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }

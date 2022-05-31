@@ -4,7 +4,6 @@ import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
-//import com.epam.esm.validator.GiftCertificateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +17,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,11 +39,11 @@ class GiftCertificateLogicServiceTest {
 
     List<Tag> tagList = Arrays.asList(new Tag("hello"), new Tag("season"));
     GiftCertificate giftCertificate = new GiftCertificate(1L,"abc","abc"
-            ,50.00,13, LocalDateTime.now(),LocalDateTime.now(),tagList);
+            ,50.00,13,tagList);
     GiftCertificate giftCertificateForUpdate = new GiftCertificate(1L,null,null
-            ,null,15, null,null,new ArrayList<>());
+            ,null,15, new ArrayList<>());
     GiftCertificate updatedGiftCertificate = new GiftCertificate(1L,"abc","abc"
-            ,50.00,30, LocalDateTime.now(),LocalDateTime.now(),tagList);
+            ,50.00,30, tagList);
 
     @BeforeEach
     void init(){
@@ -84,21 +86,26 @@ class GiftCertificateLogicServiceTest {
     void update(){
         Mockito.when(giftCertificateRepository.findById(1L))
                 .thenReturn(Optional.of(giftCertificate));
-        Mockito.when(giftCertificateRepository.update(15,giftCertificate.getId()))
-                .thenReturn(1);
-        int updatedRows=giftCertificateLogicService.update(1L,giftCertificateForUpdate);
-        assertEquals(1, updatedRows);
+        Mockito.when(giftCertificateRepository.update(15,giftCertificate))
+                .thenReturn(Optional.ofNullable(updatedGiftCertificate));
+        GiftCertificate giftCertificate = giftCertificateLogicService.update(1L,giftCertificateForUpdate);
+        assertEquals(30, giftCertificate.getDuration());
     }
 
     @Test
     void getQueryWithConditions() {
+        Page<GiftCertificate> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(giftCertificate)));
         MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-        map.set("tag_name","season");
-        map.set("tag_name","hello");
+        map.set("tagName","season");
+        map.set("tagName","hello");
+        map.set("pageNumber","0");
+        map.set("pageSize","1");
         Mockito.when(giftCertificateRepository
-                .findGiftCertificatesByTransferredConditions(map))
-                .thenReturn(Collections.singletonList(giftCertificate));
-        List<GiftCertificate> giftCertificates = giftCertificateLogicService.getQueryWithConditions(map);
-        assertEquals(1,giftCertificates.size());
+                .findGiftCertificatesByTransferredConditions(map,0,1))
+                .thenReturn(page);
+        Page<GiftCertificate> giftCertificates = giftCertificateLogicService.
+                getQueryWithConditions(map);
+        System.out.println(giftCertificates);
+        assertEquals(1,giftCertificates.getSize());
     }
 }

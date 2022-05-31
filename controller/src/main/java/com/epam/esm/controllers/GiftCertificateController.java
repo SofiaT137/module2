@@ -61,11 +61,11 @@ public class GiftCertificateController {
      * @return List of GiftCertificateDTO entity and HttpStatus "OK"
      */
     @GetMapping
-    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "5",required = false)
-                                                                     int pageSize,
-                                                         @RequestParam (defaultValue = "1", required = false)
-                                                                 int pageNumber){
-        Page<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "1",required = false)
+                                                                     int pageNumber,
+                                                         @RequestParam (defaultValue = "5", required = false)
+                                                                 int pageSize){
+        Page<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageNumber,pageSize);
         giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
         return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }
@@ -90,7 +90,7 @@ public class GiftCertificateController {
     @GetMapping("/filter")
     public ResponseEntity<Object> giftCertificatesByParameter(@RequestParam MultiValueMap<String,
                                                                             String> allRequestParams){
-        List<GiftCertificateDto> giftCertificates =  giftCertificateService.getQueryWithConditions(allRequestParams);
+        Page<GiftCertificateDto> giftCertificates =  giftCertificateService.getQueryWithConditions(allRequestParams);
         giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
         return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }

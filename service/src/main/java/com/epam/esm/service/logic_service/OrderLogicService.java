@@ -114,7 +114,7 @@ public class OrderLogicService implements OrderService<Order> {
     }
 
     @Override
-    public List<Order> ordersByUserId(long userId, int pageSize, int pageNumber){
+    public Page<Order> ordersByUserId(long userId, int pageSize, int pageNumber){
         User user = userLogicService.getById(userId);
         if (user.getOrderList().isEmpty()){
             throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE);

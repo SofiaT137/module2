@@ -84,12 +84,12 @@ public class TagLogicService implements TagService<Tag> {
     @Override
     public Tag findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
         User receivedUserById = userLogicService.getById(userId);
-        List<Tag> resultTagList = tagRepository.
+        Optional<Tag> resultTag = tagRepository.
                 findTheMostWidelyUsedUserTagWithHighersOrderCost(receivedUserById.getId());
-        if (resultTagList.isEmpty()){
+        if (!resultTag.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG);
         }
-        return resultTagList.get(0);
+        return resultTag.get();
     }
     @Override
     public Tag findTagByTagName(String name) {

@@ -1,8 +1,7 @@
 package com.epam.esm.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.util.MultiValueMap;
-
-import java.util.List;
 
 /**
  * GiftCertificateService interface features GiftCertificate service functionality
@@ -15,6 +14,6 @@ public interface GiftCertificateService<T> extends CRUDService<T> {
      * @param mapWithFilters Map(key=filter, value=passed value)
      * @return The GiftCertificateDto object
      */
-    List<T> getQueryWithConditions(MultiValueMap<String,String> mapWithFilters);
+    Page<T> getQueryWithConditions(MultiValueMap<String,String> mapWithFilters);
 
 }

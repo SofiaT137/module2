@@ -3,6 +3,11 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.repository.GiftCertificateFilter;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.MultiValueMap;
 
 import javax.persistence.EntityManager;
@@ -14,6 +19,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class GiftCertificateDaoImpl is implementation of interface GiftCertificateRepository
@@ -26,7 +32,7 @@ class GiftCertificateFilterImpl implements GiftCertificateFilter {
     private EntityManager entityManager;
 
     private static final String NAME = "name";
-    private static final String CREATE_DATE = "createDate";
+    private static final String CREATE_DATE = "createdDate";
     private static final String TAG_PARAMETER = "tagName";
     private static final String PERCENT = "%";
     private static final String JOIN_TAGS = "tagList";
@@ -40,8 +46,8 @@ class GiftCertificateFilterImpl implements GiftCertificateFilter {
     private static final String DESC = "desc";
 
     @Override
-    public List<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String,
-            String> mapWithFilters){
+    public Page<GiftCertificate> findGiftCertificatesByTransferredConditions(MultiValueMap<String,
+            String> mapWithFilters, int pageNumber, int pageSize){
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
@@ -49,7 +55,8 @@ class GiftCertificateFilterImpl implements GiftCertificateFilter {
         getMainQuery(mapWithFilters,predicates,criteriaBuilder,root);
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
         criteriaQuery = getSorting(mapWithFilters,criteriaQuery,criteriaBuilder,root);
-        return entityManager.createQuery(criteriaQuery.select(root)).getResultList();
+        List<GiftCertificate> giftCertificates = entityManager.createQuery(criteriaQuery.select(root)).getResultList();
+        return getRequiredPage(giftCertificates,pageNumber,pageSize);
     }
 
     private void getMainQuery(MultiValueMap<String, String> mapWithFilters,List<Predicate> predicates,
@@ -120,6 +127,22 @@ class GiftCertificateFilterImpl implements GiftCertificateFilter {
         }else {
             return criteriaQuery.orderBy(criteriaBuilder.asc(root.get(order)));
         }
+    }
+
+    @Override
+    public Optional<GiftCertificate> update(int duration, GiftCertificate entity) {
+        GiftCertificate mergedCertificate = entityManager.merge(entity);
+        entity.setDuration(duration);
+        return mergedCertificate != null ? Optional.of(mergedCertificate) : Optional.empty();
+    }
+
+    private Page<GiftCertificate> getRequiredPage(List<GiftCertificate> giftCertificates,int pageNumber,int pageSize){
+        PagedListHolder<GiftCertificate> pagedListHolder = new PagedListHolder<>();
+        pagedListHolder.setSource(giftCertificates);
+        pagedListHolder.setPage(pageNumber);
+        pagedListHolder.setPageSize(pageSize);
+        return new PageImpl<>(pagedListHolder.getPageList(),PageRequest.of(pageNumber,pageSize),
+                giftCertificates.size());
     }
 }
 

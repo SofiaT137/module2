@@ -31,8 +31,6 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
-        LocalDateTime createDate = value.getCreateDate();
-        LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = value.getTags();
         List<Tag> valueTagList = new ArrayList<>();
         if(valueTagDtoList!=null){
@@ -40,7 +38,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         }
         return new GiftCertificate(value.getId(),value.getGiftCertificateName(),
                 value.getDescription(),value.getPrice(),value.getDuration(),
-                createDate,lastUpdateDate,valueTagList);
+                valueTagList);
     }
 
     private List<Tag> convertTagDtoList(Set<TagDto> valueTagDtoList){
@@ -59,11 +57,9 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificateDto convert(GiftCertificate value) {
-        LocalDateTime createDate = validateDate(value.getCreateDate());
-        LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
         return new GiftCertificateDto(value.getId(), value.getName(), value.getDescription(),
-                value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
+                value.getPrice(), value.getDuration(), valueTagDtoList);
     }
 
     private Set<TagDto> convertTagList(List<Tag> valueTagList){

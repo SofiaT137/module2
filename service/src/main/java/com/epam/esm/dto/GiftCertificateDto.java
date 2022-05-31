@@ -28,34 +28,24 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {onCreate.class, onUpdate.class})
     @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {onCreate.class, onUpdate.class})
     private Integer duration;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createDate;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime lastUpdateDate;
     private Set<TagDto> tags;
 
     public GiftCertificateDto(Long id, String giftCertificateName,
-                              String description, Double price, Integer duration,
-                              LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<TagDto> tags) {
+                              String description, Double price, Integer duration, Set<TagDto> tags) {
         this.id = id;
         this.giftCertificateName = giftCertificateName;
         this.description = description;
         this.price = price;
         this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
         this.tags = tags;
     }
 
     public GiftCertificateDto(String giftCertificateName, String description,
-                              Double price, Integer duration,
-                              LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<TagDto> tags) {
+                              Double price, Integer duration, Set<TagDto> tags) {
         this.giftCertificateName = giftCertificateName;
         this.description = description;
         this.price = price;
         this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
         this.tags = tags;
     }
 
@@ -102,22 +92,6 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.duration = duration;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDateTime getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
     public Set<TagDto> getTags() {
         return tags;
     }
@@ -154,8 +128,6 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
-                ", createDate='" + createDate + '\'' +
-                ", lastUpdateDate='" + lastUpdateDate + '\'' +
                 ", tags=" + tags +
                 '}';
     }

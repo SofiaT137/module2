@@ -20,7 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class TagLogicServiceTest {
@@ -42,7 +42,7 @@ class TagLogicServiceTest {
     private static final User user = new User(1L,"AlexRendal","dddd");
     private static final GiftCertificate giftCertificate = new GiftCertificate(1L,"fff"
             ,"ffff",40.12,30,
-            LocalDateTime.now(),LocalDateTime.now(),Arrays.asList(tag,tag2));
+            Arrays.asList(tag,tag2));
     private static final Order order = new Order(40.12,LocalDateTime.now(),user);
 
     @Test
@@ -78,7 +78,7 @@ class TagLogicServiceTest {
     void findTheMostWidelyUsedUserTagWithHigherOrderCost() {
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
         Mockito.when(tagRepository.findTheMostWidelyUsedUserTagWithHighersOrderCost(user.getId()))
-                .thenReturn(Collections.singletonList(tag));
+                .thenReturn(Optional.of(tag));
         Tag tagFound = tagLogicService.findTheMostWidelyUsedUserTagWithHigherOrderCost(user.getId());
         assertEquals(tag,tagFound);
     }
