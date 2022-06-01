@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 /**
  * TagController class presents REST controller for the Tag entity
  */
@@ -32,6 +30,7 @@ public class TagController {
     public void setUserService(TagService<TagDto> tagService) {
         this.tagBusinessService = tagService;
     }
+
     /**
      * Method insertTag inserts the TagDto entity
      * @param entity TagDto entity
@@ -64,15 +63,15 @@ public class TagController {
     @GetMapping("/filter/{userId}")
     public ResponseEntity<Object> findTheMostWidelyUsedUserTagWithHighersOrderCost(@PathVariable Long userId) {
        TagDto tagDto = tagBusinessService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
-        tagDtoHateoas.addLinks(tagDto);
-        return new ResponseEntity<>(tagDto, HttpStatus.OK);
+       tagDtoHateoas.addLinks(tagDto);
+       return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     /**
      * Method getAllTags returns all the TagDto entity
+     * @param pageNumber Number of the page with TagDto entities(default value is 0)
      * @param pageSize Number of TagDto entities per page(default value is 5)
-     * @param pageNumber Number of the page with TagDto entities(default value is 1)
-     * @return List of TagDto entity and HttpStatus "OK"
+     * @return Response entity with page of TagDto entity and HttpStatus "OK"
      */
     @GetMapping
     public ResponseEntity<Object> getAllTags(@RequestParam (defaultValue = "0", required = false) int pageNumber,

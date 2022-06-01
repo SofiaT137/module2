@@ -50,8 +50,8 @@ public class UserBusinessService implements UserService<UserDto> {
     }
 
     @Override
-    public Page<UserDto> getAll(int pageSize, int pageNumber) {
-        Page<User> userList = userLogicService.getAll(pageSize, pageNumber);
+    public Page<UserDto> getAll(int pageNumber, int pageSize) {
+        Page<User> userList = userLogicService.getAll(pageNumber, pageSize);
         return userList.map(userConverter::convert);
     }
 

@@ -1,6 +1,7 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.exceptions.NoPermissionException;
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.RoleRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.entity.Role;
@@ -36,14 +37,17 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
 
     private final BCryptPasswordEncoder encoder;
 
+    private final Pagination<User> pagination;
+
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION = "noUserWithId";
 
     @Autowired
     public UserLogicService(UserRepository userRepository, RoleRepository roleRepository,
-                            BCryptPasswordEncoder encoder) {
+                            BCryptPasswordEncoder encoder, Pagination<User> pagination) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
+        this.pagination = pagination;
     }
 
     @Override
@@ -67,8 +71,8 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
     }
 
     @Override
-    public Page<User> getAll(int pageSize, int pageNumber) {
-        return userRepository.findAll(PageRequest.of(pageSize,pageNumber));
+    public Page<User> getAll(int pageNumber, int pageSize) {
+        return pagination.checkHasContent(userRepository.findAll(PageRequest.of(pageNumber,pageSize)));
     }
 
     @Override

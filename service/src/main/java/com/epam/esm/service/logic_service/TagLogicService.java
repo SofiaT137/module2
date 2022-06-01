@@ -1,5 +1,6 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
@@ -27,6 +28,7 @@ public class TagLogicService implements TagService<Tag> {
 
     private final TagRepository tagRepository;
     private UserService<User> userLogicService;
+    private final Pagination<Tag> pagination;
 
     private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
     private static final String NOT_UNIQUE_TAG_NAME_MESSAGE = "notUniqueTagName";
@@ -37,8 +39,9 @@ public class TagLogicService implements TagService<Tag> {
             "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
 
     @Autowired
-    public TagLogicService(TagRepository tagRepository){
+    public TagLogicService(TagRepository tagRepository, Pagination<Tag> pagination){
         this.tagRepository = tagRepository;
+        this.pagination = pagination;
     }
 
     @Autowired
@@ -67,7 +70,7 @@ public class TagLogicService implements TagService<Tag> {
 
     @Override
     public Page<Tag> getAll(int pageNumber,int pageSize){
-        return tagRepository.findAll(PageRequest.of(pageNumber,pageSize));
+        return pagination.checkHasContent(tagRepository.findAll(PageRequest.of(pageNumber,pageSize)));
     }
 
     @Override

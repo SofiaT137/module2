@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
  * OrderController class presents REST controller for the Order entity
  */
@@ -65,15 +63,15 @@ public class OrderController {
 
     /**
      * Method getAllOrders returns all the OrderDto entity
+     * @param pageNumber Number of the page with OrderDto entities(default value is 0)
      * @param pageSize Number of OrderDto entities per page(default value is 5)
-     * @param pageNumber Number of the page with OrderDto entities(default value is 1)
-     * @return Response entity with list of OrderDto entity and HttpStatus "OK"
+     * @return Response entity with page of OrderDto entity and HttpStatus "OK"
      */
     @GetMapping
-    public ResponseEntity<Object> getAllOrders(@RequestParam(defaultValue = "5",required = false) int pageSize,
-                                                         @RequestParam (defaultValue = "1", required = false)
-                                                                 int pageNumber){
-        Page<OrderDto> orderDtoList = orderLogicService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllOrders(@RequestParam(defaultValue = "0",required = false) int pageNumber,
+                                                         @RequestParam (defaultValue = "5", required = false)
+                                                                 int pageSize){
+        Page<OrderDto> orderDtoList = orderLogicService.getAll(pageNumber,pageSize);
         orderDtoList.forEach(orderDtoHateoas::addLinks);
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }
@@ -90,17 +88,17 @@ public class OrderController {
     }
 
     /**
-     * Method findByUserId returns all the Users OrderDto entity
+     * Method findByUserId returns all the users OrderDto entity
      * @param userId User id(Long value)
+     * @param pageNumber Number of the page with OrderDto entities(default value is 0)
      * @param pageSize Number of OrderDto entities per page(default value is 5)
-     * @param pageNumber Number of the page with OrderDto entities(default value is 1)
-     * @return Response entity with list of OrderDto entity and HttpStatus "OK"
+     * @return Response entity with page of OrderDto entity and HttpStatus "OK"
      */
     @GetMapping("/users/{userId}")
     public ResponseEntity<Object> ordersByUserId(@PathVariable long userId,
-                                                 @RequestParam(defaultValue = "5",required = false) int pageSize,
-                                                 @RequestParam (defaultValue = "1", required = false) int pageNumber){
-        Page<OrderDto> orderDtoList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
+                                                 @RequestParam(defaultValue = "0",required = false) int pageNumber,
+                                                 @RequestParam (defaultValue = "5", required = false) int pageSize){
+        Page<OrderDto> orderDtoList = orderLogicService.ordersByUserId(userId, pageNumber, pageSize);
         orderDtoList.forEach(orderDtoHateoas::addLinks);
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }

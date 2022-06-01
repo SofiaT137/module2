@@ -1,11 +1,10 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.configuration.AuditConfiguration;
+import com.epam.esm.entity.*;
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.OrderRepository;
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Order;
-import com.epam.esm.entity.Tag;
-import com.epam.esm.entity.User;
+import com.epam.esm.repository.RoleRepository;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,6 +39,12 @@ class OrderLogicServiceTest {
     private AuditConfiguration auditConfiguration;
 
     @Mock
+    private Pagination<Order> pagination;
+
+    @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
 
     @InjectMocks
@@ -50,6 +55,7 @@ class OrderLogicServiceTest {
     private static final GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
             , "abc", 50.00, 13,  tagList);
     private static Order order;
+    private static final Role ROLE =  new Role(1L, "ROLE_ADMINISTRATOR");
 
     @BeforeEach
     void init(){
@@ -64,6 +70,7 @@ class OrderLogicServiceTest {
        order.addGiftCertificateToOrder(giftCertificate);
        order.setPrice(giftCertificate.getPrice());
        order.setId(1L);
+       user.addRoleToUser(ROLE);
     }
 
     @Test
@@ -92,18 +99,27 @@ class OrderLogicServiceTest {
 
     @Test
     void getAll() {
-        Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
-        Mockito.when(orderRepository.findAll(PageRequest.of(1,1))).thenReturn(page);
-        Page<Order> orderList = orderLogicService.getAll(1,1);
-        assertEquals(1,orderList.getTotalElements());
+        try {
+            Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
+            Mockito.when(auditConfiguration.getCurrentUser()).thenReturn(user.getLogin());
+            Mockito.when(userLogicService.findUserByUserLogin("AlexRendal")).thenReturn(user);
+            Mockito.when(roleRepository.findById(1L)).thenReturn(Optional.of(ROLE));
+            Mockito.when(pagination.checkHasContent(orderRepository.findAll(PageRequest.of(0,1))))
+                    .thenReturn(page);
+            Page<Order> orderList = orderLogicService.getAll(0,1);
+            assertEquals(1L,orderList.getTotalElements());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Test
     void ordersByUserId() {
         Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
         Mockito.when(userLogicService.getById(1L)).thenReturn(user);
-        Mockito.when(orderRepository.findAllByUserId(1L, PageRequest.of(1,1))).
-                thenReturn(page);
+        Mockito.when(pagination.checkHasContent(orderRepository.
+                        findAllOrderWhereUserId(1L, PageRequest.of(1,1)))).thenReturn(page);
         Page<Order> orders = orderLogicService.ordersByUserId(1L,1,1);
         assertEquals(1,orders.getTotalElements());
     }

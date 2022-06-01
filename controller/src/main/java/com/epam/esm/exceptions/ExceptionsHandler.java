@@ -4,6 +4,8 @@ import com.epam.esm.internalization.Translation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,6 +29,10 @@ public class ExceptionsHandler {
     }
 
     private static final String STRING_MESSAGE = "Message: ";
+    private static final String BAD_VALIDATION_RESULT_EXCEPTION_MESSAGE = "403001";
+    private static final String ACCESS_DENIED_EXCEPTION_MESSAGE = "403000";
+    private static final String BAD_CREDENTIALS_EXCEPTION_MESSAGE = "404000";
+
 
     /**
      * Method resourceNotFoundException handles the NoSuchEntityException exception
@@ -75,8 +81,7 @@ public class ExceptionsHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> badRequestException(ConstraintViolationException exception) {
         String exceptionMessage = translation.translate(exception.getMessage());
-        String exceptionCode = "403000";
-        ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage,exceptionCode);
+        ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage, BAD_VALIDATION_RESULT_EXCEPTION_MESSAGE);
         return new ResponseEntity<>(exceptionEntity, HttpStatus.BAD_REQUEST);
     }
 
@@ -92,6 +97,30 @@ public class ExceptionsHandler {
     }
 
     /**
+     * Method badCredentialsException handles the BadCredentialsException exception
+     * @param exception BadCredentialsException exception
+     * @return Response entity with exception message and HttpStatus "NOT_FOUND"
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> badCredentialsException(BadCredentialsException exception) {
+        String exceptionMessage = translation.translate(exception.getLocalizedMessage());
+        ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage,BAD_CREDENTIALS_EXCEPTION_MESSAGE);
+        return new ResponseEntity<>(exceptionEntity, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Method accessDeniedExceptionException handles the AccessDeniedException exception
+     * @param exception AccessDeniedException exception
+     * @return Response entity with exception message and HttpStatus "FORBIDDEN"
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> accessDeniedExceptionException(AccessDeniedException exception) {
+        String exceptionMessage = translation.translate(exception.getLocalizedMessage());
+        ExceptionEntity exceptionEntity = new ExceptionEntity(exceptionMessage,ACCESS_DENIED_EXCEPTION_MESSAGE);
+        return new ResponseEntity<>(exceptionEntity, HttpStatus.FORBIDDEN);
+    }
+
+    /**
      * Method requestMethodNotSupportedException handles the HttpRequestMethodNotSupportedException exception
      * @param exception HttpRequestMethodNotSupportedException exception
      * @return Response entity with exception message and HttpStatus "METHOD_NOT_ALLOWED"
@@ -101,6 +130,7 @@ public class ExceptionsHandler {
         String exceptionMessage = exception.getLocalizedMessage();
         return new ResponseEntity<>(STRING_MESSAGE + exceptionMessage, HttpStatus.METHOD_NOT_ALLOWED);
     }
+
 
     /**
      * Method noHandlerFoundException handles the NoHandlerFoundException exception

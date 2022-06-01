@@ -1,5 +1,6 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
@@ -17,8 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,6 +33,8 @@ class TagLogicServiceTest {
     private TagRepository tagRepository;
     @Mock
     private UserService<User> userLogicService;
+    @Mock
+    private Pagination<Tag> pagination;
     @InjectMocks
     private TagLogicService tagLogicService;
 
@@ -62,7 +68,8 @@ class TagLogicServiceTest {
     @Test
     void getAll() {
         Page<Tag> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(tag)));
-        Mockito.when(tagRepository.findAll(PageRequest.of(1,1))).thenReturn(page);
+        Mockito.when(pagination.checkHasContent(tagRepository.findAll(PageRequest.of(0,1))))
+                .thenReturn(page);
         Page<Tag> tagList = tagLogicService.getAll(1,1);
         assertEquals(1,tagList.getTotalElements());
     }

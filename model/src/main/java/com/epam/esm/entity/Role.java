@@ -23,6 +23,11 @@ public class Role extends AbstractEntity<Long>{
         this.name = name;
     }
 
+    public Role(Long id,String name) {
+        super(id);
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

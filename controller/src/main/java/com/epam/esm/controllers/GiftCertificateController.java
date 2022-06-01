@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
  * GiftCertificateController class presents REST controller for the GiftCertificate entity
  */
@@ -57,11 +55,11 @@ public class GiftCertificateController {
     /**
      * Method getAllGiftCertificates returns all the GiftCertificateDTO entity
      * @param pageSize Number of GiftCertificateDTO entities per page (default value is 5)
-     * @param pageNumber Number of the page with GiftCertificateDTO entities (default value is 1)
-     * @return List of GiftCertificateDTO entity and HttpStatus "OK"
+     * @param pageNumber Number of the page with GiftCertificateDTO entities (default value is 0)
+     * @return Response entity with page of GiftCertificateDTO entity and HttpStatus "OK"
      */
     @GetMapping
-    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "1",required = false)
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "0",required = false)
                                                                      int pageNumber,
                                                          @RequestParam (defaultValue = "5", required = false)
                                                                  int pageSize){
@@ -72,7 +70,7 @@ public class GiftCertificateController {
 
     /**
      * Method insertCertificate inserts the GiftCertificateDTO entity
-     * @param giftCertificate  GiftCertificateDto giftCertificate
+     * @param giftCertificate GiftCertificateDto giftCertificate
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
@@ -82,10 +80,10 @@ public class GiftCertificateController {
     }
 
     /**
-     * Method giftCertificatesByParameter returns the list of GiftCertificateDTO entity by all the
+     * Method giftCertificatesByParameter returns all the GiftCertificateDTO entity by all the
      * transferred parameters
      * @param allRequestParams Map with transferred parameters
-     * @return Response entity with list of GiftCertificateDTO entity and HttpStatus "OK"
+     * @return Response entity with page of GiftCertificateDTO entity and HttpStatus "OK"
      */
     @GetMapping("/filter")
     public ResponseEntity<Object> giftCertificatesByParameter(@RequestParam MultiValueMap<String,

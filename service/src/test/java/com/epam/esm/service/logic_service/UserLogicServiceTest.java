@@ -1,9 +1,8 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.entity.User;
-//import com.epam.esm.validator.UserValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +24,9 @@ class UserLogicServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private Pagination<User> pagination;
 
     @InjectMocks
     private UserLogicService userLogicService;
@@ -42,7 +43,8 @@ class UserLogicServiceTest {
     @Test
     void getAll() {
         Page<User> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(user)));
-        Mockito.when(userRepository.findAll(PageRequest.of(1,1))).thenReturn(page);
+        Mockito.when(pagination.checkHasContent(userRepository.findAll(PageRequest.of(0,1))))
+                .thenReturn(page);
         Page<User> userList = userLogicService.getAll(1,1);
         assertEquals(1,userList.getTotalElements());
     }

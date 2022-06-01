@@ -1,11 +1,14 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.configuration.AuditConfiguration;
+import com.epam.esm.entity.Role;
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.NoSuchEntityException;
+import com.epam.esm.repository.RoleRepository;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
@@ -31,11 +34,16 @@ public class OrderLogicService implements OrderService<Order> {
     private UserService<User> userLogicService;
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
     private final AuditConfiguration auditConfiguration;
+    private final RoleRepository roleRepository;
+    private final Pagination<Order> pagination;
 
     @Autowired
-    public OrderLogicService(OrderRepository orderRepository, AuditConfiguration auditConfiguration){
+    public OrderLogicService(OrderRepository orderRepository, AuditConfiguration auditConfiguration,
+                             RoleRepository roleRepository, Pagination<Order> pagination){
         this.orderRepository = orderRepository;
         this.auditConfiguration = auditConfiguration;
+        this.roleRepository = roleRepository;
+        this.pagination = pagination;
     }
 
     @Autowired
@@ -104,17 +112,26 @@ public class OrderLogicService implements OrderService<Order> {
     }
 
     @Override
-    public Page<Order> getAll(int pageSize, int pageNumber) {
-        return orderRepository.findAll(PageRequest.of(pageSize,pageNumber));
+    public Page<Order> getAll(int pageNumber, int pageSize) {
+        User currentUser = getUser();
+        Optional<Role> role = roleRepository.findById(1L);
+        if (currentUser.getRoles().contains(role.get())){
+            return pagination.checkHasContent(orderRepository.findAll(PageRequest.of(pageNumber,pageSize)));
+        }else{
+            return pagination.checkHasContent(orderRepository.findAllOrderWhereUserId(currentUser.getId(),
+                    PageRequest.of(pageNumber,pageSize)));
+        }
     }
 
     @Override
-    public Page<Order> ordersByUserId(long userId, int pageSize, int pageNumber){
+    public Page<Order> ordersByUserId(long userId, int pageNumber,int pageSize){
         User user = userLogicService.getById(userId);
         if (user.getOrderList().isEmpty()){
             throw new NoSuchEntityException(USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE);
         }
-        return orderRepository.findAllByUserId(user.getId(),PageRequest.of(pageSize,pageNumber));
+        return pagination.checkHasContent(orderRepository.
+                findAllOrderWhereUserId(user.getId(),PageRequest.of(pageNumber,pageSize)));
     }
+
 
 }

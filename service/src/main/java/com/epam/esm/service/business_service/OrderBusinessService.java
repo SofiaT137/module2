@@ -50,8 +50,8 @@ public class OrderBusinessService implements OrderService<OrderDto> {
     }
 
     @Override
-    public Page<OrderDto> ordersByUserId(long userId, int pageSize, int pageNumber) {
-        Page<Order> orderList = orderLogicService.ordersByUserId(userId, pageSize, pageNumber);
+    public Page<OrderDto> ordersByUserId(long userId, int pageNumber, int pageSize) {
+        Page<Order> orderList = orderLogicService.ordersByUserId(userId, pageNumber, pageSize);
         return orderList.map(orderConverter::convert);
     }
 
@@ -63,8 +63,8 @@ public class OrderBusinessService implements OrderService<OrderDto> {
     }
 
     @Override
-    public Page<OrderDto> getAll(int pageSize, int pageNumber) {
-        Page<Order> orderList = orderLogicService.getAll(pageSize, pageNumber);
+    public Page<OrderDto> getAll(int pageNumber, int pageSize ) {
+        Page<Order> orderList = orderLogicService.getAll(pageNumber,pageSize);
         return orderList.map(orderConverter::convert);
     }
 }

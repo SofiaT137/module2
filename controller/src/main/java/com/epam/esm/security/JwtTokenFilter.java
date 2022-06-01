@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Нет токена - нет запроса!
+ * JwtTokenFilter class allows to create a JWT token filter that handles all HTTP queries to the application
  */
 @Component
 public class JwtTokenFilter extends GenericFilterBean {
@@ -26,6 +26,14 @@ public class JwtTokenFilter extends GenericFilterBean {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /**
+     * Method doFilter allows to check a token prior to calling the filter.
+     * @param servletRequest ServletRequest servletRequest
+     * @param servletResponse ServletResponse servletResponse
+     * @param filterChain FilterChain filterChain
+     * @throws IOException IOException exception
+     * @throws ServletException ServletException exception
+     */
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);

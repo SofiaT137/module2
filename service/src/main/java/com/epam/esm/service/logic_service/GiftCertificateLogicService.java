@@ -1,5 +1,6 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
@@ -29,6 +30,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     private final GiftCertificateRepository giftCertificateRepository;
     private TagService<Tag> tagLogicService;
+    private final Pagination<GiftCertificate> pagination;
 
     private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "giftCertificateNameIsNotUnique";
     private static final String CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE = "noGiftCertificateWithThatId";
@@ -37,8 +39,10 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
 
     @Autowired
-    public GiftCertificateLogicService(GiftCertificateRepository giftCertificateRepository) {
+    public GiftCertificateLogicService(GiftCertificateRepository giftCertificateRepository,
+                                       Pagination<GiftCertificate> pagination) {
         this.giftCertificateRepository = giftCertificateRepository;
+        this.pagination = pagination;
     }
 
     @Autowired
@@ -81,7 +85,7 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     public Page<GiftCertificate> getAll(int pageNumber, int pageSize) {
-        return giftCertificateRepository.findAll(PageRequest.of(pageNumber,pageSize));
+        return pagination.checkHasContent(giftCertificateRepository.findAll(PageRequest.of(pageNumber,pageSize)));
     }
 
 
@@ -120,13 +124,10 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     @Override
     public Page<GiftCertificate> getQueryWithConditions(MultiValueMap<String, String> mapWithFilters) {
-        int[] pagination = getPagination(mapWithFilters);
+        int[] pageInfo = getPagination(mapWithFilters);
         Page< GiftCertificate> giftCertificate = giftCertificateRepository.
-                findGiftCertificatesByTransferredConditions(mapWithFilters,pagination[0],pagination[1]);
-        if (giftCertificate.isEmpty()){
-            throw new NoSuchEntityException(CANNOT_FIND_ANY_CERTIFICATE_BY_CONDITIONS_MESSAGE);
-        }
-        return giftCertificate;
+                findGiftCertificatesByTransferredConditions(mapWithFilters,pageInfo[0],pageInfo[1]);
+        return pagination.checkHasContent(giftCertificate);
     }
 
     private int[] getPagination(MultiValueMap<String, String> mapWithFilters){

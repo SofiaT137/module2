@@ -9,6 +9,6 @@ import org.springframework.data.domain.Pageable;
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
     @Query(value = "select o from Order o where o.user.id = :userId")
-    Page<Order> findAllByUserId(long userId, Pageable pageable);
+    Page<Order> findAllOrderWhereUserId(long userId, Pageable pageable);
 
 }

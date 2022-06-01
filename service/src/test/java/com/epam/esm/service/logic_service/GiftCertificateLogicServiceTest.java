@@ -1,6 +1,7 @@
 package com.epam.esm.service.logic_service;
 
 import com.epam.esm.configuration.AuditConfiguration;
+import com.epam.esm.pagination.Pagination;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
@@ -34,6 +35,9 @@ class GiftCertificateLogicServiceTest {
 
     @Mock
     private TagService<Tag> tagLogicService;
+
+    @Mock
+    private Pagination<GiftCertificate> pagination;
 
     @InjectMocks
     private GiftCertificateLogicService giftCertificateLogicService;
@@ -69,9 +73,9 @@ class GiftCertificateLogicServiceTest {
     @Test
     void getAll() {
         Page<GiftCertificate> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(giftCertificate)));
-        Mockito.when(giftCertificateRepository.findAll(PageRequest.of(1,1)))
+        Mockito.when(pagination.checkHasContent(giftCertificateRepository.findAll(PageRequest.of(0,1))))
                 .thenReturn(page);
-        Page<GiftCertificate> giftCertificates = giftCertificateLogicService.getAll(1,1);
+        Page<GiftCertificate> giftCertificates = giftCertificateLogicService.getAll(0,1);
         assertEquals(1L,giftCertificates.getTotalElements());
     }
 
@@ -101,12 +105,10 @@ class GiftCertificateLogicServiceTest {
         map.set("tagName","hello");
         map.set("pageNumber","0");
         map.set("pageSize","1");
-        Mockito.when(giftCertificateRepository
-                .findGiftCertificatesByTransferredConditions(map,0,1))
-                .thenReturn(page);
-        Page<GiftCertificate> giftCertificates = giftCertificateLogicService.
-                getQueryWithConditions(map);
-        System.out.println(giftCertificates);
-        assertEquals(1,giftCertificates.getSize());
+        Mockito.when(pagination.checkHasContent(giftCertificateRepository.
+                        findGiftCertificatesByTransferredConditions(map,0,1))).
+                thenReturn(page);
+        Page<GiftCertificate> giftCertificates = giftCertificateLogicService.getQueryWithConditions(map);
+        assertEquals(1L,giftCertificates.getNumberOfElements());
     }
 }
