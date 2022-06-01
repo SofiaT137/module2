@@ -54,9 +54,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET,USERS_ENDPOINT,TAGS_ENDPOINT,ORDERS_ENDPOINT).hasAnyRole(USER,ADMINISTRATOR)
                 .antMatchers(POST,ORDERS_ENDPOINT).hasAnyRole(USER,ADMINISTRATOR)
                 .antMatchers(POST,TAGS_ENDPOINT,CERTIFICATES_ENDPOINT).hasRole(ADMINISTRATOR)
-                .antMatchers(DELETE,USERS_ENDPOINT,TAGS_ENDPOINT,ORDERS_ENDPOINT,CERTIFICATES_ENDPOINT).
+                .antMatchers(DELETE,TAGS_ENDPOINT,ORDERS_ENDPOINT,CERTIFICATES_ENDPOINT).
                             hasRole(ADMINISTRATOR)
-                .antMatchers(PATCH,CERTIFICATES_ENDPOINT).hasRole(ADMINISTRATOR)
+                .antMatchers(PATCH,CERTIFICATES_ENDPOINT,USERS_ENDPOINT).hasRole(ADMINISTRATOR)
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfiguration(jwtTokenProvider));

@@ -17,16 +17,19 @@ public class UserDto extends RepresentationModel<UserDto> {
     private String login;
     @NotEmpty(message = "{passwordCannotBeNull}")
     private String password;
+    private boolean enabled;
 
-    public UserDto(Long id,String login,String password) {
+    public UserDto(Long id,String login,String password,boolean enabled) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.enabled = enabled;
     }
 
-    public UserDto(String login,String password) {
+    public UserDto(String login,String password,boolean enabled) {
         this.login = login;
         this.password = password;
+        this.enabled = enabled;
     }
 
     public UserDto() {
@@ -54,6 +57,14 @@ public class UserDto extends RepresentationModel<UserDto> {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

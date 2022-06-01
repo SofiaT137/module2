@@ -10,7 +10,9 @@ import java.util.Optional;
  * UserService interface features User Service functionality and implements RService functionality
  * @param <T> The entity object
  */
-public interface UserService<T> extends CRDService<T>{
-    UserDetails loadUserByUsername(String username);
+public interface UserService<T> extends CRService<T>{
+    UserDetails loadUserByUsername(String userName);
     User findUserByUserLogin(String login);
+    User blockUser(String login);
+    User unblockUser(String login);
 }

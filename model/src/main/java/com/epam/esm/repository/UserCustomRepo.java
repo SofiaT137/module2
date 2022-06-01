@@ -1,0 +1,11 @@
+package com.epam.esm.repository;
+
+import com.epam.esm.entity.User;
+
+import java.util.Optional;
+
+public interface UserCustomRepo {
+
+    Optional<User> blockUser(User entity);
+    Optional<User> unblockUser(User entity);
+}

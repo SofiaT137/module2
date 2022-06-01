@@ -1,5 +1,6 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.repository.RoleRepository;
 import com.epam.esm.repository.UserRepository;
 import com.epam.esm.entity.Role;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +47,7 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User insert(User entity) {
         Optional<Role> roleUser = roleRepository.findById(2L);
         roleUser.ifPresent(entity::addRoleToUser);
@@ -84,19 +87,32 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
         return receivedUserById.get();
     }
 
+    @Override
+    @Transactional
+    public User blockUser(String login) {
+       User userForBlock = findUserByUserLogin(login);
+       Optional<User> user = userRepository.blockUser(userForBlock);
+       if (!user.isPresent()){
+           throw new NoPermissionException("Cannot block this user");
+       }
+       return user.get();
+    }
+
+    @Override
+    @Transactional
+    public User unblockUser(String login) {
+        User userForUnblock = findUserByUserLogin(login);
+        Optional<User> user = userRepository.unblockUser(userForUnblock);
+        if (!user.isPresent()){
+            throw new NoPermissionException("Cannot unblock this user");
+        }
+        return user.get();
+    }
+
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> userRoles) {
         return userRoles.stream()
                 .map(role ->
                         new SimpleGrantedAuthority(role.getName())
                 ).collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteByID(long id) {
-        Optional<User> receivedUserById = userRepository.findById(id);
-        if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException("No user with that id exception");
-        }
-        userRepository.delete(receivedUserById.get());
     }
 }

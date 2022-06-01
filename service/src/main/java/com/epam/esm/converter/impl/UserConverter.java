@@ -15,16 +15,19 @@ public class UserConverter implements Converter<User,UserDto> {
 
     @Override
     public User convert(UserDto value) {
-        String password = value.getPassword();
-        String login = value.getLogin();
-        return new User(login,password);
+        User user = new User();
+        user.setLogin(value.getLogin());
+        user.setPassword(value.getPassword());
+        int enabled = value.isEnabled() ? 1 : 0;
+        user.setEnabled(enabled);
+        return user;
     }
 
     @Override
     public UserDto convert(User value) {
         Long id = value.getId();
         String login = value.getLogin();
-        return new UserDto(id,login,"");
+        return new UserDto(id,login,"Protected info",value.getEnabled() == 1);
     }
 }
 

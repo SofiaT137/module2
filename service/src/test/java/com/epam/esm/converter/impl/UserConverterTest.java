@@ -28,7 +28,7 @@ class UserConverterTest {
     @BeforeAll
     static void init(){
         user = new User(USER_NAME,"aaa");
-        userDto = new UserDto(USER_ID,USER_NAME,"ddd");
+        userDto = new UserDto(USER_ID,USER_NAME,"ddd",true);
     }
 
     @Test

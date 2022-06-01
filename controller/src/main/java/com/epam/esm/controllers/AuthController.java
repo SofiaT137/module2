@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +43,7 @@ public class AuthController {
     @PostMapping(value = "/signUp")
     public ResponseEntity<Object> signUp(@RequestBody UserDto userDto){
         userService.insert(userDto);
+        userDto.setEnabled(true);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -51,6 +53,9 @@ public class AuthController {
             String login = userDto.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login,userDto.getPassword()));
             User user = userService.findUserByUserLogin(userDto.getLogin());
+            if (user.getEnabled() == 0){
+                throw new AccessDeniedException("Access denied! Please, contact the administrator!");
+            }
             String token = jwtTokenProvider.createToken(user);
             Map<Object, Object> response = new HashMap<>();
             response.put("login", login);

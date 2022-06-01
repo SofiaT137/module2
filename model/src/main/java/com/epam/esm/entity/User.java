@@ -27,6 +27,9 @@ public class User extends AbstractEntity<Long> {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "enabled")
+    private int enabled;
+
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Order> orderList = new ArrayList<>();
@@ -89,6 +92,14 @@ public class User extends AbstractEntity<Long> {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     @Override

@@ -36,7 +36,6 @@ public class UserBusinessService implements UserService<UserDto> {
     }
 
     @Override
-    @Transactional
     public UserDto insert(UserDto entity) {
         validationFacade.validate(entity);
         User convertUser = userConverter.convert(entity);
@@ -56,7 +55,6 @@ public class UserBusinessService implements UserService<UserDto> {
         return userList.map(userConverter::convert);
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) {
         return userLogicService.loadUserByUsername(username);
@@ -67,10 +65,14 @@ public class UserBusinessService implements UserService<UserDto> {
         return userLogicService.findUserByUserLogin(login);
     }
 
+    @Override
+    public User blockUser(String login) {
+       return userLogicService.blockUser(login);
+    }
 
     @Override
-    @Transactional
-    public void deleteByID(long id) {
-        userLogicService.deleteByID(id);
+    public User unblockUser(String login) {
+        return userLogicService.unblockUser(login);
     }
+
 }

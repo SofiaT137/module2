@@ -1,5 +1,6 @@
 package com.epam.esm.controllers;
 
+import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.UserService;
@@ -9,11 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * UserController class presents REST controller for the User entity
@@ -64,5 +61,17 @@ public class UserController {
         Page<UserDto> userDtoList = userService.getAll(pageSize,pageNumber);
         userDtoList.forEach(userDtoHateoas::addLinks);
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+    }
+
+    @PatchMapping("/block/{login}")
+    public ResponseEntity<Object> blockUser(@PathVariable String login){
+        userService.blockUser(login);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/unblock/{login}")
+    public ResponseEntity<Object> unBlockUser(@PathVariable String login){
+        userService.unblockUser(login);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
