@@ -1,5 +1,6 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.configuration.AuditConfiguration;
 import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;

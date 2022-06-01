@@ -1,10 +1,10 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.configuration.AuditConfiguration;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
-import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +30,12 @@ public class OrderLogicService implements OrderService<Order> {
     private final OrderRepository orderRepository;
     private UserService<User> userLogicService;
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
+    private final AuditConfiguration auditConfiguration;
 
     @Autowired
-    public OrderLogicService(OrderRepository orderRepository){
+    public OrderLogicService(OrderRepository orderRepository, AuditConfiguration auditConfiguration){
         this.orderRepository = orderRepository;
+        this.auditConfiguration = auditConfiguration;
     }
 
     @Autowired
@@ -60,21 +61,15 @@ public class OrderLogicService implements OrderService<Order> {
     @Override
     @Transactional
     public Order insert(Order entity) {
-        User user = getUser(entity);
+        User user = getUser();
         entity.addUserToOrder(user);
         entity.setPrice(saveGiftCertificatesToOrder(entity));
-        entity.setPurchaseTime(LocalDateTime.now());
         return orderRepository.save(entity);
     }
 
-    private User getUser(Order entity){
-        User user;
-        if (entity.getUser().getId() != null) {
-            user = userLogicService.getById(entity.getUser().getId());
-        }else{
-            throw new NoPermissionException(USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE);
-        }
-        return user;
+    private User getUser(){
+       String currentUserLogin = auditConfiguration.getCurrentUser();
+       return userLogicService.findUserByUserLogin(currentUserLogin);
     }
 
     private double saveGiftCertificatesToOrder(Order entity){

@@ -31,19 +31,13 @@ public class OrderConverter implements Converter<Order, OrderDto> {
     @Override
     public Order convert(OrderDto value) {
         Order order = new Order();
-        LocalDateTime localDateTime = value.getPurchaseTime() != null ? parseLocalDateTime(value): null;
         double price = value.getPrice() != null ? value.getPrice() : 0.0;
         List<GiftCertificate> giftCertificates = convertGiftCertificateDtoList(value.getGiftCertificateDto());
         User user = getNewUser(value.getUserId());
         order.setPrice(price);
-        order.setPurchaseTime(localDateTime);
         order.setGiftCertificateList(giftCertificates);
         order.setUser(user);
         return order;
-    }
-
-    private LocalDateTime parseLocalDateTime(OrderDto value){
-        return LocalDateTime.parse(value.getPurchaseTime());
     }
 
     private User getNewUser(Long userId){
@@ -62,17 +56,12 @@ public class OrderConverter implements Converter<Order, OrderDto> {
     public OrderDto convert(Order value) {
         Long id = value.getId();
         double price = value.getPrice();
-        LocalDateTime localDateTime = value.getPurchaseTime();
-        String purchaseDate =  localDateTime != null ? getDateInStringFormat(value.getPurchaseTime()): null;
+        LocalDateTime purchaseDate = value.getCreatedDate();
         List<GiftCertificateDto> giftCertificates = convertGiftCertificateList(value.getGiftCertificateList());
         long userId = value.getUser().getId();
         return new OrderDto(id,price,purchaseDate,giftCertificates,userId);
     }
 
-    private String getDateInStringFormat(LocalDateTime localDateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return localDateTime.format(formatter);
-    }
 
     private List<GiftCertificateDto> convertGiftCertificateList(List<GiftCertificate> list){
         return list.stream()

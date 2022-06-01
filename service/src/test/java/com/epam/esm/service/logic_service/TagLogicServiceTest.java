@@ -43,7 +43,7 @@ class TagLogicServiceTest {
     private static final GiftCertificate giftCertificate = new GiftCertificate(1L,"fff"
             ,"ffff",40.12,30,
             Arrays.asList(tag,tag2));
-    private static final Order order = new Order(40.12,LocalDateTime.now(),user);
+    private static final Order order = new Order(40.12,user);
 
     @Test
     void insert() {

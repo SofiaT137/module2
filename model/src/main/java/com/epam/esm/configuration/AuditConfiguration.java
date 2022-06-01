@@ -17,7 +17,7 @@ public class AuditConfiguration {
         return () -> Optional.of(getCurrentUser());
     }
 
-    private String getCurrentUser(){
+    public String getCurrentUser(){
         try{
             return SecurityContextHolder.getContext().getAuthentication().getName();
         }catch (NullPointerException exception){

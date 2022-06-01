@@ -1,5 +1,6 @@
 package com.epam.esm.service.logic_service;
 
+import com.epam.esm.configuration.AuditConfiguration;
 import com.epam.esm.repository.OrderRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +35,9 @@ class OrderLogicServiceTest {
 
     @Mock
     private UserService<User> userLogicService;
+
+    @Mock
+    private AuditConfiguration auditConfiguration;
 
     @Mock
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
@@ -60,13 +63,13 @@ class OrderLogicServiceTest {
        order.addUserToOrder(user);
        order.addGiftCertificateToOrder(giftCertificate);
        order.setPrice(giftCertificate.getPrice());
-       order.setPurchaseTime(LocalDateTime.now());
        order.setId(1L);
     }
 
     @Test
     void insertOrder() {
-        Mockito.when(userLogicService.getById(user.getId())).thenReturn(user);
+        Mockito.when(auditConfiguration.getCurrentUser()).thenReturn(user.getLogin());
+        Mockito.when(userLogicService.findUserByUserLogin(user.getLogin())).thenReturn(user);
         Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
         Mockito.when(orderRepository.save(order)).thenReturn(order);
         Order order1 = orderLogicService.insert(order);

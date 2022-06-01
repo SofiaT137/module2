@@ -24,9 +24,6 @@ public class Order extends AbstractEntity<Long> {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "purchase_time")
-    private LocalDateTime purchaseTime;
-
     @ManyToMany
     @JoinTable(
             name = "order_certificate",
@@ -43,16 +40,14 @@ public class Order extends AbstractEntity<Long> {
     public Order() {
     }
 
-    public Order(long id,double price, LocalDateTime purchaseTime, User user) {
+    public Order(long id,double price, User user) {
         super(id);
         this.price = price;
-        this.purchaseTime = purchaseTime;
         this.user = user;
     }
 
-    public Order(double price, LocalDateTime purchaseTime, User user) {
+    public Order(double price, User user) {
         this.price = price;
-        this.purchaseTime = purchaseTime;
         this.user = user;
     }
 
@@ -72,14 +67,6 @@ public class Order extends AbstractEntity<Long> {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public LocalDateTime getPurchaseTime() {
-        return purchaseTime;
-    }
-
-    public void setPurchaseTime(LocalDateTime purchaseTime) {
-        this.purchaseTime = purchaseTime;
     }
 
     public User getUser() {
@@ -104,20 +91,18 @@ public class Order extends AbstractEntity<Long> {
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
         return  Double.compare(order.getPrice(), getPrice()) == 0
-                && Objects.equals(getPurchaseTime(), order.getPurchaseTime())
                 && Objects.equals(getUser(), order.getUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getPurchaseTime(), getUser());
+        return Objects.hash(getPrice(), getUser());
     }
 
     @Override
     public String toString() {
         return "Order{" +
                 ", price=" + price +
-                ", purchaseTime=" + purchaseTime +
                 ", user=" + user +
                 '}';
     }
