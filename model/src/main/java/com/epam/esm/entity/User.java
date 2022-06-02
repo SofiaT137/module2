@@ -108,14 +108,12 @@ public class User extends AbstractEntity<Long> {
         if (!(o instanceof User)) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(getLogin(), user.getLogin())
-                && Objects.equals(getOrderList(), user.getOrderList())
-                && Objects.equals(getRoles(), user.getRoles());
+        return Objects.equals(getLogin(), user.getLogin());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getLogin(), getOrderList(), getRoles());
+        return Objects.hash(super.hashCode(), getLogin());
     }
 
     @Override

@@ -7,8 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
+/**
+ * TagRepository interface implements JpaRepository functionality for the Tag entity
+ */
 public interface TagRepository extends JpaRepository<Tag,Long> {
 
+    /**
+     * Method findTheMostWidelyUsedUserTagWithHighersOrderCost searches the widely used user tag with higher
+     * order cost
+     * @param userId User id (Long value)
+     * @return Optional of the Tag entity
+     */
     @Query(value = "(SELECT t.id,t.tag_name,t.created_date,t.last_modified_date,t.last_modified_by" +
             " g_cer.price,count(g_cer.price) as count, sum(g_cer.price) as sum "+
             "FROM tags AS t INNER join gift_certificate_tag AS g_cer_tag on t.id=g_cer_tag.tag_id "+
@@ -19,8 +28,18 @@ public interface TagRepository extends JpaRepository<Tag,Long> {
             nativeQuery = true)
     Optional<Tag> findTheMostWidelyUsedUserTagWithHighersOrderCost(Long userId);
 
+
+    /**
+     * Method findTagByTagName searches the Tag entity by its name
+     * @param tagName String tag name
+     * @return Optional of the Tag entity
+     */
     Optional<Tag> findTagByName(String tagName);
 
+    /**
+     * Method findTagByTagName deletes the parents of the Tag entity
+     * @param id Tag id (Long value)
+     */
     @Modifying(clearAutomatically = true,flushAutomatically = true)
     @Query(value = "DELETE FROM gift_certificate_tag WHERE tag_id = :id "
             ,nativeQuery = true)

@@ -58,6 +58,7 @@ class OrderConverterTest {
     @Test
     void convertDTOEntityToEntity() {
         Order convertOrder = orderConverter.convert(orderDto);
+        convertOrder.setId(ORDER_ID);
         assertEquals(order,convertOrder);
     }
 

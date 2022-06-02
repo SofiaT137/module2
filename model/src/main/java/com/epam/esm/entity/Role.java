@@ -1,11 +1,17 @@
 package com.epam.esm.entity;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Role class extends AbstractEntity and presents creation of the Role entity
+ */
 @Entity
 @Table(name = "roles")
 public class Role extends AbstractEntity<Long>{

@@ -8,7 +8,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 
 /**
- * Class JwtConfiguration is a configuration that helps to add JwtTokenFilter to the security chain.
+ * Class JwtConfiguration is a configuration that helps to add JwtTokenFilter to the security chain
  */
 @Component
 public class JwtConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {

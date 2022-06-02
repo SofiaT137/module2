@@ -6,6 +6,7 @@ import com.epam.esm.repository.GiftCertificateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -26,6 +27,9 @@ class GiftCertificateCustomRepoImplTest {
     private static final String CERTIFICATE_NAME = "Swimming with dolphins!";
     private static final String CERTIFICATE_NAME_2 = "Swimming with seals!";
     private static final int DURATION = 90;
+    private static final int NEW_DURATION = 80;
+    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_NUMBER = 1;
     private static final LocalDateTime TIME = LocalDateTime.now();
     private static final String DESCRIPTION = "Let's swim with dolphins!";
     private static final String DESCRIPTION_2 = "Let's swim with seals!";
@@ -33,6 +37,11 @@ class GiftCertificateCustomRepoImplTest {
     private static final LocalDateTime data = LocalDateTime.now();
     private final GiftCertificate giftCertificate1 = new GiftCertificate();
     private final GiftCertificate giftCertificate2 = new GiftCertificate();
+    private static final String PART_NAME = "partName";
+    private static final String PART_NAME_NUMBER_ONE = "dolphin";
+    private static final String PART_NAME_NUMBER_TWO = "swim";
+    private static final String CANNOT_UPDATE_THE_USER_EXCEPTION = "Cannot update this user!";
+
 
 
     @BeforeEach
@@ -45,7 +54,7 @@ class GiftCertificateCustomRepoImplTest {
         giftCertificateRepository.save(giftCertificate1);
         giftCertificate2.setDescription(DESCRIPTION);
         giftCertificate2.setDuration(DURATION);
-        giftCertificate2.setName(CERTIFICATE_NAME+"aaa");
+        giftCertificate2.setName(CERTIFICATE_NAME_2);
         giftCertificate2.setPrice(PRICE);
         giftCertificate2.setTagList(new ArrayList<>());
         giftCertificateRepository.save(giftCertificate2);
@@ -54,16 +63,19 @@ class GiftCertificateCustomRepoImplTest {
     @Test
     void findGiftCertificatesByTransferredConditions() {
         MultiValueMap<String,String> map = new LinkedMultiValueMap<>();
-        map.put("partName", Arrays.asList("dolphin","swim"));
+        map.put(PART_NAME, Arrays.asList(PART_NAME_NUMBER_ONE,PART_NAME_NUMBER_TWO));
         Page<GiftCertificate> giftCertificates = giftCertificateRepository.
-                findGiftCertificatesByTransferredConditions(map,1,8);
+                findGiftCertificatesByTransferredConditions(map,PAGE_NUMBER,PAGE_SIZE);
         System.out.println(giftCertificates.getNumberOfElements());
-        assertEquals(2,giftCertificates.getNumberOfElements());
+        assertEquals(1,giftCertificates.getNumberOfElements());
     }
 
     @Test
     void update(){
-        Optional<GiftCertificate> updatedCertificate = giftCertificateRepository.update(80,giftCertificate1);
-        assertEquals(80,updatedCertificate.get().getDuration());
+        Optional<GiftCertificate> updatedCertificate = giftCertificateRepository.update(NEW_DURATION,giftCertificate1);
+        if (!updatedCertificate.isPresent()){
+            throw new UsernameNotFoundException(CANNOT_UPDATE_THE_USER_EXCEPTION);
+        }
+        assertEquals(NEW_DURATION,updatedCertificate.get().getDuration());
     }
 }

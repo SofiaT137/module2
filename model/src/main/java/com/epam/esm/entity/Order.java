@@ -9,7 +9,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -89,14 +88,15 @@ public class Order extends AbstractEntity<Long> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
+        if (!super.equals(o)) return false;
         Order order = (Order) o;
-        return  Double.compare(order.getPrice(), getPrice()) == 0
+        return Double.compare(order.getPrice(), getPrice()) == 0
                 && Objects.equals(getUser(), order.getUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getUser());
+        return Objects.hash(super.hashCode(), getPrice(), getUser());
     }
 
     @Override
