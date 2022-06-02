@@ -31,6 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public static final String ORDERS_COMMON_ENDPOINT = "/orders/**";
     public static final String ORDERS_GET_ORDERS_BY_USER_ID_ADMIN_ENDPOINT = "/orders/users/**";
     public static final String ORDERS_GET_ORDERS_BY_ID_ADMIN_ENDPOINT = "/orders/{\\d+}";
+    public static final String ORDERS_GET_COMMON_ENDPOINT = "/orders/all/**";
     public static final String USERS_ENDPOINT = "/users/**";
     public static final String TAGS_ENDPOINT = "/tags/**";
     public static final String ENTRANCE_ENDPOINT = "/auth/signIn";
@@ -63,9 +64,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(GET,CERTIFICATES_ENDPOINT).permitAll()
                 .antMatchers(POST,ENTRANCE_ENDPOINT,REGISTRATION_ENDPOINT).permitAll()
-                .antMatchers(GET,TAGS_ENDPOINT,ORDERS_COMMON_ENDPOINT).hasAnyRole(USER,ADMINISTRATOR)
                 .antMatchers(GET,USERS_ENDPOINT,ORDERS_GET_ORDERS_BY_USER_ID_ADMIN_ENDPOINT,
                         ORDERS_GET_ORDERS_BY_ID_ADMIN_ENDPOINT).hasRole(ADMINISTRATOR)
+                .antMatchers(GET,TAGS_ENDPOINT,ORDERS_GET_COMMON_ENDPOINT).hasAnyRole(USER,ADMINISTRATOR)
                 .antMatchers(POST,ORDERS_COMMON_ENDPOINT).hasAnyRole(USER,ADMINISTRATOR)
                 .antMatchers(POST,TAGS_ENDPOINT,CERTIFICATES_ENDPOINT).hasRole(ADMINISTRATOR)
                 .antMatchers(DELETE,TAGS_ENDPOINT,ORDERS_COMMON_ENDPOINT,CERTIFICATES_ENDPOINT).

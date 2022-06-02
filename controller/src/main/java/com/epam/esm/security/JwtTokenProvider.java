@@ -10,7 +10,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +40,6 @@ public class JwtTokenProvider {
 
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer_";
-    private static final String SOMETHING_WRONG_WITH_TRANSFERRED_TOKEN_EXCEPTION = "somethingWrongWithToken";
 
     @Autowired
     public JwtTokenProvider(PasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
@@ -101,9 +99,8 @@ public class JwtTokenProvider {
         String bearerToken = req.getHeader(AUTHORIZATION);
         if (bearerToken != null && bearerToken.startsWith(BEARER)) {
             return bearerToken.substring(7);
-        }else {
-            throw new AccessDeniedException(SOMETHING_WRONG_WITH_TRANSFERRED_TOKEN_EXCEPTION);
         }
+        return null;
     }
 
     /**

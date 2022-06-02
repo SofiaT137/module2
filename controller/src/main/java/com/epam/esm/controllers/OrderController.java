@@ -67,7 +67,7 @@ public class OrderController {
      * @param pageSize Number of OrderDto entities per page(default value is 5)
      * @return Response entity with page of OrderDto entity and HttpStatus "OK"
      */
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Object> getAllOrders(@RequestParam(defaultValue = "0",required = false) int pageNumber,
                                                          @RequestParam (defaultValue = "5", required = false)
                                                                  int pageSize){

@@ -59,8 +59,8 @@ public class AuthController {
      */
     @PostMapping(value = "/signUp")
     public ResponseEntity<Object> signUp(@RequestBody UserDto userDto){
-        userService.insert(userDto);
         userDto.setEnabled(true);
+        userService.insert(userDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
