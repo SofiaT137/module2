@@ -3,8 +3,6 @@ package com.epam.esm.converter.impl;
 import com.epam.esm.converter.Converter;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +10,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserConverter implements Converter<User,UserDto> {
+
+    private static final String PROTECTED_INFO = "Protected info";
 
     @Override
     public User convert(UserDto value) {
@@ -27,7 +27,7 @@ public class UserConverter implements Converter<User,UserDto> {
     public UserDto convert(User value) {
         Long id = value.getId();
         String login = value.getLogin();
-        return new UserDto(id,login,"Protected info",value.getEnabled() == 1);
+        return new UserDto(id,login,PROTECTED_INFO,value.getEnabled() == 1);
     }
 }
 

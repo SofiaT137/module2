@@ -50,77 +50,79 @@ class OrderLogicServiceTest {
     @InjectMocks
     private OrderLogicService orderLogicService;
 
-    private static final User user = new User(1L,"AlexRendal","sss");
+    private static final String LOGIN = "AlexRendal";
+    private static final int PAGE_NUMBER = 0;
+    private static final int PAGE_SIZE = 1;
+    private static final long ID = 1L;
     private static final List<Tag> tagList = Collections.singletonList(new Tag("hello"));
-    private static final GiftCertificate giftCertificate = new GiftCertificate(1L, "abc"
-            , "abc", 50.00, 13,  tagList);
-    private static Order order;
-    private static final Role ROLE =  new Role(1L, "ROLE_ADMINISTRATOR");
+    private static GiftCertificate GIFT_CERTIFICATE;
+    private static Order ORDER;
+    private static Role ROLE;
+    private static User USER;
 
     @BeforeEach
-    void init(){
+    void setUserLogicService(){
         orderLogicService.setUserLogicService(userLogicService);
         orderLogicService.setGiftCertificateLogicService(giftCertificateLogicService);
     }
 
     @BeforeAll
-    static void fillTheOrderFields(){
-       order = new Order();
-       order.addUserToOrder(user);
-       order.addGiftCertificateToOrder(giftCertificate);
-       order.setPrice(giftCertificate.getPrice());
-       order.setId(1L);
-       user.addRoleToUser(ROLE);
+    static void init(){
+        ROLE =  new Role(ID, "ROLE_ADMINISTRATOR");
+        USER = new User(ID,LOGIN,"sss");
+        GIFT_CERTIFICATE = new GiftCertificate(ID, "abc","abc", 50.00, 13,  tagList);
+        ORDER = new Order();
+        ORDER.addUserToOrder(USER);
+        ORDER.addGiftCertificateToOrder(GIFT_CERTIFICATE);
+        ORDER.setPrice(GIFT_CERTIFICATE.getPrice());
+        ORDER.setId(1L);
+        USER.addRoleToUser(ROLE);
     }
+
 
     @Test
     void insertOrder() {
-        Mockito.when(auditConfiguration.getCurrentUser()).thenReturn(user.getLogin());
-        Mockito.when(userLogicService.findUserByUserLogin(user.getLogin())).thenReturn(user);
-        Mockito.when(giftCertificateLogicService.getById(1L)).thenReturn(giftCertificate);
-        Mockito.when(orderRepository.save(order)).thenReturn(order);
-        Order order1 = orderLogicService.insert(order);
-        assertEquals(order,order1);
+        Mockito.when(auditConfiguration.getCurrentUser()).thenReturn(USER.getLogin());
+        Mockito.when(userLogicService.findUserByUserLogin(USER.getLogin())).thenReturn(USER);
+        Mockito.when(giftCertificateLogicService.getById(ID)).thenReturn(GIFT_CERTIFICATE);
+        Mockito.when(orderRepository.save(ORDER)).thenReturn(ORDER);
+        Order order1 = orderLogicService.insert(ORDER);
+        assertEquals(ORDER,order1);
     }
 
     @Test
     void deleteOrder() {
-        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
-        orderLogicService.deleteByID(order.getId());
-        Mockito.verify(orderRepository, Mockito.times(1)).delete(order);
+        Mockito.when(orderRepository.findById(ID)).thenReturn(Optional.of(ORDER));
+        orderLogicService.deleteByID(ORDER.getId());
+        Mockito.verify(orderRepository, Mockito.times(1)).delete(ORDER);
     }
 
     @Test
     void getById() {
-        Mockito.when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
-        Order foundOrder = orderLogicService.getById(order.getId());
-        assertEquals(order,foundOrder);
+        Mockito.when(orderRepository.findById(ORDER.getId())).thenReturn(Optional.of(ORDER));
+        Order foundOrder = orderLogicService.getById(ORDER.getId());
+        assertEquals(ORDER,foundOrder);
     }
 
     @Test
     void getAll() {
-        try {
-            Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
-            Mockito.when(auditConfiguration.getCurrentUser()).thenReturn(user.getLogin());
-            Mockito.when(userLogicService.findUserByUserLogin("AlexRendal")).thenReturn(user);
-            Mockito.when(roleRepository.findById(1L)).thenReturn(Optional.of(ROLE));
-            Mockito.when(pagination.checkHasContent(orderRepository.findAll(PageRequest.of(0,1))))
-                    .thenReturn(page);
-            Page<Order> orderList = orderLogicService.getAll(0,1);
-            assertEquals(1L,orderList.getTotalElements());
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
+        Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(ORDER)));
+        Mockito.when(auditConfiguration.getCurrentUser()).thenReturn(USER.getLogin());
+        Mockito.when(userLogicService.findUserByUserLogin(LOGIN)).thenReturn(USER);
+        Mockito.when(roleRepository.findById(ID)).thenReturn(Optional.of(ROLE));
+        Mockito.when(pagination.checkHasContent(orderRepository.findAll(PageRequest.of(PAGE_NUMBER,PAGE_SIZE))))
+                .thenReturn(page);
+        Page<Order> orderList = orderLogicService.getAll(PAGE_NUMBER,PAGE_SIZE);
+        assertEquals(ID,orderList.getTotalElements());
     }
 
     @Test
     void ordersByUserId() {
-        Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(order)));
-        Mockito.when(userLogicService.getById(1L)).thenReturn(user);
+        Page<Order> page = new PageImpl<>(new ArrayList<>(Collections.singletonList(ORDER)));
+        Mockito.when(userLogicService.getById(ID)).thenReturn(USER);
         Mockito.when(pagination.checkHasContent(orderRepository.
-                        findAllOrderWhereUserId(1L, PageRequest.of(1,1)))).thenReturn(page);
-        Page<Order> orders = orderLogicService.ordersByUserId(1L,1,1);
+                        findAllOrderWhereUserId(ID, PageRequest.of(PAGE_NUMBER,PAGE_SIZE)))).thenReturn(page);
+        Page<Order> orders = orderLogicService.ordersByUserId(ID,PAGE_NUMBER,PAGE_SIZE);
         assertEquals(1,orders.getTotalElements());
     }
 }

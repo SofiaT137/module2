@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * UserRepository interface implements JpaRepository and UserCustomRepo functionality for the User entity
+ * UserRepository interface extends JpaRepository and UserCustomRepo functionality for the User entity
  */
 public interface UserRepository extends JpaRepository<User, Long>,UserCustomRepo{
 

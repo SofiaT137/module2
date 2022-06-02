@@ -1,11 +1,9 @@
 package com.epam.esm.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.tomcat.jni.Local;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -78,16 +76,15 @@ public class OrderDto extends RepresentationModel<OrderDto> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof OrderDto)) return false;
+        if (!super.equals(o)) return false;
         OrderDto orderDto = (OrderDto) o;
         return  Objects.equals(getPrice(), orderDto.getPrice())
-                && Objects.equals(getPurchaseTime(), orderDto.getPurchaseTime())
-                && Objects.equals(getGiftCertificateDto(), orderDto.getGiftCertificateDto())
                 && Objects.equals(getUserId(), orderDto.getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getPurchaseTime(),getGiftCertificateDto(),getUserId());
+        return Objects.hash(getPrice(), getUserId());
     }
 
     @Override

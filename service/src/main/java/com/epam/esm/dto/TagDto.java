@@ -2,7 +2,6 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Objects;

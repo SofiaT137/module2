@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 /**
- * TagRepository interface implements JpaRepository functionality for the Tag entity
+ * TagRepository interface extends JpaRepository functionality for the Tag entity
  */
 public interface TagRepository extends JpaRepository<Tag,Long> {
 

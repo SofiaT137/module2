@@ -8,9 +8,7 @@ import com.epam.esm.validator.ValidationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Class UserBusinessService is implementation of the UserService interface
@@ -53,11 +51,6 @@ public class UserBusinessService implements UserService<UserDto> {
     public Page<UserDto> getAll(int pageNumber, int pageSize) {
         Page<User> userList = userLogicService.getAll(pageNumber, pageSize);
         return userList.map(userConverter::convert);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        return userLogicService.loadUserByUsername(username);
     }
 
     @Override

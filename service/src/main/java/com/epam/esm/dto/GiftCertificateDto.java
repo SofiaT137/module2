@@ -1,11 +1,17 @@
 package com.epam.esm.dto;
 
-import com.epam.esm.validator.onCreate;
-import com.epam.esm.validator.onUpdate;
+import com.epam.esm.validator.OnCreate;
+import com.epam.esm.validator.OnUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -16,17 +22,17 @@ import java.util.Set;
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 
     private Long id;
-    @NotEmpty(message = "giftCertificateNameCannotBeNull",groups = onCreate.class)
-    @Size(min = 3,max = 50,message = "{giftCertificateLengthIsForbidden}",groups = onCreate.class)
+    @NotEmpty(message = "giftCertificateNameCannotBeNull",groups = OnCreate.class)
+    @Size(min = 3,max = 50,message = "{giftCertificateLengthIsForbidden}",groups = OnCreate.class)
     private String giftCertificateName;
-    @Size(max = 450,message = "{giftCertificateDescriptionIsTooLong}",groups = onCreate.class)
+    @Size(max = 450,message = "{giftCertificateDescriptionIsTooLong}",groups = OnCreate.class)
     private String description;
-    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = onCreate.class)
-    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = onCreate.class)
+    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = OnCreate.class)
+    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = OnCreate.class)
     private Double price;
-    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {onCreate.class, onUpdate.class})
-    @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {onCreate.class, onUpdate.class})
-    @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {onCreate.class, onUpdate.class})
+    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {OnCreate.class, OnUpdate.class})
+    @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
+    @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
     private Integer duration;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createDate;
@@ -133,17 +139,12 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         if (!super.equals(o)) return false;
         GiftCertificateDto that = (GiftCertificateDto) o;
         return Objects.equals(getId(), that.getId())
-                && Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
-                && Objects.equals(getDescription(), that.getDescription())
-                && Objects.equals(getPrice(), that.getPrice())
-                && Objects.equals(getDuration(), that.getDuration())
-                && Objects.equals(getTags(), that.getTags());
+                && Objects.equals(getGiftCertificateName(), that.getGiftCertificateName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getGiftCertificateName(),
-                getDescription(), getPrice(), getDuration(), getTags());
+        return Objects.hash(super.hashCode(), getId(), getGiftCertificateName());
     }
 
     @Override

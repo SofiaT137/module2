@@ -2,14 +2,13 @@ package com.epam.esm.security;
 
 import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
-import com.epam.esm.service.UserService;
+import com.epam.esm.service.userdetails_service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -39,21 +37,16 @@ public class JwtTokenProvider {
 
     private final PasswordEncoder passwordEncoder;
 
-    private UserService<User> userLogicService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer_";
     private static final String SOMETHING_WRONG_WITH_TRANSFERRED_TOKEN_EXCEPTION = "somethingWrongWithToken";
 
     @Autowired
-    public JwtTokenProvider(PasswordEncoder passwordEncoder) {
+    public JwtTokenProvider(PasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    @Qualifier("userLogicService")
-    public void setUserLogicService(UserService<User> userLogicService) {
-        this.userLogicService = userLogicService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @PostConstruct
@@ -86,7 +79,7 @@ public class JwtTokenProvider {
      * @return UsernamePasswordAuthenticationToken entity
      */
     public Authentication getAuthentication(String token){
-        UserDetails userDetails = this.userLogicService.loadUserByUsername(getLogin(token));
+        UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(getLogin(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

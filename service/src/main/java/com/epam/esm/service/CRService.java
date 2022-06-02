@@ -2,6 +2,10 @@ package com.epam.esm.service;
 
 import org.springframework.data.domain.Page;
 
+/**
+ * CRService interface features CR Service functionality
+ * @param <T> The entity object
+ */
 public interface CRService<T> {
     /**
      * The method provides service layer functionality for inserting the entity object

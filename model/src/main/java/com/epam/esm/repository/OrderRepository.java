@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.domain.Pageable;
 
 /**
- * OrderRepository interface implements JpaRepository functionality for the Order entity
+ * OrderRepository interface extends JpaRepository functionality for the Order entity
  */
 public interface OrderRepository extends JpaRepository<Order,Long> {
 

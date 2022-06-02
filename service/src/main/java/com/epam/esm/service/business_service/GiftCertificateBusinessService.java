@@ -6,16 +6,17 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exceptions.IncorrectTransferredParametersException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.validator.ValidationFacade;
-import com.epam.esm.validator.onCreate;
-import com.epam.esm.validator.onUpdate;
+import com.epam.esm.validator.OnCreate;
+import com.epam.esm.validator.OnUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class GiftCertificateBusinessService is implementation of the GiftCertificateService interface
@@ -29,6 +30,8 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     private GiftCertificateService<GiftCertificate> giftCertificateLogicService;
 
     private static final String INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION = "checkTheValuesThatYouTransferred";
+    private static final List<String> ALLOWED_KEYS = Arrays.asList("tagName", "partName", "partDescription", "sortByName",
+            "sortByCreationDate","pageSize","pageNumber");
 
     @Autowired
     public GiftCertificateBusinessService(GiftCertificateConverter giftCertificateConverter,
@@ -45,7 +48,7 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
 
     @Override
     public GiftCertificateDto insert(GiftCertificateDto entityDto){
-        validationFacade.validate(entityDto, onCreate.class);
+        validationFacade.validate(entityDto, OnCreate.class);
         GiftCertificate entity = giftCertificateConverter.convert(entityDto);
         return giftCertificateConverter.convert(giftCertificateLogicService.insert(entity));
     }
@@ -70,7 +73,7 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
 
     @Override
     public GiftCertificateDto update(Long id, GiftCertificateDto entity) {
-        validationFacade.validate(entity,onUpdate.class);
+        validationFacade.validate(entity, OnUpdate.class);
         GiftCertificate giftCertificateEntity = giftCertificateConverter.convert(entity);
         GiftCertificate giftCertificate = giftCertificateLogicService.update(id,giftCertificateEntity);
         return giftCertificateConverter.convert(giftCertificate);
@@ -85,12 +88,10 @@ public class GiftCertificateBusinessService implements GiftCertificateService<Gi
     }
 
     private void checkTransferredMapParameters(MultiValueMap<String, String> mapWithFilters){
-        List<String> allowedKeys = Arrays.asList("tagName", "partName", "partDescription", "sortByName",
-                "sortByCreationDate","pageSize","pageNumber");
         List<String> transferredKeys = new ArrayList<>(mapWithFilters.keySet());
         for (String transferredKey : transferredKeys) {
-            if (!allowedKeys.contains(transferredKey)) {
-                throw new IncorrectTransferredParametersException("INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION");
+            if (!ALLOWED_KEYS.contains(transferredKey)) {
+                throw new IncorrectTransferredParametersException(INCORRECT_TRANSFERRED_GET_VALUES_EXCEPTION);
             }
         }
     }

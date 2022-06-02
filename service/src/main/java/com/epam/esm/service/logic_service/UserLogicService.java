@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * The class presents service logic layer for User entity
  */
 @Service("userLogicService")
-public class UserLogicService implements UserService<User>, UserDetailsService {
+public class UserLogicService implements UserService<User>{
 
     private final UserRepository userRepository;
 
@@ -76,22 +76,6 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User foundedUser = findUserByUserLogin(login);
-        return new org.springframework.security.core.userdetails.User(foundedUser.getLogin(),
-                foundedUser.getPassword(), mapToGrantedAuthorities(foundedUser.getRoles()));
-    }
-
-    @Override
-    public User findUserByUserLogin(String login) {
-        Optional<User> receivedUserById = userRepository.findUserByLogin(login);
-        if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException("Failed to retrieve user: ");
-        }
-        return receivedUserById.get();
-    }
-
-    @Override
     @Transactional
     public User blockUser(String login) {
        User userForBlock = findUserByUserLogin(login);
@@ -113,10 +97,12 @@ public class UserLogicService implements UserService<User>, UserDetailsService {
         return user.get();
     }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> userRoles) {
-        return userRoles.stream()
-                .map(role ->
-                        new SimpleGrantedAuthority(role.getName())
-                ).collect(Collectors.toList());
+    public User findUserByUserLogin(String login) {
+        Optional<User> receivedUserById = userRepository.findUserByLogin(login);
+        if (!receivedUserById.isPresent()){
+            throw new NoSuchEntityException("Failed to retrieve user: ");
+        }
+        return receivedUserById.get();
     }
+
 }
