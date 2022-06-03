@@ -11,18 +11,11 @@ import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Class UserLogicService is implementation of interface UserService
@@ -40,6 +33,9 @@ public class UserLogicService implements UserService<User>{
     private final Pagination<User> pagination;
 
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION = "noUserWithId";
+    private static final String CANNOT_BLOCK_USER_EXCEPTION = "cannotBlockUser";
+    private static final String CANNOT_UNBLOCK_USER_EXCEPTION = "cannotUnblockUser";
+    private static final String CANNOT_RETRIEVE_USER_EXCEPTION = "cannotRetrieveUser";
 
     @Autowired
     public UserLogicService(UserRepository userRepository, RoleRepository roleRepository,
@@ -56,7 +52,6 @@ public class UserLogicService implements UserService<User>{
         Optional<Role> roleUser = roleRepository.findById(2L);
         roleUser.ifPresent(entity::addRoleToUser);
         String password = entity.getPassword();
-        entity.setPassword(null);
         entity.setPassword(encoder.encode(password));
         return userRepository.save(entity);
     }
@@ -81,7 +76,7 @@ public class UserLogicService implements UserService<User>{
        User userForBlock = findUserByUserLogin(login);
        Optional<User> user = userRepository.blockUser(userForBlock);
        if (!user.isPresent()){
-           throw new NoPermissionException("Cannot block this user");
+           throw new NoPermissionException(CANNOT_BLOCK_USER_EXCEPTION);
        }
        return user.get();
     }
@@ -92,7 +87,7 @@ public class UserLogicService implements UserService<User>{
         User userForUnblock = findUserByUserLogin(login);
         Optional<User> user = userRepository.unblockUser(userForUnblock);
         if (!user.isPresent()){
-            throw new NoPermissionException("Cannot unblock this user");
+            throw new NoPermissionException(CANNOT_UNBLOCK_USER_EXCEPTION);
         }
         return user.get();
     }
@@ -100,7 +95,7 @@ public class UserLogicService implements UserService<User>{
     public User findUserByUserLogin(String login) {
         Optional<User> receivedUserById = userRepository.findUserByLogin(login);
         if (!receivedUserById.isPresent()){
-            throw new NoSuchEntityException("Failed to retrieve user: ");
+            throw new NoSuchEntityException(CANNOT_RETRIEVE_USER_EXCEPTION);
         }
         return receivedUserById.get();
     }
