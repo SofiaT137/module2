@@ -1,7 +1,10 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,14 +15,16 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 
     private Long id;
     private Double price;
-    private String purchaseTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime purchaseTime;
+    @NotEmpty(message = "{giftCertificateListCannotBeNull}")
     private List<GiftCertificateDto> giftCertificateDto;
     private Long userId;
 
    public OrderDto() {
     }
 
-    public OrderDto(long id, Double price, String purchaseTime, List<GiftCertificateDto> giftCertificateDto, Long userId) {
+    public OrderDto(long id, Double price, LocalDateTime purchaseTime, List<GiftCertificateDto> giftCertificateDto, Long userId) {
         this.id = id;
         this.price = price;
         this.purchaseTime = purchaseTime;
@@ -43,11 +48,11 @@ public class OrderDto extends RepresentationModel<OrderDto> {
         this.price = price;
     }
 
-    public String getPurchaseTime() {
+    public LocalDateTime getPurchaseTime() {
         return purchaseTime;
     }
 
-    public void setPurchaseTime(String purchaseTime) {
+    public void setPurchaseTime(LocalDateTime purchaseTime) {
         this.purchaseTime = purchaseTime;
     }
 
@@ -71,16 +76,15 @@ public class OrderDto extends RepresentationModel<OrderDto> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof OrderDto)) return false;
+        if (!super.equals(o)) return false;
         OrderDto orderDto = (OrderDto) o;
         return  Objects.equals(getPrice(), orderDto.getPrice())
-                && Objects.equals(getPurchaseTime(), orderDto.getPurchaseTime())
-                && Objects.equals(getGiftCertificateDto(), orderDto.getGiftCertificateDto())
                 && Objects.equals(getUserId(), orderDto.getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getPurchaseTime(),getGiftCertificateDto(),getUserId());
+        return Objects.hash(getPrice(), getUserId());
     }
 
     @Override

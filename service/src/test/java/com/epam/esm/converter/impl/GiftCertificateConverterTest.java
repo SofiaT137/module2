@@ -32,9 +32,6 @@ class GiftCertificateConverterTest {
     private static final String CORRECT_DESCRIPTION = "Fun,joy ans seals";
     private static final Double CORRECT_PRICE = 56.13;
     private static final Integer CORRECT_DURATION = 15;
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-    private static final LocalDateTime localDate = LocalDateTime.now();
-    private static final String date = localDate.format(formatter);
     private static final Set<TagDto> tag_set = new HashSet<>();
     private static final TagDto tagDto1 = new TagDto(1L,"joy");
     private static final TagDto tagDto2 = new TagDto(2L,"happiness");
@@ -42,6 +39,7 @@ class GiftCertificateConverterTest {
     private static List<Tag> tag_list_convert;
     private static GiftCertificateDto giftCertificateDto;
     private static GiftCertificate giftCertificate;
+    private static LocalDateTime localDateTime = LocalDateTime.now();
 
 
     @BeforeAll
@@ -52,9 +50,9 @@ class GiftCertificateConverterTest {
         giftCertificateConverter = new GiftCertificateConverter(tagConverter);
         tag_list_convert = tag_set.stream().map(tagConverter::convert).collect(Collectors.toList());
         giftCertificateDto = new GiftCertificateDto(CORRECT_NAME,CORRECT_DESCRIPTION
-                ,CORRECT_PRICE,CORRECT_DURATION,date,date, tag_set);
+                ,CORRECT_PRICE,CORRECT_DURATION,localDateTime,localDateTime,tag_set);
         giftCertificate = new GiftCertificate(CORRECT_NAME,CORRECT_DESCRIPTION,CORRECT_PRICE
-                ,CORRECT_DURATION,localDate,localDate,tag_list_convert);
+                ,CORRECT_DURATION,tag_list_convert);
     }
 
     @Test

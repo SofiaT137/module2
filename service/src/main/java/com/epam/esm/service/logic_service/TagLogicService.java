@@ -1,23 +1,23 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.pagination.Pagination;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.CannotInsertEntityException;
 import com.epam.esm.exceptions.NoSuchEntityException;
-import com.epam.esm.exceptions.ValidatorException;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.UserService;
-import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 
 /**
  * Class TagLogicService is implementation of interface TagService
@@ -26,21 +26,22 @@ import static com.epam.esm.exceptions.ExceptionErrorCode.*;
 @Service("tagLogicService")
 public class TagLogicService implements TagService<Tag> {
 
-    private final TagDao tagDao;
+    private final TagRepository tagRepository;
     private UserService<User> userLogicService;
-    private final TagValidator tagValidator;
+    private final Pagination<Tag> pagination;
 
     private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
     private static final String NOT_UNIQUE_TAG_NAME_MESSAGE = "notUniqueTagName";
     private static final String CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE = "noTagWithThatId";
     private static final String CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE = "noTagWithThatName";
     private static final String CANNOT_FIND_THIS_USER_MESSAGE = "noUserWithId";
-    private static final String CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG = "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
+    private static final String CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG =
+            "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
 
     @Autowired
-    public TagLogicService(TagDao tagDao, TagValidator tagValidator) {
-        this.tagDao = tagDao;
-        this.tagValidator = tagValidator;
+    public TagLogicService(TagRepository tagRepository, Pagination<Tag> pagination){
+        this.tagRepository = tagRepository;
+        this.pagination = pagination;
     }
 
     @Autowired
@@ -51,61 +52,53 @@ public class TagLogicService implements TagService<Tag> {
 
     @Override
     @Transactional
-    public Tag insert(Tag entity) throws ValidatorException {
-        tagValidator.validate(entity);
+    public Tag insert(Tag entity){
         if (checkIfTagNameExists(entity.getName())){
-            throw new CannotInsertEntityException(NOT_UNIQUE_TAG_NAME_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
+            throw new CannotInsertEntityException(NOT_UNIQUE_TAG_NAME_MESSAGE);
         }
-        Optional<Tag> insertedTag = tagDao.insert(entity);
-        if (!insertedTag.isPresent()){
-            throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
-        }
-        return insertedTag.get();
+        return tagRepository.save(entity);
     }
 
     @Override
     public Tag getById(long id) {
-        tagValidator.checkID(id);
-        Optional<Tag> receivedTagById = tagDao.getById(id);
+        Optional<Tag> receivedTagById = tagRepository.findById(id);
         if (!receivedTagById.isPresent()){
-            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE);
         }
         return receivedTagById.get();
     }
 
     @Override
-    public List<Tag> getAll(int pageSize,int pageNumber){
-        return tagDao.getAll(pageSize,pageNumber);
+    public Page<Tag> getAll(int pageNumber,int pageSize){
+        return pagination.checkHasContent(tagRepository.findAll(PageRequest.of(pageNumber,pageSize)));
     }
 
     @Override
     @Transactional
     public void deleteByID(long id) {
-        tagValidator.checkID(id);
-        Optional<Tag> receivedTagById = tagDao.getById(id);
+        Optional<Tag> receivedTagById = tagRepository.findById(id);
         if (!receivedTagById.isPresent()){
-            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE);
         }
-        tagDao.delete(receivedTagById.get());
+        tagRepository.deleteParentRelationShips(id);
+        tagRepository.delete(receivedTagById.get());
     }
 
     @Override
     public Tag findTheMostWidelyUsedUserTagWithHigherOrderCost(Long userId) {
-        tagValidator.checkID(userId);
         User receivedUserById = userLogicService.getById(userId);
-        List<Tag> resultTagList = tagDao.
+        Optional<Tag> resultTag = tagRepository.
                 findTheMostWidelyUsedUserTagWithHighersOrderCost(receivedUserById.getId());
-        if (resultTagList.isEmpty()){
-            throw new NoSuchEntityException(CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG,NO_SUCH_ENTITY_CODE);
+        if (!resultTag.isPresent()){
+            throw new NoSuchEntityException(CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG);
         }
-        return resultTagList.get(0);
+        return resultTag.get();
     }
-
     @Override
     public Tag findTagByTagName(String name) {
-        Optional<Tag> tag = tagDao.findTagByTagName(name);
+        Optional<Tag> tag = tagRepository.findTagByName(name);
         if (!tag.isPresent()){
-            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE,NO_SUCH_ENTITY_CODE);
+            throw new NoSuchEntityException(CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE);
         }
         return tag.get();
     }
@@ -113,14 +106,10 @@ public class TagLogicService implements TagService<Tag> {
     @Override
     public List<Tag> getCertificateTagList(List<Tag> tagList){
         List<Tag> tags = new ArrayList<>();
-        tagList.forEach(tagValidator::validate);
         for (Tag entityHasTag : tagList) {
-            Optional<Tag> currentTag = tagDao.findTagByTagName(entityHasTag.getName());
+            Optional<Tag> currentTag = tagRepository.findTagByName(entityHasTag.getName());
             if (!currentTag.isPresent()){
-                currentTag = tagDao.insert(entityHasTag);
-                if (!currentTag.isPresent()){
-                    throw new CannotInsertEntityException(CANNOT_INSERT_THIS_TAG_MESSAGE,CANNOT_INSERT_ENTITY_CODE);
-                }
+                currentTag = Optional.of(tagRepository.save(entityHasTag));
             }
             tags.add(currentTag.get());
         }

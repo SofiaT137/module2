@@ -8,8 +8,6 @@ import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,8 +30,6 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
 
     @Override
     public GiftCertificate convert(GiftCertificateDto value) {
-        LocalDateTime createDate = validateDate(value.getCreateDate());
-        LocalDateTime lastUpdateDate = validateDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = value.getTags();
         List<Tag> valueTagList = new ArrayList<>();
         if(valueTagDtoList!=null){
@@ -41,35 +37,19 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
         }
         return new GiftCertificate(value.getId(),value.getGiftCertificateName(),
                 value.getDescription(),value.getPrice(),value.getDuration(),
-                createDate,lastUpdateDate,valueTagList);
+                valueTagList);
     }
 
     private List<Tag> convertTagDtoList(Set<TagDto> valueTagDtoList){
         return valueTagDtoList.stream().map(tagConverter::convert).collect(Collectors.toList());
     }
 
-    private LocalDateTime validateDate(String dateTime){
-        LocalDateTime date;
-        if (dateTime != null){
-            date = LocalDateTime.parse(dateTime);
-        } else {
-            date = null;
-        }
-        return date;
-    }
-
     @Override
     public GiftCertificateDto convert(GiftCertificate value) {
-        String createDate = getFormatDate(value.getCreateDate());
-        String lastUpdateDate = getFormatDate(value.getLastUpdateDate());
         Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
-        return new GiftCertificateDto(value.getId(), value.getGiftCertificateName(), value.getDescription(),
-                value.getPrice(), value.getDuration(), createDate,lastUpdateDate, valueTagDtoList);
-    }
-
-    private String getFormatDate(LocalDateTime dateTime){
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return formatter.format(dateTime);
+        return new GiftCertificateDto(value.getId(), value.getName(), value.getDescription(),
+                value.getPrice(), value.getDuration(),value.getCreatedDate(), value.getLastModifiedDate(),
+                valueTagDtoList);
     }
 
     private Set<TagDto> convertTagList(List<Tag> valueTagList){

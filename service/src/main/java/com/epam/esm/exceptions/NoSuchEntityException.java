@@ -5,17 +5,16 @@ package com.epam.esm.exceptions;
  */
 public class NoSuchEntityException extends RuntimeException{
 
-    private String errorCode;
+    private static final String ERROR_CODE = "404002";
 
     public NoSuchEntityException() {
     }
 
-    public NoSuchEntityException(String message, String errorCode) {
+    public NoSuchEntityException(String message) {
          super(message);
-        this.errorCode = errorCode;
     }
 
     public String getErrorCode() {
-        return errorCode;
+        return ERROR_CODE;
     }
 }

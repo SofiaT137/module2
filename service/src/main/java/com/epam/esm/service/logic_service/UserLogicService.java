@@ -1,50 +1,108 @@
 package com.epam.esm.service.logic_service;
 
-import com.epam.esm.dao.UserDao;
+import com.epam.esm.exceptions.NoPermissionException;
+import com.epam.esm.pagination.Pagination;
+import com.epam.esm.repository.RoleRepository;
+import com.epam.esm.repository.UserRepository;
+import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.UserService;
-import com.epam.esm.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.epam.esm.exceptions.ExceptionErrorCode.NO_SUCH_ENTITY_CODE;
+import java.util.stream.Collectors;
 
 /**
  * Class UserLogicService is implementation of interface UserService
  * The class presents service logic layer for User entity
  */
 @Service("userLogicService")
-public class UserLogicService implements UserService<User> {
+public class UserLogicService implements UserService<User>{
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
-    private final UserValidator userValidator;
+    private final RoleRepository roleRepository;
+
+    private final BCryptPasswordEncoder encoder;
+
+    private final Pagination<User> pagination;
 
     private static final String NO_USER_WITH_THAT_ID_EXCEPTION = "noUserWithId";
 
     @Autowired
-    public UserLogicService(UserDao userDao, UserValidator userValidator) {
-        this.userDao = userDao;
-        this.userValidator = userValidator;
+    public UserLogicService(UserRepository userRepository, RoleRepository roleRepository,
+                            BCryptPasswordEncoder encoder, Pagination<User> pagination) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.encoder = encoder;
+        this.pagination = pagination;
+    }
+
+    @Override
+    @Transactional
+    public User insert(User entity) {
+        Optional<Role> roleUser = roleRepository.findById(2L);
+        roleUser.ifPresent(entity::addRoleToUser);
+        String password = entity.getPassword();
+        entity.setPassword(null);
+        entity.setPassword(encoder.encode(password));
+        return userRepository.save(entity);
     }
 
     @Override
     public User getById(long id) {
-        userValidator.checkID(id);
-        Optional<User> receivedOrderById = userDao.getById(id);
-        if (!receivedOrderById.isPresent()){
-            throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION,NO_SUCH_ENTITY_CODE);
+        Optional<User> receivedUserById = userRepository.findById(id);
+        if (!receivedUserById.isPresent()){
+            throw new NoSuchEntityException(NO_USER_WITH_THAT_ID_EXCEPTION);
         }
-        return receivedOrderById.get();
+        return receivedUserById.get();
     }
 
     @Override
-    public List<User> getAll(int pageSize, int pageNumber) {
-        return userDao.getAll(pageSize,pageNumber);
+    public Page<User> getAll(int pageNumber, int pageSize) {
+        return pagination.checkHasContent(userRepository.findAll(PageRequest.of(pageNumber,pageSize)));
+    }
+
+    @Override
+    @Transactional
+    public User blockUser(String login) {
+       User userForBlock = findUserByUserLogin(login);
+       Optional<User> user = userRepository.blockUser(userForBlock);
+       if (!user.isPresent()){
+           throw new NoPermissionException("Cannot block this user");
+       }
+       return user.get();
+    }
+
+    @Override
+    @Transactional
+    public User unblockUser(String login) {
+        User userForUnblock = findUserByUserLogin(login);
+        Optional<User> user = userRepository.unblockUser(userForUnblock);
+        if (!user.isPresent()){
+            throw new NoPermissionException("Cannot unblock this user");
+        }
+        return user.get();
+    }
+
+    public User findUserByUserLogin(String login) {
+        Optional<User> receivedUserById = userRepository.findUserByLogin(login);
+        if (!receivedUserById.isPresent()){
+            throw new NoSuchEntityException("Failed to retrieve user: ");
+        }
+        return receivedUserById.get();
     }
 
 }

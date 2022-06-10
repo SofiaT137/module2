@@ -2,15 +2,15 @@ package com.epam.esm.service.business_service;
 
 import com.epam.esm.converter.impl.TagConverter;
 import com.epam.esm.dto.TagDto;
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.validator.ValidationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class TagBusinessService is implementation of the TagService interface
@@ -20,11 +20,13 @@ import java.util.stream.Collectors;
 public class TagBusinessService implements TagService<TagDto> {
 
     private final TagConverter tagConverter;
+    private final ValidationFacade validationFacade;
     private TagService<Tag> tagLogicService;
 
     @Autowired
-    public TagBusinessService(TagConverter tagConverter) {
+    public TagBusinessService(TagConverter tagConverter,ValidationFacade validationFacade) {
         this.tagConverter = tagConverter;
+        this.validationFacade = validationFacade;
     }
 
     @Autowired
@@ -35,6 +37,7 @@ public class TagBusinessService implements TagService<TagDto> {
 
     @Override
     public TagDto insert(TagDto entityDto) {
+        validationFacade.validate(entityDto);
         Tag entity = tagConverter.convert(entityDto);
         return tagConverter.convert(tagLogicService.insert(entity));
     }
@@ -51,9 +54,9 @@ public class TagBusinessService implements TagService<TagDto> {
     }
 
     @Override
-    public List<TagDto> getAll(int pageSize, int pageNumber) {
-        List<Tag> tagList = tagLogicService.getAll(pageSize,pageNumber);
-        return tagList.stream().map(tagConverter::convert).collect(Collectors.toList());
+    public Page<TagDto> getAll(int pageNumber,int pageSize) {
+        Page<Tag> tagList = tagLogicService.getAll(pageNumber,pageSize);
+        return tagList.map(tagConverter::convert);
     }
 
     @Override

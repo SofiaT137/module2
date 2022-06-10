@@ -1,8 +1,18 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.validator.OnCreate;
+import com.epam.esm.validator.OnUpdate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.List;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -12,17 +22,27 @@ import java.util.Set;
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 
     private Long id;
+    @NotEmpty(message = "giftCertificateNameCannotBeNull",groups = OnCreate.class)
+    @Size(min = 3,max = 50,message = "{giftCertificateLengthIsForbidden}",groups = OnCreate.class)
     private String giftCertificateName;
+    @Size(max = 450,message = "{giftCertificateDescriptionIsTooLong}",groups = OnCreate.class)
     private String description;
+    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = OnCreate.class)
+    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = OnCreate.class)
     private Double price;
+    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {OnCreate.class, OnUpdate.class})
+    @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
+    @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
     private Integer duration;
-    private String createDate;
-    private String lastUpdateDate;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime lastUpdateDate;
     private Set<TagDto> tags;
 
     public GiftCertificateDto(Long id, String giftCertificateName,
-                              String description, Double price, Integer duration,
-                              String createDate, String lastUpdateDate, Set<TagDto> tags) {
+                              String description, Double price, Integer duration,LocalDateTime createDate,
+                              LocalDateTime lastUpdateDate,Set<TagDto> tags) {
         this.id = id;
         this.giftCertificateName = giftCertificateName;
         this.description = description;
@@ -34,8 +54,8 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     }
 
     public GiftCertificateDto(String giftCertificateName, String description,
-                              Double price, Integer duration,
-                              String createDate, String lastUpdateDate, Set<TagDto> tags) {
+                              Double price, Integer duration,LocalDateTime createDate,
+                              LocalDateTime lastUpdateDate,Set<TagDto> tags) {
         this.giftCertificateName = giftCertificateName;
         this.description = description;
         this.price = price;
@@ -88,28 +108,28 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.duration = duration;
     }
 
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(String lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
     public Set<TagDto> getTags() {
         return tags;
     }
 
     public void setTags(Set<TagDto> tags) {
         this.tags = tags;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public LocalDateTime getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
     @Override
@@ -119,19 +139,12 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         if (!super.equals(o)) return false;
         GiftCertificateDto that = (GiftCertificateDto) o;
         return Objects.equals(getId(), that.getId())
-                && Objects.equals(getGiftCertificateName(), that.getGiftCertificateName())
-                && Objects.equals(getDescription(), that.getDescription())
-                && Objects.equals(getPrice(), that.getPrice())
-                && Objects.equals(getDuration(), that.getDuration())
-                && Objects.equals(getCreateDate(), that.getCreateDate())
-                && Objects.equals(getLastUpdateDate(), that.getLastUpdateDate())
-                && Objects.equals(getTags(), that.getTags());
+                && Objects.equals(getGiftCertificateName(), that.getGiftCertificateName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getGiftCertificateName(),
-                getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), getTags());
+        return Objects.hash(super.hashCode(), getId(), getGiftCertificateName());
     }
 
     @Override
@@ -142,8 +155,8 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", duration=" + duration +
-                ", createDate='" + createDate + '\'' +
-                ", lastUpdateDate='" + lastUpdateDate + '\'' +
+                ", createDate=" + createDate +
+                ", lastUpdateDate=" + lastUpdateDate +
                 ", tags=" + tags +
                 '}';
     }

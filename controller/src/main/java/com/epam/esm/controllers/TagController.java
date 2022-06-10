@@ -5,11 +5,10 @@ import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * TagController class presents REST controller for the Tag entity
@@ -31,9 +30,6 @@ public class TagController {
     public void setUserService(TagService<TagDto> tagService) {
         this.tagBusinessService = tagService;
     }
-
-    private static final String CREATED_MESSAGE = "Created!";
-    private static final String DELETED_MESSAGE = "Deleted!";
 
     /**
      * Method insertTag inserts the TagDto entity
@@ -67,20 +63,20 @@ public class TagController {
     @GetMapping("/filter/{userId}")
     public ResponseEntity<Object> findTheMostWidelyUsedUserTagWithHighersOrderCost(@PathVariable Long userId) {
        TagDto tagDto = tagBusinessService.findTheMostWidelyUsedUserTagWithHigherOrderCost(userId);
-        tagDtoHateoas.addLinks(tagDto);
-        return new ResponseEntity<>(tagDto, HttpStatus.OK);
+       tagDtoHateoas.addLinks(tagDto);
+       return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     /**
      * Method getAllTags returns all the TagDto entity
+     * @param pageNumber Number of the page with TagDto entities(default value is 0)
      * @param pageSize Number of TagDto entities per page(default value is 5)
-     * @param pageNumber Number of the page with TagDto entities(default value is 1)
-     * @return List of TagDto entity and HttpStatus "OK"
+     * @return Response entity with page of TagDto entity and HttpStatus "OK"
      */
     @GetMapping
-    public ResponseEntity<Object> getAllTags(@RequestParam(defaultValue = "5",required = false) int pageSize,
-                                             @RequestParam (defaultValue = "1", required = false) int pageNumber){
-        List<TagDto> tagDtoList = tagBusinessService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllTags(@RequestParam (defaultValue = "0", required = false) int pageNumber,
+                                             @RequestParam(defaultValue = "5",required = false) int pageSize){
+        Page<TagDto> tagDtoList = tagBusinessService.getAll(pageNumber,pageSize);
         tagDtoList.forEach(tagDtoHateoas::addLinks);
         return new ResponseEntity<>(tagDtoList, HttpStatus.OK);
     }

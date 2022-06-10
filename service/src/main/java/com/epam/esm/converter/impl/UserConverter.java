@@ -11,17 +11,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserConverter implements Converter<User,UserDto> {
 
+    private static final String PROTECTED_INFO = "Protected info";
+
     @Override
     public User convert(UserDto value) {
-        String name = value.getName();
-        return new User(name);
+        User user = new User();
+        user.setLogin(value.getLogin());
+        user.setPassword(value.getPassword());
+        int enabled = value.isEnabled() ? 1 : 0;
+        user.setEnabled(enabled);
+        return user;
     }
 
     @Override
     public UserDto convert(User value) {
         Long id = value.getId();
-        String name = value.getName();
-        return new UserDto(id,name);
+        String login = value.getLogin();
+        return new UserDto(id,login,PROTECTED_INFO,value.getEnabled() == 1);
     }
 }
 

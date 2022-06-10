@@ -1,6 +1,10 @@
 package com.epam.esm.entity;
 
-import com.epam.esm.audit.EntityListener;
+//import com.epam.esm.audit.EntityListener;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -9,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -17,7 +22,7 @@ import java.util.Objects;
  * @param <K>
  */
 @MappedSuperclass
-@EntityListeners(EntityListener.class)
+@EntityListeners({AuditingEntityListener.class})
 public abstract class AbstractEntity<K extends Serializable> {
 
     @Id
@@ -25,11 +30,17 @@ public abstract class AbstractEntity<K extends Serializable> {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "operation")
-    private String operation;
+    @CreatedDate
+    @Column(name = "created_date",updatable = false)
+    private LocalDateTime createdDate;
 
-    @Column(name = "time_mark")
-    private LocalDateTime localDateTime;
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private LocalDateTime lastModifiedDate;
+
+    @LastModifiedBy
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
 
     protected AbstractEntity(){}
 
@@ -45,20 +56,29 @@ public abstract class AbstractEntity<K extends Serializable> {
         this.id = id;
     }
 
-    public String getOperation() {
-        return operation;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public LocalDateTime getTimestamp() {
-        return localDateTime;
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setTimestamp(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override

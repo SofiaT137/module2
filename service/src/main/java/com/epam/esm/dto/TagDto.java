@@ -2,6 +2,8 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
@@ -10,6 +12,8 @@ import java.util.Objects;
 public class TagDto extends RepresentationModel<TagDto> {
 
     private Long id;
+    @NotEmpty(message = "{tagNameCannotBeNull}")
+    @Size(min = 2, max = 35,message = "{thisTagLengthIsForbidden}")
     private String name;
 
     public TagDto(String name){

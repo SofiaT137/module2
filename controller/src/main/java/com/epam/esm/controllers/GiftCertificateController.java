@@ -6,6 +6,7 @@ import com.epam.esm.hateoas.Hateoas;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * GiftCertificateController class presents REST controller for the GiftCertificate entity
@@ -35,11 +34,6 @@ public class GiftCertificateController {
     public GiftCertificateController(Hateoas<GiftCertificateDto> giftCertificateDtoHateoas) {
         this.giftCertificateDtoHateoas = giftCertificateDtoHateoas;
     }
-
-    private static final String CREATED_MESSAGE = "Created!";
-    private static final String UPDATED_MESSAGE = "Updated!";
-    private static final String DELETED_MESSAGE = "Deleted!";
-
     @Autowired
     @Qualifier("giftCertificateBusinessService")
     public void setGiftCertificateService(GiftCertificateService<GiftCertificateDto> giftCertificateService) {
@@ -61,22 +55,22 @@ public class GiftCertificateController {
     /**
      * Method getAllGiftCertificates returns all the GiftCertificateDTO entity
      * @param pageSize Number of GiftCertificateDTO entities per page (default value is 5)
-     * @param pageNumber Number of the page with GiftCertificateDTO entities (default value is 1)
-     * @return List of GiftCertificateDTO entity and HttpStatus "OK"
+     * @param pageNumber Number of the page with GiftCertificateDTO entities (default value is 0)
+     * @return Response entity with page of GiftCertificateDTO entity and HttpStatus "OK"
      */
     @GetMapping
-    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam(defaultValue = "5",required = false)
-                                                                     int pageSize,
-                                                         @RequestParam (defaultValue = "1", required = false)
-                                                                 int pageNumber){
-        List<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageSize,pageNumber);
+    public ResponseEntity<Object> getAllGiftCertificates(@RequestParam (defaultValue = "0", required = false)
+                                                                     int pageNumber,
+                                                         @RequestParam(defaultValue = "5",required = false)
+                                                                 int pageSize){
+        Page<GiftCertificateDto> giftCertificates =  giftCertificateService.getAll(pageNumber,pageSize);
         giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
         return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }
 
     /**
      * Method insertCertificate inserts the GiftCertificateDTO entity
-     * @param giftCertificate  GiftCertificateDto giftCertificate
+     * @param giftCertificate GiftCertificateDto giftCertificate
      * @return Response entity with HttpStatus "CREATED"
      */
     @PostMapping
@@ -86,15 +80,15 @@ public class GiftCertificateController {
     }
 
     /**
-     * Method giftCertificatesByParameter returns the list of GiftCertificateDTO entity by all the
+     * Method giftCertificatesByParameter returns all the GiftCertificateDTO entity by all the
      * transferred parameters
      * @param allRequestParams Map with transferred parameters
-     * @return Response entity with list of GiftCertificateDTO entity and HttpStatus "OK"
+     * @return Response entity with page of GiftCertificateDTO entity and HttpStatus "OK"
      */
     @GetMapping("/filter")
     public ResponseEntity<Object> giftCertificatesByParameter(@RequestParam MultiValueMap<String,
                                                                             String> allRequestParams){
-        List<GiftCertificateDto> giftCertificates =  giftCertificateService.getQueryWithConditions(allRequestParams);
+        Page<GiftCertificateDto> giftCertificates =  giftCertificateService.getQueryWithConditions(allRequestParams);
         giftCertificates.forEach(giftCertificateDtoHateoas::addLinks);
         return new ResponseEntity<>(giftCertificates,HttpStatus.OK);
     }

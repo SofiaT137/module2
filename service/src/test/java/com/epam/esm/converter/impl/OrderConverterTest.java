@@ -36,8 +36,6 @@ class OrderConverterTest {
     private static final TagConverter tagConverter = Mockito.spy(TagConverter.class);
 
     private static final LocalDateTime DATA = LocalDateTime.now();
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-    private static final String dataAsString = formatter.format(DATA);
     private static final Double PRICE = 300.12;
     private static final List<GiftCertificate> giftCertificates = new ArrayList<>();
     private static final List<GiftCertificateDto> giftCertificatesDto = new ArrayList<>();
@@ -51,14 +49,16 @@ class OrderConverterTest {
     static void setUp(){
         orderConverter = new OrderConverter(new GiftCertificateConverter(tagConverter));
         user = new User(USER_ID);
-        order = new Order(ORDER_ID,PRICE,DATA,user);
-        orderDto = new OrderDto(ORDER_ID,PRICE,dataAsString,giftCertificatesDto,USER_ID);
+        order = new Order(ORDER_ID,PRICE,user);
+        order.setCreatedDate(DATA);
+        orderDto = new OrderDto(ORDER_ID,PRICE,DATA,giftCertificatesDto,USER_ID);
         order.setGiftCertificateList(giftCertificates);
     }
 
     @Test
     void convertDTOEntityToEntity() {
         Order convertOrder = orderConverter.convert(orderDto);
+        convertOrder.setId(ORDER_ID);
         assertEquals(order,convertOrder);
     }
 

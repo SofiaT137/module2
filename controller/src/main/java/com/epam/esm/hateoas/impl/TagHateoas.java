@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * TagHateoas class allows to add the HATEOAS logic to the TagDto entity
+ */
 @Component
 public class TagHateoas implements Hateoas<TagDto> {
 
