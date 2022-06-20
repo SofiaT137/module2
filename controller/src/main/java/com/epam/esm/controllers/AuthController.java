@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,16 +70,12 @@ public class AuthController {
      */
     @PostMapping(value = "/signIn")
     public ResponseEntity<Object> signIn(@RequestBody UserDto userDto){
-        try {
-            String login = userDto.getLogin();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login,userDto.getPassword()));
-            User user = userService.findUserByUserLogin(userDto.getLogin());
-            checkUserAccess(user);
-            Map<Object, Object> responseMap = createResponseWithLoginAndToken(user,login);
-            return new ResponseEntity<>(responseMap,HttpStatus.OK);
-        }catch (AuthenticationException exception) {
-           throw new BadCredentialsException(INVALID_LOGIN_OR_PASSWORD);
-        }
+        String login = userDto.getLogin();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login,userDto.getPassword()));
+        User user = userService.findUserByUserLogin(userDto.getLogin());
+        checkUserAccess(user);
+        Map<Object, Object> responseMap = createResponseWithLoginAndToken(user,login);
+        return new ResponseEntity<>(responseMap,HttpStatus.OK);
     }
 
     private void checkUserAccess(User user){
