@@ -2,6 +2,7 @@ package com.epam.esm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @EnableWebMvc
 @SpringBootApplication
-public class SpringBootApplicationRunner {
+public class SpringBootApplicationRunner extends SpringBootServletInitializer {
 
     private static final String DISPATCHER_SERVLET = "dispatcherServlet";
 
