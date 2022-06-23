@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "roles")
-public class Role extends AbstractEntity<Long>{
+public class Role extends AbstractEntity{
 
     @Column(name = "role_name")
     private String name;

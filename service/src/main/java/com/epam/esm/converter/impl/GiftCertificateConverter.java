@@ -47,7 +47,7 @@ public class GiftCertificateConverter implements Converter<GiftCertificate, Gift
     @Override
     public GiftCertificateDto convert(GiftCertificate value) {
         Set<TagDto> valueTagDtoList = this.convertTagList(value.getTagList());
-        return new GiftCertificateDto(value.getName(), value.getDescription(),
+        return new GiftCertificateDto(value.getId(), value.getName(), value.getDescription(),
                 value.getPrice(), value.getDuration(),value.getCreatedDate(), value.getLastModifiedDate(),
                 valueTagDtoList);
     }

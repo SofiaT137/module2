@@ -27,9 +27,15 @@ public class AspectLogging {
     private static final String STARTS = " starts";
     private static final String EXCEPTION = "exception";
 
+    /**
+     * The allServiceMethods method is used only for aspect logging logic
+     */
     @Pointcut(EXECUTION_ALL_SERVICE_METHODS)
     private void allServiceMethods() {}
 
+    /**
+     * The allModelMethods method is used only for aspect logging logic
+     */
     @Pointcut(EXECUTION_ALL_MODEL_METHODS)
     private void allModelMethods() {}
 
@@ -39,8 +45,7 @@ public class AspectLogging {
      */
     @Before(SERVICE_POINTCUT_REFERENCE_NAME)
     public void beforeServiceMethodsAdvice(JoinPoint joinPoint) {
-        LOGGER.info(String.format("%1$s %2$s %3$s", SERVICE_LAYER_METHOD_NAME,
-                joinPoint.getSignature().getName(), STARTS));
+        LOGGER.info("{} {} {}",SERVICE_LAYER_METHOD_NAME,joinPoint.getSignature().getName(),STARTS);
     }
 
     /**
@@ -49,7 +54,7 @@ public class AspectLogging {
      */
     @AfterThrowing(pointcut = SERVICE_POINTCUT_REFERENCE_NAME, throwing = EXCEPTION)
     public void afterThrowingServiceMethodsAdvice(Throwable exception) {
-        LOGGER.error(String.format("%1$s %2$s", SERVICE_LAYER_METHOD_THROWS_AN_EXCEPTION, exception));
+        LOGGER.error("{} {}", SERVICE_LAYER_METHOD_THROWS_AN_EXCEPTION, exception);
     }
 
     /**
@@ -58,8 +63,7 @@ public class AspectLogging {
      */
     @Before(MODEL_POINTCUT_REFERENCE_NAME)
     public void beforeModelMethodsAdvice(JoinPoint joinPoint) {
-        LOGGER.info(String.format("%1$s %2$s %3$s",MODEL_LAYER_METHOD_NAME,
-                joinPoint.getSignature().getName(), STARTS));
+        LOGGER.info("{} {} {}",MODEL_LAYER_METHOD_NAME,joinPoint.getSignature().getName(),STARTS);
     }
 
     /**
@@ -68,7 +72,7 @@ public class AspectLogging {
      */
     @AfterThrowing(pointcut = MODEL_POINTCUT_REFERENCE_NAME, throwing = EXCEPTION)
     public void afterThrowingModelMethodsAdvice(Throwable exception) {
-        LOGGER.error(String.format("%1$s %2$s",MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION, exception));
+        LOGGER.error("{} {}", MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION, exception);
     }
 }
 
