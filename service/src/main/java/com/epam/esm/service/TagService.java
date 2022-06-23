@@ -1,8 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.service.CRDService;
 
 import java.util.List;
 

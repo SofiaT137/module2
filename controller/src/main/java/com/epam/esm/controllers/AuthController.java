@@ -32,7 +32,6 @@ public class AuthController {
 
     private UserService<UserDto> userService;
 
-    private static final String INVALID_LOGIN_OR_PASSWORD = "invalidLoginOrPassword";
     private static final String ACCESS_DENIED = "accessDenied";
     private static final String LOGIN = "login";
     private static final String TOKEN = "token";

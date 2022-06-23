@@ -41,7 +41,6 @@ class GiftCertificateCustomRepoImpl implements GiftCertificateCustomRepo {
     private static final String SORT_BY_NAME = "sortByName";
     private static final String SORT_BY_DATE = "sortByCreationDate";
     private static final String DESCRIPTION = "description";
-    private static final String WHERE = " WHERE ";
     private static final String DESC = "desc";
 
     @Override

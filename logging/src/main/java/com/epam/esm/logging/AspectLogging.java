@@ -26,12 +26,10 @@ public class AspectLogging {
     private static final String EXCEPTION = "exception";
 
     @Pointcut(EXECUTION_ALL_SERVICE_METHODS)
-    private void allServiceMethods() {
-    }
+    private void allServiceMethods() {}
 
     @Pointcut(EXECUTION_ALL_MODEL_METHODS)
-    private void allModelMethods() {
-    }
+    private void allModelMethods() {}
 
     /**
      * Before service methods' advice method

@@ -1,6 +1,5 @@
 package com.epam.esm.entity;
 
-//import com.epam.esm.audit.EntityListener;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

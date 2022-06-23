@@ -1,7 +1,6 @@
 package com.epam.esm.converter;
 
 import com.epam.esm.entity.AbstractEntity;
-import org.springframework.stereotype.Component;
 
 /**
  * The converter class

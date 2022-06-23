@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -34,16 +33,13 @@ public class JwtTokenProvider {
     @Value("${jwt.token.expired}")
     private Long expireTokenTime;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final CustomUserDetailsService customUserDetailsService;
 
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer_";
 
     @Autowired
-    public JwtTokenProvider(PasswordEncoder passwordEncoder, CustomUserDetailsService customUserDetailsService) {
-        this.passwordEncoder = passwordEncoder;
+    public JwtTokenProvider(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -119,10 +115,7 @@ public class JwtTokenProvider {
 
     private List<String> getRoleNames(List<Role> roleList){
         List<String> roleNames = new ArrayList<>();
-        roleList.
-                forEach(role -> roleNames.add(role.
-                        getName())
-                );
+        roleList.forEach(role -> roleNames.add(role.getName()));
         return roleNames;
     }
 
