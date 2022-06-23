@@ -27,15 +27,9 @@ public class AspectLogging {
     private static final String STARTS = " starts";
     private static final String EXCEPTION = "exception";
 
-    /**
-     * The allServiceMethods method is used only for aspect logging logic
-     */
     @Pointcut(EXECUTION_ALL_SERVICE_METHODS)
     private void allServiceMethods() {}
 
-    /**
-     * The allModelMethods method is used only for aspect logging logic
-     */
     @Pointcut(EXECUTION_ALL_MODEL_METHODS)
     private void allModelMethods() {}
 
