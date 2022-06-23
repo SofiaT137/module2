@@ -18,10 +18,12 @@ public class AspectLogging {
     private static final String EXECUTION_ALL_MODEL_METHODS = "execution(* com.epam.esm.dao.*.*(..))";
     private static final String SERVICE_POINTCUT_REFERENCE_NAME = "allServiceMethods()";
     private static final String MODEL_POINTCUT_REFERENCE_NAME = "allModelMethods()";
-    private static final String SERVER_LAYER_METHOD_NAME = "Service layer, Method name: ";
+    private static final String SERVICE_LAYER_METHOD_NAME = "Service layer, Method name: ";
     private static final String MODEL_LAYER_METHOD_NAME = "Model layer, Method name: ";
-    private static final String SERVER_LAYER_METHOD_THROWS_AN_EXCEPTION = "Method from Service layer throws an exception: ";
-    private static final String MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION = "Method from Model layer throws an exception: ";
+    private static final String SERVICE_LAYER_METHOD_THROWS_AN_EXCEPTION =
+            "Method from Service layer throws an exception: ";
+    private static final String MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION =
+            "Method from Model layer throws an exception: ";
     private static final String STARTS = " starts";
     private static final String EXCEPTION = "exception";
 
@@ -37,7 +39,8 @@ public class AspectLogging {
      */
     @Before(SERVICE_POINTCUT_REFERENCE_NAME)
     public void beforeServiceMethodsAdvice(JoinPoint joinPoint) {
-        LOGGER.info(SERVER_LAYER_METHOD_NAME + joinPoint.getSignature().getName() + STARTS);
+        LOGGER.info(String.format("%1$s %2$s %3$s", SERVICE_LAYER_METHOD_NAME,
+                joinPoint.getSignature().getName(), STARTS));
     }
 
     /**
@@ -46,7 +49,7 @@ public class AspectLogging {
      */
     @AfterThrowing(pointcut = SERVICE_POINTCUT_REFERENCE_NAME, throwing = EXCEPTION)
     public void afterThrowingServiceMethodsAdvice(Throwable exception) {
-        LOGGER.error(SERVER_LAYER_METHOD_THROWS_AN_EXCEPTION + exception);
+        LOGGER.error(String.format("%1$s %2$s", SERVICE_LAYER_METHOD_THROWS_AN_EXCEPTION, exception));
     }
 
     /**
@@ -55,7 +58,8 @@ public class AspectLogging {
      */
     @Before(MODEL_POINTCUT_REFERENCE_NAME)
     public void beforeModelMethodsAdvice(JoinPoint joinPoint) {
-        LOGGER.info(MODEL_LAYER_METHOD_NAME + joinPoint.getSignature().getName() + STARTS);
+        LOGGER.info(String.format("%1$s %2$s %3$s",MODEL_LAYER_METHOD_NAME,
+                joinPoint.getSignature().getName(), STARTS));
     }
 
     /**
@@ -64,7 +68,7 @@ public class AspectLogging {
      */
     @AfterThrowing(pointcut = MODEL_POINTCUT_REFERENCE_NAME, throwing = EXCEPTION)
     public void afterThrowingModelMethodsAdvice(Throwable exception) {
-        LOGGER.error(MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION + exception);
+        LOGGER.error(String.format("%1$s %2$s",MODEL_LAYER_METHOD_THROWS_AN_EXCEPTION, exception));
     }
 }
 
