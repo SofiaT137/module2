@@ -1,7 +1,7 @@
-## Jenkins' credentials as admin role :
+## Jenkins' credentials as admins role :
 login: user
 password: user
 
-## Jenkins' credentials as developer role :
+## Jenkins' credentials as developers role :
 login: Neko
 password: Neko
