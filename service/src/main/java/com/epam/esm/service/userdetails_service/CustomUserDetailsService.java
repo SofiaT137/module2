@@ -2,7 +2,6 @@ package com.epam.esm.service.userdetails_service;
 
 import com.epam.esm.entity.Role;
 import com.epam.esm.entity.User;
-import com.epam.esm.repository.UserRepository;
 import com.epam.esm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,14 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-
     private UserService<User> userLogicService;
-
-    @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Autowired
     @Qualifier("userLogicService")

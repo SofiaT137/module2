@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "orders")
-public class Order extends AbstractEntity<Long> {
+public class Order extends AbstractEntity {
 
     @Column(name = "price")
     private double price;

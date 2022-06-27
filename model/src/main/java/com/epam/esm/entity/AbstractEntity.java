@@ -1,6 +1,5 @@
 package com.epam.esm.entity;
 
-//import com.epam.esm.audit.EntityListener;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -12,18 +11,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * The abstract class AbstractEntity presents creation of the abstract entity
- * @param <K>
  */
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
-public abstract class AbstractEntity<K extends Serializable> {
+public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +52,6 @@ public abstract class AbstractEntity<K extends Serializable> {
         this.id = id;
     }
 
-
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -85,7 +80,7 @@ public abstract class AbstractEntity<K extends Serializable> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AbstractEntity)) return false;
-        AbstractEntity<?> that = (AbstractEntity<?>) o;
+        AbstractEntity that = (AbstractEntity) o;
         return Objects.equals(getId(), that.getId());
     }
 

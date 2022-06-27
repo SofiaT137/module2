@@ -59,10 +59,7 @@ public class OrderLogicService implements OrderService<Order> {
     }
 
     private static final String NO_ORDER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noOrderWithThatId";
-    private static final String CANNOT_INSERT_THIS_ORDER_EXCEPTION_MESSAGE = "cannotInsertThisOrder!";
-    private static final String NO_USER_WITH_THAT_ID_EXCEPTION_MESSAGE = "noUserWithId";
-    private static final String NO_GIFT_CERTIFICATE_WITH_THAT_ID_EXCEPTION_MESSAGE = "noGiftCertificateWithThatId";
-    private static final String USER_ID_CANNOT_BE_NULL_EXCEPTION_MESSAGE = "userIdCannotBeNull";
+    private static final String NO_ROLE_WITH_THAT_ID_EXCEPTION_MESSAGE = "noRoleWithThatId";
     private static final String USER_HAVE_NOT_ANY_ORDERS_EXCEPTION_MESSAGE = "userDoesNotHaveAnyOrders";
 
 
@@ -115,13 +112,18 @@ public class OrderLogicService implements OrderService<Order> {
     public Page<Order> getAll(int pageNumber, int pageSize) {
         User currentUser = getUser();
         Optional<Role> role = roleRepository.findById(1L);
-        if (currentUser.getRoles().contains(role.get())){
-            return pagination.checkHasContent(orderRepository.findAll(PageRequest.of(pageNumber,pageSize)));
-        }else{
+        if (!role.isPresent()) {
+            throw new NoSuchEntityException(NO_ROLE_WITH_THAT_ID_EXCEPTION_MESSAGE);
+        }
+        if (currentUser.getRoles().contains(role.get())) {
+            return pagination.checkHasContent(orderRepository.findAll(PageRequest.of(pageNumber, pageSize)));
+        } else {
             return pagination.checkHasContent(orderRepository.findAllOrderWhereUserId(currentUser.getId(),
-                    PageRequest.of(pageNumber,pageSize)));
+                    PageRequest.of(pageNumber, pageSize)));
         }
     }
+
+
 
     @Override
     public Page<Order> ordersByUserId(long userId, int pageNumber,int pageSize){

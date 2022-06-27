@@ -34,7 +34,6 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
 
     private static final String CANNOT_INSERT_THIS_GIFT_CERTIFICATE_MESSAGE = "giftCertificateNameIsNotUnique";
     private static final String CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE = "noGiftCertificateWithThatId";
-    private static final String CANNOT_FIND_ANY_CERTIFICATE_BY_CONDITIONS_MESSAGE = "noGiftCertificateWithConditions";
     private static final String CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE = "cannotUpdateThisCertificate";
     private static final String TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE = "forbiddenTransferredToMuchParameters";
 
@@ -56,12 +55,12 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     public GiftCertificate insert(GiftCertificate entity) {
         checkIfGiftCertificateNameIsUnique(entity.getName());
         if (!entity.getTagList().isEmpty()){
-            addTagsToGiftCertificateList(entity.getTagList(),entity);
+            addTagsToGiftCertificateList(entity);
         }
         return giftCertificateRepository.save(entity);
     }
 
-    private void addTagsToGiftCertificateList(List<Tag> tagList,GiftCertificate entity){
+    private void addTagsToGiftCertificateList(GiftCertificate entity){
         List<Tag> certificateTags = tagLogicService.getCertificateTagList(entity.getTagList());
         entity.setTagList(new ArrayList<>());
         certificateTags.forEach(entity::addTagToGiftCertificate);

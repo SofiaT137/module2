@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "tags")
-public class Tag extends AbstractEntity<Long> {
+public class Tag extends AbstractEntity{
 
     @Column(name = "tag_name")
     private String name;

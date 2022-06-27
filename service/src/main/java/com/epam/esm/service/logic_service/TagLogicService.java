@@ -30,11 +30,9 @@ public class TagLogicService implements TagService<Tag> {
     private UserService<User> userLogicService;
     private final Pagination<Tag> pagination;
 
-    private static final String CANNOT_INSERT_THIS_TAG_MESSAGE = "cannotInsertThisTag";
     private static final String NOT_UNIQUE_TAG_NAME_MESSAGE = "notUniqueTagName";
     private static final String CANNOT_FIND_THIS_TAG_BY_ID_MESSAGE = "noTagWithThatId";
     private static final String CANNOT_FIND_THIS_TAG_BY_NAME_MESSAGE = "noTagWithThatName";
-    private static final String CANNOT_FIND_THIS_USER_MESSAGE = "noUserWithId";
     private static final String CANNOT_FIND_THE_MOST_WIDELY_USED_USER_TAG =
             "cannotFindTheMostWidelyUsedUserTagWithHigherOrderCost";
 
