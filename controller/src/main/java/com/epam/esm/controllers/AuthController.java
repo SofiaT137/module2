@@ -24,6 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin({"http://localhost:3000", "http://localhost:8085"})
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
