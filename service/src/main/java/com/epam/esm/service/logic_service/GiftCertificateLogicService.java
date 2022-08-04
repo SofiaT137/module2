@@ -94,7 +94,6 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
-        checkIfGiftCertificateNameIsUnique(entity.getName());
         if (!entity.getTagList().isEmpty()){
             addTagsToGiftCertificateList(entity);
         }
