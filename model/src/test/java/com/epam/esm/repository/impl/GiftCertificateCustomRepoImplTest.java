@@ -60,6 +60,10 @@ class GiftCertificateCustomRepoImplTest {
         giftCertificate2.setTagList(new ArrayList<>());
         giftCertificateRepository.save(giftCertificate2);
         itemValueForUpdate.setDuration(NEW_DURATION);
+        itemValueForUpdate.setDescription(DESCRIPTION);
+        itemValueForUpdate.setName(CERTIFICATE_NAME);
+        itemValueForUpdate.setPrice(PRICE);
+        itemValueForUpdate.setTagList(new ArrayList<>());
     }
 
     @Test
