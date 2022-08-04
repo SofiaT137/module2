@@ -22,7 +22,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 
     private Long id;
     @NotEmpty(message = "giftCertificateNameCannotBeNull",groups = OnCreate.class)
-    @Size(min = 6,max = 30,message = "{giftCertificateLengthIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
+    @Size(min = 6,max = 48,message = "{giftCertificateLengthIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
     private String giftCertificateName;
     @Size(min = 12,max = 1000,message = "{giftCertificateDescriptionIsTooLong}",groups = {OnCreate.class,
             OnUpdate.class})
