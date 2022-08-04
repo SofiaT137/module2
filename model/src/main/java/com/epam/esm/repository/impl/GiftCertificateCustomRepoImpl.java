@@ -133,7 +133,7 @@ class GiftCertificateCustomRepoImpl implements GiftCertificateCustomRepo {
         if (entity.getName() != null && entity.getName().length() != 0){
             certificateForUpdate.setName(entity.getName());
         }
-        if (entity.getName() != null && entity.getDescription().length() != 0 ){
+        if (entity.getDescription() != null && entity.getDescription().length() != 0 ){
             certificateForUpdate.setDescription(entity.getDescription());
         }
         if (entity.getPrice() != null){
