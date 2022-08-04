@@ -23,16 +23,15 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 
     private Long id;
     @NotEmpty(message = "giftCertificateNameCannotBeNull",groups = OnCreate.class)
-    @Size(min = 3,max = 50,message = "{giftCertificateLengthIsForbidden}",groups = OnCreate.class)
+    @Size(min = 6,max = 30,message = "{giftCertificateLengthIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
     private String giftCertificateName;
-    @Size(max = 450,message = "{giftCertificateDescriptionIsTooLong}",groups = OnCreate.class)
+    @Size(min = 12,max = 1000,message = "{giftCertificateDescriptionIsTooLong}",groups = {OnCreate.class, OnUpdate.class})
     private String description;
-    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = OnCreate.class)
-    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = OnCreate.class)
+    @DecimalMin(value = "0.01",message = "{giftCertificatePriceIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
+    @DecimalMax(value = "9999.99",message = "{giftCertificatePriceIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
     private Double price;
-    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {OnCreate.class, OnUpdate.class})
+    @NotNull(message = "{giftCertificateDurationCannotBeNull}",groups = {OnCreate.class})
     @Min(value = 1,message = "{giftCertificateDurationIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
-    @Max(value = 90,message = "{giftCertificateDurationIsForbidden}",groups = {OnCreate.class, OnUpdate.class})
     private Integer duration;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createDate;
