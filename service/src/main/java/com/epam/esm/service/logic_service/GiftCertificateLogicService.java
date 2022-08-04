@@ -5,7 +5,6 @@ import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.CannotInsertEntityException;
-import com.epam.esm.exceptions.NoPermissionException;
 import com.epam.esm.exceptions.NoSuchEntityException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
@@ -95,8 +94,13 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
-        checkIfEntityHasMoreThatOneTransferredParameter(entity);
-        Optional<GiftCertificate> giftCertificate = giftCertificateRepository.update(entity.getDuration(),
+        if (!entity.getTagList().isEmpty()){
+            addTagsToGiftCertificateList(entity);
+        }
+        if (entity.getName() != null && entity.getDescription().length() != 0){
+            checkIfGiftCertificateNameIsUnique(entity.getName());
+        }
+        Optional<GiftCertificate> giftCertificate = giftCertificateRepository.update(entity,
                 foundedCertificateById.get());
         if (!giftCertificate.isPresent()){
             throw new NoSuchEntityException(CANNOT_UPDATE_THIS_GIFT_CERTIFICATE_MESSAGE);
@@ -104,12 +108,6 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
         return giftCertificate.get();
     }
 
-    private void checkIfEntityHasMoreThatOneTransferredParameter(GiftCertificate entity){
-        if (entity.getPrice() != null || entity.getDescription()!= null
-            || entity.getName()!= null || !entity.getTagList().isEmpty()){
-           throw new NoPermissionException(TOO_MUCH_TRANSFERRED_PARAMETERS_MESSAGE);
-        }
-    }
 
     @Override
     @Transactional

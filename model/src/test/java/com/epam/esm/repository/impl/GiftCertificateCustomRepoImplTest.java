@@ -37,6 +37,7 @@ class GiftCertificateCustomRepoImplTest {
     private static final LocalDateTime data = LocalDateTime.now();
     private final GiftCertificate giftCertificate1 = new GiftCertificate();
     private final GiftCertificate giftCertificate2 = new GiftCertificate();
+    private final GiftCertificate itemValueForUpdate = new GiftCertificate();
     private static final String PART_NAME = "partName";
     private static final String PART_NAME_NUMBER_ONE = "dolphin";
     private static final String PART_NAME_NUMBER_TWO = "swim";
@@ -58,6 +59,7 @@ class GiftCertificateCustomRepoImplTest {
         giftCertificate2.setPrice(PRICE);
         giftCertificate2.setTagList(new ArrayList<>());
         giftCertificateRepository.save(giftCertificate2);
+        itemValueForUpdate.setDuration(NEW_DURATION);
     }
 
     @Test
@@ -72,7 +74,8 @@ class GiftCertificateCustomRepoImplTest {
 
     @Test
     void update(){
-        Optional<GiftCertificate> updatedCertificate = giftCertificateRepository.update(NEW_DURATION,giftCertificate1);
+        Optional<GiftCertificate> updatedCertificate  = giftCertificateRepository.update(itemValueForUpdate
+                    ,giftCertificate1);
         if (!updatedCertificate.isPresent()){
             throw new UsernameNotFoundException(CANNOT_UPDATE_THE_USER_EXCEPTION);
         }

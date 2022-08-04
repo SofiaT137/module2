@@ -128,9 +128,20 @@ class GiftCertificateCustomRepoImpl implements GiftCertificateCustomRepo {
     }
 
     @Override
-    public Optional<GiftCertificate> update(int duration, GiftCertificate entity) {
-        GiftCertificate mergedCertificate = entityManager.merge(entity);
-        entity.setDuration(duration);
+    public Optional<GiftCertificate> update(GiftCertificate entity, GiftCertificate certificateForUpdate) {
+        GiftCertificate mergedCertificate = entityManager.merge(certificateForUpdate);
+        if (entity.getName() != null && entity.getName().length() != 0){
+            certificateForUpdate.setName(entity.getName());
+        }
+        if (entity.getName() != null && entity.getDescription().length() != 0 ){
+            certificateForUpdate.setDescription(entity.getDescription());
+        }
+        if (entity.getPrice() != null){
+            certificateForUpdate.setPrice(entity.getPrice());
+        }
+        if (entity.getDuration() != null){
+            certificateForUpdate.setDuration(entity.getDuration());
+        }
         return mergedCertificate != null ? Optional.of(mergedCertificate) : Optional.empty();
     }
 

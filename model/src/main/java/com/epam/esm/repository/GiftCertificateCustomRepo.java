@@ -4,6 +4,7 @@ import com.epam.esm.entity.GiftCertificate;
 import org.springframework.data.domain.Page;
 import org.springframework.util.MultiValueMap;
 
+import java.security.cert.Certificate;
 import java.util.Optional;
 
 /**
@@ -24,9 +25,9 @@ public interface GiftCertificateCustomRepo {
 
     /**
      * The method updates the GiftCertificate entity
-     * @param duration The GiftCertificates new duration
      * @param entity The GiftCertificate object from table
+     * @param certificateForUpdate The GiftCertificates for update from DB
      * @return Optional of the GiftCertificate entity
      */
-    Optional<GiftCertificate> update(int duration, GiftCertificate entity);
+    Optional<GiftCertificate> update(GiftCertificate entity, GiftCertificate certificateForUpdate);
 }

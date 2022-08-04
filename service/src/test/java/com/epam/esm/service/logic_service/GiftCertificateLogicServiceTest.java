@@ -118,7 +118,7 @@ class GiftCertificateLogicServiceTest {
     void update(){
         Mockito.when(giftCertificateRepository.findById(giftCertificate.getId()))
                 .thenReturn(Optional.of(giftCertificate));
-        Mockito.when(giftCertificateRepository.update(DURATION,giftCertificate))
+        Mockito.when(giftCertificateRepository.update(giftCertificateForUpdate,giftCertificate))
                 .thenReturn(Optional.ofNullable(updatedGiftCertificate));
         GiftCertificate giftCertificate = giftCertificateLogicService.
                 update(giftCertificateForUpdate.getId(),giftCertificateForUpdate);
