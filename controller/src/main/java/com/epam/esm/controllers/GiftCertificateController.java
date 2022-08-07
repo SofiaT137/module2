@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/gift_certificates")
-@CrossOrigin({"http://localhost:3000", "http://localhost:8085"})
+@CrossOrigin({"http://localhost:3000", "http://localhost:8085", "http://localhost:5500"})
 public class GiftCertificateController {
 
     private GiftCertificateService<GiftCertificateDto> giftCertificateService;
