@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(242, 242, 242);
+    height: 100%;
+}
+
+section {
+    position: relative;
+}
+
+button {
+    width: 142px;
+    height: 30px;
+    color: gray;
+    background-color: white;
+    border-radius: 3px;
+    border: 1px solid gray;
+}
+
+.formWrapper {
+    width: 50%;
+    border-radius: 3px;
+    background-color: white;
+    border: 2px solid #6fd098;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, +25%);
+}
+
+.signUpButton {
+    background-color: #6fd098;
+    color: white;
+    border: none;
+}
+
+.registerField {
+    height: 50px;
+    background-color: lightgrey;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 50px;
+    gap: 16px;
+}
+
+.labelInputWrapper {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    width: 300px;    
+}
+
+.labelInputWrapper > li > input {
+    border: 1px solid #6fd098;
+    border-radius: 3px;
+    padding: 7px;
+    width: 100%;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 30px 50px;
+    gap: 15px;
+}
+
+@media (max-width:1438px) {
+
+    .inputWrapper {
+        justify-content: center;
+    }
+
+    .buttonWrapper {
+        justify-content: center;
+    }
+    
+}
+
+@media (max-width:1250px) {
+    .registerField {
+        padding: 3px;
+    }
+
+    .inputWrapper {
+        gap: 2px;
+    }
+
+    .buttonWrapper {
+        justify-content: center;
+    }
+}

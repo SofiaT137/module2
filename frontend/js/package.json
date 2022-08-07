@@ -1,0 +1,23 @@
+{
+  "name": "epam_front_not_react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SofiaT137/EPAM_FRONT_NOT_REACT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SofiaT137/EPAM_FRONT_NOT_REACT/issues"
+  },
+  "homepage": "https://github.com/SofiaT137/EPAM_FRONT_NOT_REACT#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
+}

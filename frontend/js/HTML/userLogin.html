@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>USER LOGIN</title>
+    <link rel="shortcut icon" href="./../images/logoIc.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./../CSS/userLogin.css">
+    <link rel="stylesheet" href="./../CSS/header.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The best gift service">
+    <meta name="keywords" content="gift, service, present, gift certificate, best choise">
+</head>
+
+<body>
+    <header>
+        <div class="headerWrapper">
+            <div class="logoButtonWrapper">
+                <div class="newCouponWrapper">
+                    <h6><a href="">Create new coupon!</a></h6>
+                </div>
+                <div class="logoWrapper">
+                    <a href="">
+                        <img class="logoLittle" src="./../images/Logo.png" alt="logo">
+                    </a>
+                </div>
+            </div>
+            <form class="searchForm" action="someJSFile1.js" name="Find certificate form">
+                <input type="text" placeholder="Search by item name">
+                <select name="All categories">
+                    <option value="none" selected disabled hidden>All Categories</option>
+                    <option value="One">One</option>
+                    <option value="Two">Two</option>
+                </select><br>
+            </form>
+            <nav class="navWrapper">
+                <a class="navItem" href="">
+                    <span class="material-icons">
+                        favorite
+                    </span>
+                </a>
+                <a class="navItem" href="">
+                    <span class="material-icons">
+                        shopping_cart
+                    </span>
+                </a>
+                <div class="loginSingUpWrapper">
+                    <a class="navItem" href="">
+                        Login
+                    </a>
+                    <p>|</p>
+                    <a class="navItem" href="">
+                        Sing up
+                    </a>
+                </div>
+            </nav>
+            <div class="headerBurger">
+                <span></span>
+            </div>
+            <nav class="burgerMenu">
+                <ul class="burgerList">
+                    <li><a href="" class="burgerLink">Create new coupon</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Search coupon</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Main menu</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Favorites</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Cart</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Login</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Sing Up</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section>
+        <form action="someJSFile2.js" name="Login form">
+            <fieldset>
+                <legend><img class="logoForm" src="./../images/logo2.png" alt="logo"></legend>
+                <ul class="formWrapper">
+                    <li class="form-row">
+                        <input type="text" id="login" placeholder="Login">
+                    </li>
+                    <li class="form-row">
+                        <input type="password" id="password" placeholder="Password">
+                    </li>
+                    <li class="form-row">
+                        <button type="submit">Login</button>
+                    </li>
+                    <li class="form-row">
+                        <div class="form-text">You are not registred? Please,
+                            <a class="form-link" href="./registerPage.html">sing up!</a>
+                        </div>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+    </section>
+    <script src="./../JS/burgerMenu.js"></script>
+</body>
+
+</html>
