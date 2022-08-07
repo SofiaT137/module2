@@ -91,11 +91,14 @@ public class GiftCertificateLogicService implements GiftCertificateService<GiftC
     @Transactional
     public GiftCertificate update(Long id, GiftCertificate entity) {
         Optional<GiftCertificate> foundedCertificateById = giftCertificateRepository.findById(id);
+        GiftCertificate found;
         if (!foundedCertificateById.isPresent()){
             throw new NoSuchEntityException(CANNOT_FIND_THIS_GIFT_CERTIFICATE_MESSAGE);
         }
+        found = foundedCertificateById.get();
         if (!entity.getTagList().isEmpty()){
-            addTagsToGiftCertificateList(entity);
+            found.setTagList(entity.getTagList());
+            addTagsToGiftCertificateList(found);
         }
         Optional<GiftCertificate> giftCertificate = giftCertificateRepository.update(entity,
                 foundedCertificateById.get());
