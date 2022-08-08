@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    height: 70px;
+    background-color: #ffff;
+}
+
+.logoButtonWrapper {
+    display: flex;
+    gap: 5px;
+}
+
+.headerWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+}
+
+.logoWrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.logoLittle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.headerBurger {
+    display: none;
+}
+
+.burgerMenu {
+    display: none;
+}
+
+.searchForm {
+    display: flex;
+    width: 40%;
+}
+
+.searchForm>input {
+    border: 1px solid #6fd098;
+    padding: 7px;
+    width: 70%;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 3px;
+}
+
+.searchForm>select {
+    font-size: 20px;
+    border-radius: 3px;
+    border: 1px solid #6fd098;
+    color: grey;
+    text-align: center;
+}
+
+.navWrapper {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.navWrapper>a {
+    color: grey;
+}
+
+.loginSingUpWrapper {
+    gap: 2px;
+    display: flex;
+}
+
+.loginSingUpWrapper > a,p {
+    text-decoration: none;
+    color: grey;
+
+}
+
+.newCouponWrapper {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: rgb(242, 242, 242);
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.newCouponWrapper a {
+    text-decoration: none;
+    color: #6fd098;
+}
+
+
+@media (max-width:768px) {
+
+    body.lock {
+        overflow: hidden;
+    }
+
+    .headerWrapper {
+        height: 100%;
+    }
+
+    .searchForm {
+        display: none;
+    }
+
+    .logoButtonWrapper {
+        display: none;
+    }
+
+    .navWrapper {
+        display: none;
+    }
+
+    .headerBurger {
+        display: block;
+        position: relative;
+        z-index: 3;
+        width: 30px;
+        height: 20px;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    .headerBurger:hover {
+        cursor: pointer;
+    }
+
+    .headerBurger span {
+        position: absolute;
+        background-color: grey;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        top: 9px;
+        transition: all 0.3s ease 0s;
+    }
+
+    .headerBurger:before,
+    .headerBurger::after {
+        content: '';
+        background-color: grey;
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        left: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .headerBurger:before {
+        top: 0;
+    }
+
+    .headerBurger::after {
+        bottom: 0;
+    }
+
+    .headerBurger.active:before {
+        transform: rotate(45deg);
+        background-color: #fff;
+        top: 9px;
+    }
+
+    .headerBurger.active:after {
+        transform: rotate(-45deg);
+        background-color: #fff;
+        bottom: 9px;
+    }
+
+    .headerBurger.active span {
+        transform: scale(0);
+    }
+
+    .burgerMenu {
+        display: block;
+        position: absolute;
+        z-index: 2;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        transition: all 0.3s ease 0s;
+        height: 100%;
+        background-color: #6fd098;
+        padding: 70px 10px 20px 10px;
+        overflow: auto;
+    }
+
+    .burgerMenu.active {
+        top: 0;
+    }
+
+    .burgerList {
+        display: block;
+    }
+
+    .burgerList li {
+        margin: 0px 0px 20px 0px;
+    }
+
+    .burgerList li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        text-transform: uppercase;
+        padding: 50px;
+    }
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>NEW ITEM</title>
+    <link rel="shortcut icon" href="/images/logoIc.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./../CSS/header.css">
+    <link rel="stylesheet" href="./../CSS/createNewItem.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The best gift service">
+    <meta name="keywords" content="gift, service, present, gift certificate, best choise">
+</head>
+
+<body>
+    <header>
+        <div class="headerWrapper">
+            <div class="logoButtonWrapper">
+                <div class="newCouponWrapper">
+                    <h6><a href="">Create new coupon!</a></h6>
+                </div>
+                <div class="logoWrapper">
+                    <a href="">
+                        <img class="logoLittle" src="./../images/Logo.png" alt="logo">
+                    </a>
+                </div>
+            </div>
+            <form class="searchForm" action="someJSFile1.js" name="Find certificate form">
+                <input type="text" placeholder="Search by item name">
+                <select name="All categories">
+                    <option value="none" selected disabled hidden>All Categories</option>
+                    <option value="One">One</option>
+                    <option value="Two">Two</option>
+                </select><br>
+            </form>
+            <nav class="navWrapper">
+                <a class="navItem" href="">
+                    <span class="material-icons">
+                        favorite
+                    </span>
+                </a>
+                <a class="navItem" href="">
+                    <span class="material-icons">
+                        shopping_cart
+                    </span>
+                </a>
+                <div class="loginSingUpWrapper">
+                    <a class="navItem" href="">
+                        Login
+                    </a>
+                    <p>|</p>
+                    <a class="navItem" href="">
+                        Sing up
+                    </a>
+                </div>
+            </nav>
+            <div class="headerBurger">
+                <span></span>
+            </div>
+            <nav class="burgerMenu">
+                <ul class="burgerList">
+                    <li><a href="" class="burgerLink">Create new coupon</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Search coupon</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Main menu</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Favorites</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Cart</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Login</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Sing Up</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section>
+        <div class="addNewCoupon">Add new coupon</div>
+        <form class="formWrapper" action="someJSFile4.js" name="Register form">
+            <ul class="columnWrapper">
+                <div class="firstColumn">
+                    <li>
+                        <label for="companyName">Company</label>
+                        <input type="text" id="companyName">
+                    </li>
+                    <li>
+                        <label for="Category">Category</label>
+                        <select name="All categories" id="Category">
+                            <option value="none" selected disabled hidden>Category Name</option>
+                            <option value="One">One</option>
+                            <option value="Two">Two</option>
+                        </select><br>
+                    </li>
+                    <li>
+                        <label for="validTo">Valid to</label>
+                        <input type="datetime-local" id="validTo">
+                    </li>
+                    <li>
+                        <label for="price">Price</label>
+                        <input type="number" id="price">
+                    </li>
+                    <li>
+                        <label for="images">Images</label>
+                        <input type="image" id="images">
+                    </li>
+                </div>
+                <div class="secondColumn">
+                    <li>
+                        <label for="itemName">Item name</label>
+                        <input type="text" id="itemName">
+                    </li>
+                    <li>
+                        <label for="shortDescription">Short description</label>
+                        <textarea name="shortDescription" id="shortDescription" cols="30" rows="10"></textarea>
+                    </li>
+                    <li>
+                        <label for="longDescription">Long description</label>
+                        <textarea name="longDescription" id="longDescription" cols="30" rows="10"></textarea>
+                    </li>
+                    <li class="buttonWrapper">
+                        <button type="reset">Back</button>
+                        <button type="submit" class="saveButton">Save</button>
+                    </li>
+                </div>
+            </ul>
+        </form>
+    </section>
+    <script src="./../JS/burgerMenu.js"></script>
+</body>
+
+</html>

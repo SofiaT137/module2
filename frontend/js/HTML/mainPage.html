@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MAIN PAGE</title>
+    <link rel="shortcut icon" href="/images/logo2.png" type="image/x-icon">
+    <link rel="stylesheet" href="./../CSS/header.css">
+    <link rel="stylesheet" href="./../CSS/mainPage.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The best gift service">
+    <meta name="keywords" content="gift, service, present, gift certificate, best choise">
+</head>
+
+<body>
+    <header>
+        <div class="headerWrapper">
+            <div class="logoButtonWrapper">
+                <div class="newCouponWrapper">
+                    <h6><a href="">Create new coupon!</a></h6>
+                </div>
+                <div class="logoWrapper">
+                    <a href="">
+                        <img class="logoLittle" src="./../images/Logo.png" alt="logo">
+                    </a>
+                </div>
+            </div>
+            <form class="searchForm" name="Find certificate form">
+                <input type="text" name="name" placeholder="Item search by... ">
+                <select name="searchBy">
+                    <option value="none" selected disabled hidden>Search By:</option>
+                    <option value="name">name</option>
+                    <option value="description">description</option>
+                    <option value="tag">tag</option>
+                </select><br>
+            </form>
+            <nav class="navWrapper">
+                <a class="navItem" href="">
+                    <span class="material-icons">
+                        favorite
+                    </span>
+                </a>
+                <a class="navItem" href="">
+                    <span class="material-icons">
+                        shopping_cart
+                    </span>
+                </a>
+                <div class="loginSingUpWrapper">
+                    <a class="navItem" href="">
+                        Login
+                    </a>
+                    <p>|</p>
+                    <a class="navItem" href="">
+                        Sing up
+                    </a>
+                </div>
+            </nav>
+            <div class="headerBurger">
+                <span></span>
+            </div>
+            <nav class="burgerMenu">
+                <ul class="burgerList">
+                    <li><a href="" class="burgerLink">Create new coupon</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Search coupon</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Main menu</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Favorites</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Cart</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Login</a>
+                    </li>
+                    <li><a href="" class="burgerLink">Sing Up</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section>
+        <div class="categoryMenu">
+            <div class="categoryWrapper">
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category1</h4>
+                </div>
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category2</h4>
+                </div>
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category3</h4>
+                </div>
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category4</h4>
+                </div>
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category5</h4>
+                </div>
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category6</h4>
+                </div>
+                <div class="categoryItem">
+                    <a href="">
+                        <img src="./../images/cat1.jpg" alt="funny pic">
+                    </a>
+                    <h4>Category7</h4>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="scrollTop" onclick="scrollUp()">
+                <span class="material-icons">
+                arrow_circle_up
+                </span>
+            </div>
+        </div>
+    </section>    
+    <script src="./../JS/burgerMenu.js"></script>
+    <script src = "./../JS/backToTopButton.js"></script>
+    <script src = "./../JS/backToLastSavePosition.js"></script>
+    <script src = "./../JS/findByFunctional.js"></script>
+    <script src = "./../JS/script.js"></script>
+</body>
+
+</html>

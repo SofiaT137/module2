@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: lightgrey;
+}
+
+img{
+    width: 70%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-self: flex-start;
+    padding: 20px 150px;
+}
+
+.couponInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    height: 300px ;
+    background-color: #fff;
+    padding: 15px;
+    gap: 10px;
+}
+
+.itemDescription {
+    width: 70%;
+    padding-top: 20px;
+}
+
+.timeLeftToBuy {
+    display: flex;
+    flex-direction: column;
+}
+
+.priceWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.priceWrapper > h4 {
+    color: #6fd098;
+    font-size: 20px;
+}
+
+.priceWrapper > h4 {
+    color: #6fd098;
+    font-size: 20px;
+}
+
+.priceWrapper > a {
+    text-decoration: none;
+    color: gray;
+}
+
+.cartIcon {
+    display: flex;
+    align-items: center;
+    gap:5px;
+}
+
+.cartIcon > span {
+    color: #6fd098;
+}
+
+
+@media (max-width:768px) {
+
+    img {
+        width: 80%;
+        height: auto;
+    }
+
+    .container {
+        padding: 20px 10px;
+        justify-content: center;
+    }
+
+    .couponInfo {
+        margin-top: 20px;
+    }
+
+    .itemDescription {
+        width: 80%;
+        margin-top: 20px;
+    }
+    
+}
+@media (max-width:321px) {
+
+    img {
+        width: 300px;
+        height: auto;
+    }
+
+    .container {
+        padding: 20px 10px;
+        justify-content: center;
+    }
+
+    .itemDescription {
+        width: 100%;
+    }
+    
+}
+
+
+
