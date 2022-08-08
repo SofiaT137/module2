@@ -64,17 +64,16 @@ function substringOccurrencesCounter(substring, text) {
  *      "Hello world" -> "HHeello  wworrldd" // o, l is repeated more then once. Space was also repeated
  */
 function repeatingLitters(string) {
+  let result = "";
 
-    let result = '';
-     
-    for (var i=0; i<string.length; i++) {
-      if (string.indexOf(string[i]) === string.lastIndexOf(string[i])) {
-        result += string[i].repeat(2)
-      }else {
-        result += string[i]
-      }
-    }  
-    return result;
+  for (var i = 0; i < string.length; i++) {
+    if (string.indexOf(string[i]) === string.lastIndexOf(string[i])) {
+      result += string[i].repeat(2);
+    } else {
+      result += string[i];
+    }
+  }
+  return result;
 }
 
 /**
@@ -95,10 +94,10 @@ function repeatingLitters(string) {
  *      f3() ➞ ""
  */
 function redundant(str) {
-    function redundant2(){
-        return str;
-    }
-    return redundant2;
+  function redundant2() {
+    return str;
+  }
+  return redundant2;
 }
 
 /**
@@ -107,7 +106,32 @@ function redundant(str) {
  * @param {number} disks
  * @return {number}
  */
-function towerHanoi(disks) {}
+
+ function towerHanoi(disks) {
+  let stackA = [];
+  let stackB = [];
+  let stackC = [];
+  let number = 0;
+
+  for (let t = disks; t > 0; t--) {
+    stackA.push(t);
+  }
+
+  runHanoi(disks, stackA, stackB, stackC);
+
+  function runHanoi(z, A, B, C) {
+    if (z == 1) {
+      B.push(A.pop());
+      number++;
+    } else {
+      runHanoi(z - 1, A, C, B);
+      B.push(A.pop());
+      number++;
+      runHanoi(z - 1, C, B, A);
+    }
+  }
+  return number;
+}
 
 /**
  * You must create a function that multiplies two matricies (n x n each).
@@ -148,21 +172,19 @@ function matrixMultiplication(matrix1, matrix2) {
  */
 function gather(str) {
 
-  const a = [...str];
+  let massive = [str]
+  let resultString = ""
 
-  function order([...numbers]){
-
-    const result = new Array(a.length);
-
-    if(a.length != numbers.length){
-      console.error("wrong number length or words!")
-    } else {
-      for(let i = 0; i < numbers.length; i++) {
-        result[numbers[i]] = a[numbers[i]];
+  function getStr(strNew){
+    getStr.order = function order(number){
+      order.get = function get(){
+        return resultString;
       }
-    }    
-    return result;
+      resultString = resultString + massive[number];
+      return order;
+    }
+    massive.push(strNew);
+    return getStr;
   }
-
-  return order;
+    return getStr;
 }
